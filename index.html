@@ -225,6 +225,9 @@ nav ul {
             nav.mobile-open {
                 max-height: 400px;
             }
+            .mobile-menu-btn {
+                display: flex;
+            }
         }
 
         .container {
@@ -1711,13 +1714,25 @@ nav ul {
         let cartCount = 0;
 
         function loadCart() {
-            const savedCart = localStorage.getItem('shoppingCart');
-            if (savedCart) {
-                const parsed = JSON.parse(savedCart);
-                cart = parsed.items || [];
-                cartTotal = parsed.total || 0;
-                cartCount = parsed.count || 0;
-                updateCartDisplay();
+            try {
+                if (typeof localStorage === 'undefined' || !localStorage) {
+                    console.warn('localStorage not available');
+                    return;
+                }
+                const savedCart = localStorage.getItem('shoppingCart');
+                if (savedCart) {
+                    const parsed = JSON.parse(savedCart);
+                    cart = parsed.items || [];
+                    cartTotal = parsed.total || 0;
+                    cartCount = parsed.count || 0;
+                    updateCartDisplay();
+                }
+            } catch (e) {
+                console.warn('Could not load cart from localStorage:', e);
+                // Clear corrupted data
+                try {
+                    localStorage.removeItem('shoppingCart');
+                } catch (e2) {}
             }
         }
 
@@ -1916,6 +1931,18 @@ function updateCartDisplay() {
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
             this.classList.toggle('active');
             document.querySelector('nav').classList.toggle('mobile-open');
+        });
+
+        // Close mobile menu when a navigation link is clicked
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                const nav = document.querySelector('nav');
+                if (mobileMenuBtn.classList.contains('active')) {
+                    mobileMenuBtn.classList.remove('active');
+                    nav.classList.remove('mobile-open');
+                }
+            });
         });
 
         // Back to top button
