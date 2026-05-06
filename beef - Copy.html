@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Beef Cuts Online Portal</title>
+    <style>
+        :root {
+            --primary: #E74C3C; /* Reddish, consistent with beef badge in index.html */
+            --primary-dark: #C0392B; /* Darker red */
+            --secondary: #27AE60; /* Green, consistent */
+            --accent: #3498DB; /* Blue, for contrast */
+            --bg-light: #FDF2E9; /* Light red/orange background for beef theme */
+            --bg-card: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #FDF2E9 0%, #FFFFFF 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: shimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-20%, -20%); }
+            50% { transform: translate(20%, 20%); }
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .site-description {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav {
+            background-color: var(--text-dark);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li {
+            flex: 1;
+            text-align: center;
+        }
+
+        nav a {
+            display: block;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            background-color: var(--primary);
+        }
+
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .section {
+            padding: 3rem 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .site-overview {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+
+        /* Product Cards */
+        .featured-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .item-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.4rem 0.8rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .item-img-wrapper { height: 220px; overflow: hidden; }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .item:hover img {
+            transform: scale(1.05);
+        }
+
+        .item-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item h3 {
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+            color: var(--text-dark);
+        }
+
+        .item p {
+            color: var(--text-muted);
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+
+        .item-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart.added { background: var(--secondary); }
+
+        /* Cart Summary */
+        .cart-summary {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-card);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-hover);
+            z-index: 1000;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav a { padding: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .cart-summary { position: static; margin: 2rem auto; width: fit-content; }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Premium Beef Cuts Online Portal</h1>
+            <p class="site-description">Your trusted source for the finest fresh beef delivered to your doorstep</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="beef.html" style="background-color: var(--primary);">Beef</a></li>
+            <li><a href="fish.html">Fish</a></li>
+            <li><a href="chicken.html">Chicken</a></li>
+            <li><a href="contact.html">Customer Service</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section class="section">
+            <h2 class="section-title">About Our Beef</h2>
+            <div class="site-overview">
+                <p>Fresh Beef Online Portal is dedicated to providing the highest quality, premium beef cuts directly from trusted farms to your table. We partner with ranchers who prioritize ethical animal husbandry, sustainable practices, and superior genetics to ensure exceptional flavor and tenderness.</p>
+                <p>Our mission is to make gourmet, all-natural beef accessible to everyone with the convenience of online ordering and reliable home delivery. Each cut is expertly aged, hand-trimmed, and delivered in temperature-controlled packaging to ensure optimal freshness and taste.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Our Beef Selection</h2>
+            <div class="featured-items" id="beef-items">
+                <!-- Premium Beef Steak -->
+                <div class="item">
+                    <span class="item-badge">Beef</span>
+                    <div class="item-img-wrapper">
+                        <img src="chuck.jpg" alt="Premium Beef Steak">
+                    </div>
+                    <div class="item-content">
+                        <h3>Beef Steak</h3>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1rem;">Hand-selected & Aged</p>
+                        <p>Hand-selected premium steak cuts, expertly aged and trimmed for maximum tenderness and flavor. Perfect for grilling or pan-searing.</p>
+                        <p class="item-price">USh74,329</p>
+                        <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                            <input type="number" class="item-qty" value="1" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <button class="add-to-cart" data-item="Premium Beef Steak" data-price="74.329">
+                            <span class="icon">🛒</span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Roast Beef Brisket -->
+                <div class="item">
+                    <span class="item-badge">Beef</span>
+                    <div class="item-img-wrapper">
+                        <img src="brisket.jpg" alt="Roast Beef Brisket">
+                    </div>
+                    <div class="item-content">
+                        <h3>Beef Brisket</h3>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1rem;">Slow-cooked Perfection</p>
+                        <p>Slow-roasted to perfection, our beef brisket is tender, juicy, and full of rich flavor. Ideal for sandwiches, trays, or family dinners.</p>
+                        <p class="item-price">USh51,986</p>
+                        <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                            <input type="number" class="item-qty" value="1" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <button class="add-to-cart" data-item="Roast Beef Brisket" data-price="51.986">
+                            <span class="icon">🛒</span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ground Beef (Lean) -->
+                <div class="item"> <!-- Beef Shank -->
+                    <span class="item-badge">Beef</span>
+                    <div class="item-img-wrapper">
+                        <img src="shank.jpg" alt="Beef Shank">
+                    </div>
+                    <div class="item-content">
+                        <h3>Beef Shank</h3>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1rem;">Rich & Flavorful</p>
+                        <p>Perfect for slow-cooking, our beef shank offers rich flavor and tender meat, ideal for stews, soups, and braises.</p>
+                        <p class="item-price">USh38,000</p>
+                        <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                            <input type="number" class="item-qty" value="1" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <button class="add-to-cart" data-item="Beef Shank" data-price="38.000">
+                            <span class="icon">🛒</span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Beef Ribs -->
+                <div class="item">
+                    <span class="item-badge">Beef</span>
+                    <div class="item-img-wrapper">
+                        <img src="ribs.jpg" alt="Beef Ribs">
+                    </div>
+                    <div class="item-content">
+                        <h3>Beef Ribs</h3>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1rem;">Tender & Meaty</p>
+                        <p>Generously cut beef ribs, ideal for slow-cooking, smoking, or grilling to achieve fall-off-the-bone tenderness.</p>
+                        <p class="item-price">USh45,000</p>
+                        <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                            <input type="number" class="item-qty" value="1" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <button class="add-to-cart" data-item="Beef Ribs" data-price="45.000">
+                            <span class="icon">🛒</span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="cart-summary" id="cart-summary">
+        <div id="cart-status" style="color: var(--text-muted); font-style: italic;">Your cart is empty</div>
+        <div id="cart-details" style="display: none;">
+            <strong>Cart:</strong> <span id="cart-items-count">0</span> item(s) — 
+            <span style="color: var(--secondary); font-weight: 700;">USh<span id="cart-total">0.00</span></span>
+            <a href="checkout.html" style="margin-left: 1rem; padding: 0.5rem 1rem; background: var(--secondary); color: white; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Checkout</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Fresh Beef, Fish & Chicken Online Portal. All rights reserved.</p>
+        <p class="footer-links">
+            <a href="contact.html">Contact Us</a> | 
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Terms of Service</a>
+        </p>
+        <p>Email: support@freshbeef.com | Phone: (555) 987-6543</p>
+    </footer>
+
+    <script>
+        // Shopping cart state
+        let cart = [];
+        let cartTotal = 0;
+        let cartCount = 0;
+
+        // Load cart from localStorage
+        function loadCart() {
+            const savedCart = localStorage.getItem('shoppingCart');
+            if (savedCart) {
+                const parsed = JSON.parse(savedCart);
+                cart = parsed.items || [];
+                cartTotal = parsed.total || 0;
+                cartCount = parsed.count || 0;
+                updateCartDisplay();
+            }
+        }
+
+        // Save cart to localStorage
+        function saveCart() {
+            localStorage.setItem('shoppingCart', JSON.stringify({
+                items: cart,
+                total: cartTotal,
+                count: cartCount
+            }));
+        }
+
+        // Add to cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const itemName = this.dataset.item;
+                const itemPrice = parseFloat(this.dataset.price);
+                const qtyInput = this.parentElement.querySelector('.item-qty');
+                const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
+                
+                // Check if item is already in cart to prevent duplicates for this simple cart
+                const existingItemIndex = cart.findIndex(item => item.name === itemName);
+
+                if (this.classList.contains('added')) {
+                    // If already added, remove it
+                    this.innerHTML = '<span class="icon">🛒</span> Add to Cart';
+                    this.classList.remove('added');
+                    
+                    if (existingItemIndex > -1) {
+                        const removedQty = cart[existingItemIndex].quantity || 1;
+                        cartTotal -= cart[existingItemIndex].price * removedQty;
+                        cartCount -= removedQty;
+                        cart.splice(existingItemIndex, 1);
+                    }
+                } else {
+                    // If not added, add it
+                    this.innerHTML = '<span class="icon">✓</span> Remove from Cart';
+                    this.classList.add('added');
+                    
+                    if (existingItemIndex === -1) { // Only add if not already present
+                        cart.push({ name: itemName, price: itemPrice, quantity: quantity });
+                        cartTotal += (itemPrice * quantity);
+                        cartCount += quantity;
+                    }
+                }
+                
+                updateCartDisplay();
+                saveCart(); // Save cart state to localStorage
+            });
+        });
+
+        // Update cart summary display
+        function updateCartDisplay() {
+            const cartStatus = document.getElementById('cart-status');
+            const cartDetails = document.getElementById('cart-details');
+            const cartItemsCount = document.getElementById('cart-items-count');
+            const cartTotalElem = document.getElementById('cart-total');
+            
+            if (cartCount === 0) {
+                cartStatus.style.display = 'block';
+                cartDetails.style.display = 'none';
+            } else {
+                cartStatus.style.display = 'none';
+                cartDetails.style.display = 'block';
+                cartItemsCount.textContent = cartCount;
+                cartTotalElem.textContent = cartTotal.toFixed(3); // Assuming USh uses 3 decimal places
+            }
+
+            // Update button states based on current cart
+            addToCartButtons.forEach(btn => {
+                const itemName = btn.dataset.item;
+                if (cart.some(item => item.name === itemName)) {
+                    btn.innerHTML = '<span class="icon">✓</span> Remove from Cart';
+                    btn.classList.add('added');
+                } else {
+                    btn.innerHTML = '<span class="icon">🛒</span> Add to Cart';
+                    btn.classList.remove('added');
+                }
+            });
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Initialize cart on page load
+        loadCart();
+    </script>
