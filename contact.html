@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Fresh Beef, Fish & Chicken - Kampala">
+    <title>Contact Us - Fresh Beef, Fish & Chicken Online Portal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2E86C1;
+            --primary-dark: #1A5276;
+            --secondary: #27AE60;
+            --accent: #E74C3C;
+            --bg-light: #E8F6F3;
+            --bg-card: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 90px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(180deg, #E8F6F3 0%, #FFFFFF 30%);
+            min-height: 100vh;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Modern Header with Logo Left */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 0.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            padding: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo:hover {
+            transform: scale(1.08) rotate(5deg);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            line-height: 1.2;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        /* Enhanced Navigation */
+        nav {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: var(--header-height);
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        nav a {
+            display: block;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        /* Nav item flex (from index.html) */
+        nav li {
+            flex: 1;
+            text-align: center;
+        }
+
+        nav a:hover,
+        nav a.active {
+            background-color: rgba(46, 134, 193, 0.2);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 80%;
+            height: 3px;
+            background: var(--secondary);
+            transform: translateX(-50%);
+        }
+
+        /* Active nav link styling (from index.html) */
+        nav a[aria-current="page"] {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+            color: white;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            position: relative;
+            padding-bottom: 0.75rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 4px;
+        }
+
+        .section {
+            padding: 3rem 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .contact-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .contact-card:hover::before {
+            left: 100%;
+        }
+
+        .contact-link {
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .contact-icon {
+            width: 28px;
+            height: 28px;
+        }
+
+        .whatsapp .icon-wrapper {
+            background: linear-gradient(135deg, #27AE60, #1E8449);
+        }
+
+        .phone .icon-wrapper {
+            background: linear-gradient(135deg, #3498DB, #2980B9);
+        }
+
+        .email .icon-wrapper {
+            background: linear-gradient(135deg, #E74C3C, #C0392B);
+        }
+
+        .map .icon-wrapper {
+            background: linear-gradient(135deg, #8E44AD, #6C3483);
+        }
+
+        /* Social media icon wrappers (from index.html) */
+        .facebook .icon-wrapper {
+            background: linear-gradient(135deg, #1877F2, #0D47A1);
+        }
+
+        .twitter .icon-wrapper {
+            background: linear-gradient(135deg, #1DA1F2, #0077B5);
+        }
+
+        .tiktok .icon-wrapper {
+            background: linear-gradient(135deg, #69C9D0, #EE1D52);
+        }
+
+        .contact-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #FAFAFA;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(46, 134, 193, 0.1);
+            background: white;
+        }
+
+        .form-group input.valid,
+        .form-group textarea.valid {
+            border-color: var(--secondary);
+        }
+
+        .form-group input.invalid,
+        .form-group textarea.invalid {
+            border-color: var(--accent);
+        }
+
+        .validation-message {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .validation-message.valid {
+            color: var(--secondary);
+            display: block;
+        }
+
+        .validation-message.invalid {
+            color: var(--accent);
+            display: block;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 134, 193, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Cart Summary (from index.html) */
+        /* The cart summary styles are already present in the HTML and JS,
+           but the CSS was missing. Adding it here for consistency. */
+        /* This block is added to ensure the cart summary is styled correctly */
+        .back-to-top {
+            position: fixed;
+            bottom: 90px;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10000;
+            min-width: 300px;
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--accent);
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-success .toast-icon {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--secondary);
+        }
+
+        .toast-error .toast-icon {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--accent);
+        }
+
+        .faq-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            margin: 3rem auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            padding: 1.2rem 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-question.active {
+            color: var(--primary);
+        }
+
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .faq-icon::before,
+        .faq-icon::after {
+            content: '';
+            position: absolute;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .faq-icon::before {
+            width: 16px;
+            height: 2px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .faq-icon::after {
+            width: 2px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .faq-question.active .faq-icon::after {
+            opacity: 0;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer.open {
+            max-height: 200px;
+            padding-bottom: 1rem;
+        }
+
+        /* Footer (from index.html) */
+        footer {
+            background: linear-gradient(180deg, var(--text-dark) 0%, #1a252f 100%);
+            color: white;
+            padding: 1rem 0 0.5rem;
+            /* Reduced from 1.5rem 0 1rem */
+            margin-top: 2rem;
+            /* Adjusted margin-top */
+            position: relative;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            /* Reduced from 1.5rem */
+            margin-bottom: 0.8rem;
+            /* Reduced from 1rem */
+        }
+
+        .footer-col h4 {
+            font-size: 1rem;
+            /* Reduced from 1.1rem */
+            margin-bottom: 0.4rem;
+            /* Reduced from 0.75rem */
+            color: white;
+            position: relative;
+            padding-bottom: 0.2rem;
+            /* Reduced from 0.3rem */
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.15rem;
+            /* Reduced from 0.35rem */
+        }
+
+        .footer-col ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.85rem;
+            /* Reduced from 0.95rem */
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+            padding-left: 8px;
+        }
+
+        .footer-social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.8rem;
+            /* Reduced from 1.5rem */
+        }
+
+        .social-icon {
+            width: 32px;
+            /* Reduced from 38px */
+            height: 32px;
+            /* Reduced from 38px */
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1rem;
+            /* Reduced from 1.2rem */
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .newsletter-mini {
+            margin-top: 0.4rem;
+            /* Reduced from 0.5rem */
+            display: flex;
+            gap: 0.4rem;
+            /* Reduced from 0.5rem */
+        }
+
+        .newsletter-mini input {
+            flex: 1;
+            padding: 0.4rem;
+            /* Reduced from 0.5rem */
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 0.8rem;
+            /* Reduced from 0.9rem */
+        }
+
+        .newsletter-mini button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 0.8rem;
+            /* Reduced from 0 1rem */
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .newsletter-mini button:hover {
+            background: var(--primary-dark);
+        }
+
+        .footer-bottom {
+            padding-top: 0.6rem;
+            /* Reduced from 1rem */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.8rem;
+            /* Reduced from 0.9rem */
+        }
+
+        .footer-contact-info {
+            margin-top: 0.8rem;
+            /* Reduced from 1rem */
+            font-size: 0.8rem;
+            /* Reduced from 0.85rem */
+            color: #95a5a6;
+        }
+
+        .footer-contact-item {
+            margin-bottom: 0.4rem;
+        }
+
+        .footer-contact-item a {
+            color: #95a5a6;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-contact-item a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-contact-item a.copy-email:hover,
+        .footer-contact-item a.copy-phone:hover {
+            cursor: pointer;
+        }
+
+        .footer-contact-icon {
+            width: 16px;
+            /* Reduced from 18px */
+            height: 16px;
+            /* Reduced from 18px */
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        /* Mobile Responsiveness for Footer (from index.html) */
+        @media (max-width: 768px) {
+            footer {
+                padding: 1rem 0.5rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                /* Stack columns on small screens */
+                gap: 1.5rem;
+                /* Increase gap slightly for readability when stacked */
+            }
+
+            .footer-col {
+                text-align: center;
+                /* Center content in stacked columns */
+            }
+
+            .footer-col h4::after {
+                left: 50%;
+                /* Center the underline */
+                transform: translateX(-50%);
+            }
+
+            .footer-social-icons {
+                justify-content: center;
+                /* Center social icons */
+            }
+
+            .newsletter-mini {
+                justify-content: center;
+                /* Center newsletter form */
+            }
+
+            .footer-contact-item a {
+                justify-content: center;
+                /* Center contact info */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header role="banner">
+        <div class="logo-section">
+            <div class="logo" id="logo" title="Fresh Cuts Portal">
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                    <circle cx="50" cy="50" r="45" fill="#E74C3C" />
+                    <path d="M30 40 L50 60 L70 40" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" />
+                    <path d="M35 50 L50 65 L65 50" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" />
+                    <circle cx="50" cy="55" r="12" fill="white" />
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1>Fresh Fish, Beef, and Chicken</h1>
+                <p style="font-size:0.9rem; opacity:0.9;">Premium quality delivered to your doorstep</p>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">5k+</span>
+                <span class="stat-label">Customers</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">24hr</span>
+                <span class="stat-label">Delivery</span>
+            </div>
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+            </div>
+    </header>
+
+    <!-- NAV -->
+    <nav role="navigation">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="beef.html">Beef</a></li>
+            <li><a href="fish.html">Fish</a></li>
+            <li><a href="chicken.html">Chicken</a></li>
+            <li><a href="contact.html" class="active">Customer Service</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <!-- CONTACT OPTIONS -->
+        <section class="section">
+            <h2 class="section-title">Get In Touch</h2>
+
+            <div class="contact-details-grid">
+                <a href="https://wa.me/256769989989" target="_blank" class="contact-card contact-link whatsapp">
+                    <div class="icon-wrapper">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                        </svg>
+                    </div>
+                    <strong>WhatsApp</strong>
+                    <span class="contact-value">+256 769 989 989</span>
+                </a>
+
+                <a href="tel:+256769989989" class="contact-card contact-link phone">
+                    <div class="icon-wrapper">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                            </path>
+                        </svg>
+                    </div>
+                    <strong>Call Us</strong>
+                    <span class="contact-value">+256 769 989 989</span>
+                </a>
+
+                <a href="mailto:peterriak7@gmail.com" class="contact-card contact-link email">
+                    <div class="icon-wrapper">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <strong>Email</strong>
+                    <span class="contact-value">peterriak7@gmail.com</span>
+                </a>
+
+                <a href="https://www.google.com/maps/place/Kireka,+Kampala/@0.3365824,32.6244585,14z/data=!3m1!4b1!4m6!3m5!1s0x177db90cdbd"
+                    target="_blank" class="contact-card contact-link map">
+                    <div class="icon-wrapper">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <strong>Location</strong>
+                    <span class="contact-value">Kampala, Uganda</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- CONTACT FORM -->
+        <section class="section">
+            <h2 class="section-title" style="text-align:center;">Working Hours</h2>
+
+            <div class="contact-form">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div
+                        style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🕐</div>
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Monday - Friday</h3>
+                        <p style="font-weight: 600; color: var(--text-dark);">7:00 AM - 8:00 PM</p>
+                    </div>
+                    <div
+                        style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🕐</div>
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Saturday - Sunday</h3>
+                        <p style="font-weight: 600; color: var(--text-dark);">8:00 AM - 6:00 PM</p>
+                    </div>
+                    <div
+                        style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 12px; color: white;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚚</div>
+                        <h3 style="margin-bottom: 0.5rem;">Delivery</h3>
+                        <p style="font-weight: 600;">Orders placed before 6 PM delivered same day!</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 1.5rem; color: var(--text-muted); font-style: italic;">
+                    <strong>Note:</strong> Our customer service team is available during working hours.
+                    For urgent orders, contact us via WhatsApp anytime.
+                </p>
+            </div>
+        </section>
+
+        <!-- FAQ SECTION -->
+        <section class="section">
+            <h2 class="section-title" style="text-align:center;">Frequently Asked Questions</h2>
+
+            <div class="faq-section">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What are your delivery hours?</span>
+                        <div class="faq-icon"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We deliver Monday through Sunday from 7:00 AM to 8:00 PM. Orders placed before 6:00 PM are
+                            delivered the same day.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I place an order?</span>
+                        <div class="faq-icon"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Browse our products, add items to your cart, and proceed to checkout. You can also place
+                            orders via WhatsApp for personalized assistance.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What payment methods do you accept?</span>
+                        <div class="faq-icon"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We accept Cash on Delivery, Mobile Money (MTN & Airtel), and bank transfers. All payments are
+                            secure and tracked.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you offer bulk discounts?</span>
+                        <div class="faq-icon"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! Contact us directly via WhatsApp for bulk orders and special pricing on large
+                            quantities.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Cart Summary -->
+    <div id="cart-summary"
+        style="position: fixed; bottom: 2rem; right: 2rem; background: white; padding: 1rem 1.5rem; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); z-index: 1000; display: flex; align-items: center; gap: 1rem;">
+        <div id="cart-status" style="color: #7F8C8D; font-style: italic;">Your cart is empty</div>
+        <div id="cart-details" style="display: none;">
+            <strong>Cart:</strong> <span id="cart-items-count">0</span> item(s) —
+            <span style="color: #27AE60; font-weight: 700;">USh <span id="cart-total">0.00</span></span>
+            <a href="checkout.html"
+                style="margin-left: 1rem; padding: 0.5rem 1rem; background: #27AE60; color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.9rem; text-decoration: none;">Checkout</a>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION (from index.html) -->
+    <div id="toast" class="toast">
+        <div class="toast-icon">✓</div>
+        <span id="toast-message"></span>
+    </div>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+    <footer role="contentinfo" id="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>About Fresh Cuts</h4>
+                    <p style="color: #bdc3c7; font-size: 0.9rem;">We deliver the highest quality fresh meats and seafood
+                        directly to your doorstep, sourced from sustainable farms and fisheries.</p>
+                    <div class="footer-social-icons" style="margin-top: 0.8rem;">
+                        <a href="https://www.facebook.com/freshcutsug/" target="_blank" class="social-icon"
+                            aria-label="Facebook" style="width: 32px; height: 32px; font-size: 1rem;">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                        </a>
+                        <a href="https://x.com/i/flow/login?redirect_after_login=%2Fsearch%3Fq%3D%2523FRESHCUTS%26src%3Dhashtag_click%26f%3Dlive"
+                            target="_blank" class="social-icon" aria-label="Twitter">t</a>
+                        <a href="https://www.instagram.com/freshcutsug/" target="_blank" class="social-icon"
+                            aria-label="Instagram" style="width: 32px; height: 32px; font-size: 1rem;">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.204-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072C3.58 0.234 2.31 0.758 1.464 1.604.618 2.45.092 3.72.034 4.993.014 6.273 0 6.681 0 9.947c0 3.259.014 3.667.072 4.947.149 1.273.673 2.543 1.519 3.389.846.846 2.116 1.37 3.389 1.519 1.28.058 1.688.072 4.947.072 3.259 0 3.667-.014 4.947-.072 1.273-.149 2.543-.673 3.389-1.519.846-.846 1.37-2.116 1.519-3.389.058-1.28.072-1.688.072-4.947 0-3.259-.014-3.667-.072-4.947-.149-1.273-.673-2.543-1.519-3.389C21.55 0.618 20.28 0.092 19.007 0.034 17.727.014 17.319 0 14.053 0h-2.053zm0 4.327c-4.204 0-7.614 3.41-7.614 7.614s3.41 7.614 7.614 7.614 7.614-3.41 7.614-7.614-3.41-7.614-7.614-7.614zm0 12.414c-2.652 0-4.809-2.157-4.809-4.809s2.157-4.809 4.809-4.809 4.809 2.157 4.809 4.809-2.157 4.809-4.809 4.809zm6.406-11.845c-.679 0-1.23.552-1.23 1.23s.551 1.23 1.23 1.23 1.23-.552 1.23-1.23-.552-1.23-1.23-1.23z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop Now</h4>
+                    <ul>
+                        <li><a href="beef.html">Premium Beef</a></li>
+                        <li><a href="fish.html">Fresh Fish</a></li>
+                        <li><a href="chicken.html">Farm Chicken</a></li>
+                        <li><a href="checkout.html">Your Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Delivery Areas</h4>
+                    <ul class="delivery-areas-list">
+                        <li>Gayaza</li>
+                        <li>Kireka</li>
+                        <li>Busika</li>
+                        <li>Bugema</li>
+                        <li>Kasangati</li>
+                        <li>Seeta</li>
+                        <li>Kiira</li>
+                        <li>Najjera</li>
+                        <li>Nalya</li>
+                        <li>Gaaba</li>
+                        <li>Butto</li>
+                        <li>Kitende</li>
+                        <li>Namugongo</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Join Our Newsletter</h4>
+                    <p style="color: #bdc3c7; font-size: 0.85rem; margin-bottom: 0.4rem;">Get weekly updates on fresh
+                        stock and exclusive discounts.</p>
+                    <form class="newsletter-mini"
+                        onsubmit="event.preventDefault(); alert('Thank you for subscribing!'); this.reset();"
+                        style="margin-top: 0.4rem; gap: 0.4rem;">
+                        <input type="email" placeholder="Email address" required
+                            style="padding: 0.4rem; font-size: 0.8rem;">
+                        <button type="submit" style="padding: 0 0.8rem; font-size: 0.8rem;">Join</button>
+                    </form>
+                    <div class="footer-contact-info" style="margin-top: 0.8rem; font-size: 0.8rem; color: #95a5a6;">
+                        <div class="footer-contact-item">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Kireka,+Kampala" target="_blank"
+                                title="View on Map">
+                                <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    style="width: 16px; height: 16px;">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                Kireka, Kampala
+                            </a>
+                        </div>
+                        <div class="footer-contact-item">
+                            <a href="mailto:peterriak7@gmail.com" class="copy-email" data-copy="peterriak7@gmail.com"
+                                title="Click to copy email">
+                                <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    style="width: 16px; height: 16px;">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                peterriak7@gmail.com
+                            </a>
+                        </div>
+                        <div class="footer-contact-item">
+                            <a href="tel:+256769989989" class="copy-phone" data-copy="+256 769 989 989"
+                                title="Click to copy phone number">
+                                <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    style="width: 16px; height: 16px;">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                    </path>
+                                </svg>
+                                +256 769 989 989
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom" style="padding-top: 0.6rem; font-size: 0.8rem;">
+                <p>&copy; 2026 Fresh Beef, Fish & Chicken Online Portal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cart state logic
+        let cartTotal = 0;
+        let cartCount = 0;
+
+        function loadCart() {
+            const savedCart = localStorage.getItem('shoppingCart');
+            if (savedCart) {
+                const parsed = JSON.parse(savedCart);
+                cartTotal = parsed.total || 0;
+                cartCount = parsed.count || 0;
+                updateCartDisplay();
+            }
+        }
+
+        function updateCartDisplay() {
+            const cartStatus = document.getElementById('cart-status');
+            const cartDetails = document.getElementById('cart-details');
+            if (cartCount > 0) {
+                cartStatus.style.display = 'none';
+                cartDetails.style.display = 'block';
+                document.getElementById('cart-items-count').textContent = cartCount;
+                document.getElementById('cart-total').textContent = cartTotal.toLocaleString();
+            }
+        }
+
+        // Toast notification system
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+
+            toast.className = 'toast show toast-' + type;
+            toastMessage.textContent = message;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function () {
+                const faqItem = this.parentElement;
+                const answer = this.nextElementSibling;
+                const isActive = this.classList.contains('active');
+
+                // Close all other FAQs
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    q.classList.remove('active');
+                    q.nextElementSibling.classList.remove('open');
+                });
+
+                // Toggle current FAQ
+                if (!isActive) {
+                    this.classList.add('active');
+                    answer.classList.add('open');
+                }
+            });
+        });
+
+        // Contact card click feedback - copy to clipboard
+        document.querySelectorAll('.contact-card').forEach(card => {
+            card.addEventListener('click', function (e) {
+                const value = this.querySelector('.contact-value').textContent;
+                if (this.classList.contains('email')) {
+                    navigator.clipboard.writeText(value).then(() => {
+                        showToast('Email address copied to clipboard!', 'success');
+                    });
+                } else if (this.classList.contains('phone') || this.classList.contains('whatsapp')) {
+                    navigator.clipboard.writeText(value).then(() => {
+                        showToast('Phone number copied to clipboard!', 'success');
+                    });
+                }
+            });
+        });
+
+        // Back to top button
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Footer contact item interactions
+        document.querySelectorAll('.copy-email').forEach(el => {
+            el.addEventListener('click', function (e) {
+                if (this.getAttribute('href').startsWith('mailto:')) {
+                    e.preventDefault();
+                }
+                const text = this.getAttribute('data-copy') || this.textContent.trim();
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Email copied to clipboard!', 'success');
+                });
+            });
+        });
+
+        document.querySelectorAll('.copy-phone').forEach(el => {
+            el.addEventListener('click', function (e) {
+                if (this.getAttribute('href').startsWith('tel:')) {
+                    e.preventDefault();
+                }
+                const text = this.getAttribute('data-copy') || this.textContent.trim();
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Phone number copied to clipboard!', 'success');
+                });
+            });
+        });
+
+        loadCart();
+
+    </script>
+</body>
+
+</html>
