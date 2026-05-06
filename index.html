@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Beef, Fish & Chicken Online Portal</title>
+    <style>
+        :root {
+            --primary: #2E86C1;
+            --primary-dark: #1A5276;
+            --secondary: #27AE60;
+            --accent: #E74C3C;
+            --bg-light: #E8F6F3;
+            --bg-card: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 90px;
+        }
+
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(180deg, #E8F6F3 0%, #FFFFFF 30%);
+            min-height: 100vh;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Modern Header with Logo Left */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 0.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            padding: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .logo:hover {
+            transform: scale(1.08) rotate(5deg);
+            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo:hover::before {
+            opacity: 1;
+            animation: shine 0.8s ease-in-out;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .logo svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            line-height: 1.2;
+        }
+
+        .site-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* Enhanced Navigation */
+        nav {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0;
+            position: sticky;
+            top: var(--header-height);
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-bottom: 3px solid var(--primary);
+        }
+
+nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        nav li {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        nav a {
+            display: block;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--secondary);
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(46, 134, 193, 0.2);
+        }
+
+        nav a:hover::before {
+            width: 80%;
+        }
+
+        nav a[aria-current="page"] {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+        }
+
+        nav a[aria-current="page"]::before {
+            width: 80%;
+            background: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            nav.mobile-open {
+                max-height: 400px;
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            padding: 3rem 0;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            position: relative;
+            padding-bottom: 0.75rem;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '🥩';
+            position: absolute;
+            right: -40px;
+            top: 0;
+            font-size: 1.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+@keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(10deg); }
+        }
+
+        .site-overview {
+            background: var(--bg-card);
+            padding: 0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 1px solid rgba(46, 134, 193, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .site-overview:hover {
+            transform: translateY(-5px);
+        }
+
+        .about-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            align-items: flex-start;
+        }
+
+        .ceo-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ceo-image {
+            width: 100%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            object-fit: cover;
+            height: 300px;
+        }
+
+        .ceo-image:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ceo-name {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .ceo-title {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .about-content p {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .about-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Filter Controls - Enhanced */
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .category-legend {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .legend-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-right: 0.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .checkbox-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            margin-right: 0.5rem;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper label {
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-dark);
+            user-select: none;
+        }
+
+        .checkbox-wrapper.checked {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #EBF5FB 0%, #D4E6F1 100%);
+        }
+
+        .checkbox-wrapper.checked label {
+            color: var(--primary-dark);
+        }
+
+        .reset-btn {
+            padding: 0.6rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .reset-btn:hover {
+            background: #C0392B;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .item-count {
+            margin-left: auto;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            padding: 0.6rem 1rem;
+            background: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Featured Items Grid */
+        .featured-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem; /* Kept as is */
+        }
+
+        .item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex; /* Kept as is */
+            flex-direction: column;
+        }
+
+        .item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .item.hidden { /* Kept as is */
+            display: none;
+        }
+
+        .item-type-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.4rem 0.8rem; /* Kept as is */
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .item-type-badge.beef {
+            background: #E74C3C;
+            color: white;
+        }
+
+        .item-type-badge.fish {
+            background: #3498DB;
+            color: white;
+        }
+
+        .item-type-badge.chicken {
+            background: #F39C12;
+            color: white;
+        }
+
+        .item-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 180px; /* Kept as is */
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .item:hover img {
+            transform: scale(1.05);
+        }
+
+        .item-content {
+            padding: 1rem; /* Kept as is */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item h3 {
+            margin-bottom: 0.5rem; /* Kept as is */
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        .item p {
+            color: var(--text-muted);
+            flex-grow: 1;
+        }
+
+        .item-price {
+            font-size: 1.3rem; /* Kept as is */
+            font-weight: 700;
+            color: var(--secondary);
+            margin-top: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.8rem; /* Kept as is */
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .add-to-cart:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 134, 193, 0.3);
+        }
+
+        button:active, .add-to-cart:active, .reset-btn:active, .feedback-submit:active, .checkbox-wrapper:active {
+            transform: scale(0.96);
+        }
+
+        .add-to-cart.added {
+            background: var(--secondary);
+        }
+
+        /* News Section */
+        .latest-news {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Kept as is */
+            gap: 1rem;
+        }
+
+        .news-item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition); /* Kept as is */
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .news-item img {
+            width: 100%;
+            height: 150px; /* Kept as is */
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1rem; /* Kept as is */
+        }
+
+        .news-content h3 {
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+        }
+
+        .news-content p {
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .news-date {
+            font-size: 0.85rem; /* Kept as is */
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Feedback Section */
+        .feedback-container {
+            background: var(--bg-card);
+            padding: 1rem; /* Kept as is */
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 480px;
+            margin: 0;
+            margin-left: 0;
+        }
+
+        .feedback-intro {
+            text-align: left;
+            margin-bottom: 1.25rem; /* Kept as is */
+        }
+
+        .feedback-intro p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column; /* Kept as is */
+            gap: 0.75rem;
+        }
+
+        .feedback-rating {
+            text-align: left;
+        }
+
+        .feedback-rating label {
+            display: block;
+            margin-bottom: 0.5rem; /* Kept as is */
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: flex-start; /* Kept as is */
+            gap: 0.2rem;
+            font-size: 1.4rem;
+        }
+
+        .star {
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.15s ease; /* Kept as is */
+            user-select: none;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .star:hover {
+            transform: scale(1.1);
+        }
+
+        .star.active,
+        .star.hover {
+            color: #F1C40F;
+        }
+
+        .rating-error {
+            color: var(--accent); /* Kept as is */
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .feedback-form .form-group {
+            display: flex;
+            flex-direction: column; /* Kept as is */
+            margin-bottom: 0;
+        }
+
+        .feedback-form label {
+            margin-bottom: 0.3rem; /* Kept as is */
+            font-weight: 500; /* Kept as is */
+            color: var(--text-dark);
+            font-size: 0.85rem;
+        }
+
+        .feedback-form input,
+        .feedback-form select,
+        .feedback-form textarea {
+            padding: 0.5rem 0.6rem; /* Kept as is */
+            border: 2px solid #E0E0E0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            background: var(--bg-light);
+        }
+
+        .feedback-form input:focus,
+        .feedback-form select:focus,
+        .feedback-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(52, 73, 94, 0.1);
+            background: var(--bg-card);
+        }
+
+        .feedback-form textarea {
+            resize: vertical; /* Kept as is */
+            min-height: 60px;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem; /* Kept as is */
+        }
+
+        .feedback-submit {
+            align-self: flex-start;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition); /* Kept as is */
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .feedback-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(52, 73, 94, 0.2);
+        }
+
+        .feedback-submit:active {
+            transform: translateY(0);
+        }
+
+        .feedback-submit:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback-submit .spinner {
+            display: none; /* Kept as is */
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .feedback-submit.loading .spinner {
+            display: inline-block; /* Kept as is */
+        }
+
+        .feedback-submit.loading span:first-child {
+            display: none;
+        }
+
+        .feedback-success {
+            display: none;
+            text-align: left; /* Kept as is */
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #D5F4E6 0%, #C3E8D2 100%);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--secondary);
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .feedback-success.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 2rem; /* Kept as is */
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-success h3 {
+            color: #1A5276;
+            margin-bottom: 0.4rem;
+            font-size: 1.1rem; /* Kept as is */
+        }
+
+        .feedback-success p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback-intro {
+            text-align: center; /* Kept as is */
+            margin-bottom: 1.5rem;
+        }
+
+        .feedback-intro p {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column; /* Kept as is */
+            gap: 1rem;
+        }
+
+        .feedback-rating {
+            text-align: center;
+        }
+
+        .feedback-rating label {
+            display: block;
+            margin-bottom: 0.75rem; /* Kept as is */
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center; /* Kept as is */
+            gap: 0.25rem;
+            font-size: 1.8rem;
+        }
+
+        .star {
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.15s ease; /* Kept as is */
+            user-select: none;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .star:hover {
+            transform: scale(1.1);
+        }
+
+        .star.active,
+        .star.hover {
+            color: #F1C40F;
+        }
+
+        .rating-error {
+            color: var(--accent); /* Kept as is */
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .feedback-form .form-group {
+            display: flex;
+            flex-direction: column; /* Kept as is */
+            margin-bottom: 0;
+        }
+
+        .feedback-form label {
+            margin-bottom: 0.4rem; /* Kept as is */
+            font-weight: 500; /* Kept as is */
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .feedback-form input,
+        .feedback-form select,
+        .feedback-form textarea {
+            padding: 0.65rem 0.8rem; /* Kept as is */
+            border: 2px solid #E0E0E0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background: var(--bg-light);
+        }
+
+        .feedback-form input:focus,
+        .feedback-form select:focus,
+        .feedback-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(52, 73, 94, 0.1);
+            background: var(--bg-card);
+        }
+
+        .feedback-form textarea {
+            resize: vertical; /* Kept as is */
+            min-height: 80px;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem; /* Kept as is */
+        }
+
+        .feedback-submit {
+            align-self: flex-start;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition); /* Kept as is */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feedback-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 73, 94, 0.2);
+        }
+
+        .feedback-submit:active {
+            transform: translateY(0);
+        }
+
+        .feedback-submit:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback-submit .spinner {
+            display: none; /* Kept as is */
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .feedback-submit.loading .spinner {
+            display: inline-block; /* Kept as is */
+        }
+
+        .feedback-submit.loading span:first-child {
+            display: none;
+        }
+
+        .feedback-success {
+            display: none;
+            text-align: center; /* Kept as is */
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #D5F4E6 0%, #C3E8D2 100%);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--secondary);
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .feedback-success.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 2.5rem; /* Kept as is */
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .feedback-success h3 {
+            color: #1A5276;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem; /* Kept as is */
+        }
+
+        .feedback-success p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 90px;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Hero Stats Animation */
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, #2C3E50 0%, #1a252f 100%);
+            color: white;
+            padding: 1.5rem 0 1rem; /* Kept as is */
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem; /* Kept as is */
+            margin-bottom: 1rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: white;
+            position: relative; /* Kept as is */
+            padding-bottom: 0.3rem;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-col ul {
+            list-style: none; /* Kept as is */
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.35rem;
+        }
+
+        .footer-col ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: var(--transition); /* Kept as is */
+            font-size: 0.95rem;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+            padding-left: 8px;
+        }
+
+        .footer-social-icons {
+            display: flex;
+            gap: 1rem; /* Kept as is */
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition); /* Kept as is */
+            font-size: 1.2rem;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .newsletter-mini {
+            margin-top: 0.5rem; /* Kept as is */
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .newsletter-mini input {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 6px; /* Kept as is */
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-mini button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1rem; /* Kept as is */
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .newsletter-mini button:hover {
+            background: var(--primary-dark);
+        }
+
+        .footer-bottom {
+            padding-top: 1rem; /* Kept as is */
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .delivery-areas-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Kept as is */
+            gap: 0.15rem 1rem;
+        }
+
+        .footer-col ul.delivery-areas-list li {
+            color: #bdc3c7;
+            font-size: 0.85rem;
+            margin-bottom: 0;
+            /* No padding-left or hover effects like links */ /* Kept as is */
+        }
+
+        .footer-contact-item {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-contact-item a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: inherit;
+            text-decoration: none; /* Kept as is */
+            transition: var(--transition);
+        }
+
+        .footer-contact-icon {
+            width: 18px;
+            height: 18px;
+            color: var(--primary);
+            transition: var(--transition); /* Kept as is */
+        }
+
+        .footer-contact-info a:hover {
+            color: var(--primary) !important;
+            text-decoration: underline !important;
+        }
+
+        .footer-contact-info a:hover .footer-contact-icon {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 5px rgba(46, 134, 193, 0.4));
+        }
+
+        /* Mobile Responsiveness */ /* Kept as is */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-stats {
+                display: none;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav a {
+                padding: 0.8rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .checkbox-wrapper {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .item-count {
+                width: 100%;
+                text-align: center;
+                margin-top: 1rem;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .ceo-wrapper {
+                margin: 0 auto;
+            }
+        }
+
+        /* Mobile menu active state */
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+    </style>
+</head>
+<body>
+<header role="banner">
+            <div class="logo-section">
+                <div class="logo" id="logo" title="Fresh Cuts Portal">
+                    <svg viewBox="0 0 100 100" width="100%" height="100%">
+                        <circle cx="50" cy="50" r="45" fill="#E74C3C"/>
+                        <path d="M30 40 L50 60 L70 40" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <path d="M35 50 L50 65 L65 50" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
+                        <circle cx="50" cy="55" r="12" fill="white"/>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Fresh Fish, Beef, and Chicken</h1>
+                    <p class="site-description">Your trusted source for premium quality fresh beef, fish, and chicken delivered to your doorstep</p>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="5000">0</span>
+                    <span class="stat-label">Happy Customers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="50">0</span>
+                    <span class="stat-label">Products</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="24">0</span>
+                    <span class="stat-label">hr Delivery</span>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </header>
+
+    <nav role="navigation" aria-label="Main navigation">
+        <ul>
+            <li><a href="index.html" aria-current="page">Home</a></li>
+            <li><a href="beef.html">Beef</a></li>
+            <li><a href="fish.html">Fish</a></li>
+            <li><a href="chicken.html">Chicken</a></li>
+            <li><a href="contact.html">Customer Service</a></li> 
+            <li><a href="checkout.html">checkout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" role="main">
+        <section id="about-section" class="section">
+            <h2 class="section-title">About the Company</h2>
+            <div class="site-overview">
+                <div class="about-container">
+                    <div class="ceo-wrapper">
+                        <img src="CEO.jpg" alt="David Ngong Hassan - CEO" class="ceo-image">
+                        <div class="ceo-name">David Ngong Hassan</div>
+                        <div class="ceo-title">CEO & Founder</div>
+                    </div>
+                    <div class="about-content">
+                        <p>Fresh Beef, Fish & Chicken Online Portal is your trusted source for the highest quality fresh meats and seafood delivered directly to your doorstep. We specialize in three core categories: premium beef, fresh fish, and quality chicken — all sourced from trusted sustainable farms and fisheries.</p>
+                        <p>Our mission is to make these three essential proteins accessible to everyone with the convenience of online ordering and reliable home delivery. Every product is carefully inspected, handled with utmost care, and delivered in temperature-controlled packaging to ensure optimal freshness and flavor.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="featured-section" class="section">
+            <h2 class="section-title">Premium Beef & Fish & Chicken</h2>
+
+            <div class="category-legend">
+                <div class="legend-item">
+                    <span class="legend-dot beef"></span>
+                    <span>Beef</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot fish"></span>
+                    <span>Fish</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot chicken"></span>
+                    <span>Chicken</span>
+                </div>
+            </div>
+
+            <div class="filter-controls">
+                <span class="filter-label">Show only:</span>
+                <div class="checkbox-group">
+                    <div class="checkbox-wrapper checked" data-category="beef">
+                        <input type="checkbox" id="filter-beef" checked>
+                        <label for="filter-beef">Beef</label>
+                    </div>
+                    <div class="checkbox-wrapper checked" data-category="fish">
+                        <input type="checkbox" id="filter-fish" checked>
+                        <label for="filter-fish">Fish & Seafood</label>
+                    </div>
+                    <div class="checkbox-wrapper checked" data-category="chicken">
+                        <input type="checkbox" id="filter-chicken" checked>
+                        <label for="filter-chicken">Chicken</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-items" id="featured-items">
+                <!-- Beef Items -->
+                <div class="item" data-category="beef">
+                    <div class="item-img-wrapper">
+                        <span class="item-type-badge beef">Beef</span>
+                        <img src="https://images.unsplash.com/photo-1588347818036-558601350947?w=400&h=300&fit=crop" alt="Roast Beef Brisket">
+                    </div>
+                    <div class="item-content">
+                        <h3>Roast Beef Brisket</h3>
+                        <p>Slow-roasted to perfection, our beef brisket is tender, juicy, and full of rich flavor. Perfect for sandwiches, trays, or family dinners.</p>
+                         <p class="item-price">USh51,986</p>
+                         <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                             <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                             <input type="number" class="item-qty" value="1" min="1" style="width: 70px; padding: 0.6rem; border: 2px solid #e0e0e0; border-radius: 8px; font-weight: 600; text-align: center;">
+                         </div>
+                         <button class="add-to-cart" data-item="Roast Beef Brisket" data-price="51986">
+                             <span class="icon">🛒</span> Add to Cart
+                         </button>
+                    </div>
+                </div>
+
+                <!-- Fish Items -->
+                <div class="item" data-category="fish">
+                    <div class="item-img-wrapper">
+                        <span class="item-type-badge fish">Fish</span>
+                        <img src="whole.jpg" alt="Fresh Atlantic Salmon">
+                    </div>
+                    <div class="item-content">
+                        <h3>Fresh Atlantic Salmon</h3>
+                        <p>Wild-caught Atlantic salmon, rich in omega-3s, perfect for grilling, baking, or pan-searing.</p>
+                         <p class="item-price">USh63,134</p>
+                         <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                             <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                             <input type="number" class="item-qty" value="1" min="1" style="width: 70px; padding: 0.6rem; border: 2px solid #e0e0e0; border-radius: 8px; font-weight: 600; text-align: center;">
+                         </div>
+                         <button class="add-to-cart" data-item="Fresh Atlantic Salmon" data-price="63134">
+                             <span class="icon">🛒</span> Add to Cart
+                         </button>
+                    </div>
+                </div>
+
+
+
+                <!-- Chicken Items -->
+                <div class="item" data-category="chicken">
+                    <div class="item-img-wrapper">
+                        <span class="item-type-badge chicken">Chicken</span>
+                        <img src="full.jpg" alt="Fresh Whole Chicken">
+                    </div>
+                    <div class="item-content">
+                        <h3>Fresh Whole Chicken</h3>
+                        <p>Plump, tender whole chickens perfect for roasting, grilling, or smoking. All-natural, antibiotic-free birds.</p>
+                         <p class="item-price">USh21,900</p>
+                         <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                             <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                             <input type="number" class="item-qty" value="1" min="1" style="width: 70px; padding: 0.6rem; border: 2px solid #e0e0e0; border-radius: 8px; font-weight: 600; text-align: center;">
+                         </div>
+                         <button class="add-to-cart" data-item="Fresh Whole Chicken" data-price="21900">
+                             <span class="icon">🛒</span> Add to Cart
+                         </button>
+                    </div>
+                </div>
+
+                <!-- Additional Beef Item -->
+                <div class="item" data-category="beef">
+                    <div class="item-img-wrapper">
+                        <span class="item-type-badge beef">Beef</span>
+                        <img src="https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=400&h=300&fit=crop" alt="Premium Beef Steak">
+                    </div>
+                    <div class="item-content">
+                        <h3>Premium Beef Steak</h3>
+                        <p>Hand-selected premium steak cuts, expertly aged and trimmed for maximum tenderness and flavor.</p>
+                         <p class="item-price">USh74,329</p>
+                         <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                             <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                             <input type="number" class="item-qty" value="1" min="1" style="width: 70px; padding: 0.6rem; border: 2px solid #e0e0e0; border-radius: 8px; font-weight: 600; text-align: center;">
+                         </div>
+                         <button class="add-to-cart" data-item="Premium Beef Steak" data-price="74329">
+                             <span class="icon">🛒</span> Add to Cart
+                         </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="news-section" class="section">
+            <h2 class="section-title">Latest News</h2>
+            <div class="latest-news">
+                <div class="news-item">
+                    <img src="pork.jpg" alt="Goat Meat and Pork">
+                    <div class="news-content">
+                        <h3>Coming Soon: Premium Goat Meat & Pork</h3>
+                        <p>We are excited to expand our inventory! Starting next week, high-quality goat meat and premium pork cuts will be available for order, sourced directly from certified organic farms.</p>
+                        <span class="news-date">May 5, 2026</span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <img src="sea.jpg" alt="Mombasa Seafood">
+                    <div class="news-content">
+                        <h3>Coastal Freshness: Seafood from Mombasa</h3>
+                        <p>Direct from the shores of Mombasa! We are introducing a weekly shipment of fresh coastal seafood, featuring premium jumbo prawns, lobster tails, and fresh red snapper.</p>
+                        <span class="news-date">May 10, 2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="feedback-section" class="section">
+            <h2 class="section-title">We Value Your Feedback</h2>
+            <div class="feedback-container">
+                <div class="feedback-intro">
+                    <p>Your opinion matters to us! Help us improve by sharing your experience with our products and service.</p>
+                </div>
+
+                <form id="feedback-form" class="feedback-form" action="https://formspree.io/peterriak7@gmail.com" method="POST">
+                    <div class="feedback-rating">
+                        <label>How would you rate your overall experience? *</label>
+                        <div class="star-rating" id="star-rating">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                        <input type="hidden" id="rating-value" name="rating" required>
+                        <span class="rating-error" id="rating-error">Please select a rating</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedback-name">Your Name (optional)</label>
+                        <input type="text" id="feedback-name" name="name" placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedback-email">Email (optional - for response)</label>
+                        <input type="email" id="feedback-email" name="email" placeholder="john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedback-type">Feedback Type *</label>
+                        <select id="feedback-type" name="type" required>
+                            <option value="">Select feedback type...</option>
+                            <option value="product">Product Quality</option>
+                            <option value="delivery">Delivery Service</option>
+                            <option value="website">Website Experience</option>
+                            <option value="customer">Customer Service</option>
+                            <option value="suggestion">Suggestion</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span class="error-message">Please select a feedback type</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedback-message">Your Feedback *</label>
+                        <textarea id="feedback-message" name="message" rows="4" placeholder="Share your thoughts, suggestions, or concerns..." required></textarea>
+                        <span class="error-message">Please enter your feedback</span>
+                        <div class="char-count"><span id="char-count">0</span>/500 characters</div>
+                    </div>
+
+                    <button type="submit" class="feedback-submit" id="feedback-submit">
+                        <span>Submit Feedback</span>
+                        <span class="spinner"></span>
+                    </button>
+                </form>
+
+                <div class="feedback-success" id="feedback-success">
+                    <div class="success-icon">✓</div>
+                    <h3>Thank You!</h3>
+                    <p>Your feedback has been submitted successfully. We appreciate your input and will use it to improve our service.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cart Summary -->
+    <div id="cart-summary" style="position: fixed; bottom: 2rem; right: 2rem; background: white; padding: 1rem 1.5rem; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); z-index: 1000; display: flex; align-items: center; gap: 1rem;">
+        <div id="cart-status" style="color: #7F8C8D; font-style: italic;">Your cart is empty</div>
+        <div id="cart-details" style="display: none;">
+            <strong>Cart:</strong> <span id="cart-items-count">0</span> item(s) — 
+            <span style="color: #27AE60; font-weight: 700;">USh <span id="cart-total">0.00</span></span>
+            <a href="checkout.html" style="margin-left: 1rem; padding: 0.5rem 1rem; background: #27AE60; color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.9rem; text-decoration: none;">Checkout</a>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+    <footer role="contentinfo" id="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>About Fresh Cuts</h4>
+                    <p style="color: #bdc3c7; font-size: 0.9rem;">We deliver the highest quality fresh meats and seafood directly to your doorstep, sourced from sustainable farms and fisheries.</p>
+                    <div class="footer-social-icons">
+                        <a href="#" class="social-icon" aria-label="Facebook">f</a>
+                        <a href="https://x.com/i/flow/login?redirect_after_login=%2Fsearch%3Fq%3D%2523FRESHCUTS%26src%3Dhashtag_click%26f%3Dlive" target="_blank" class="social-icon" aria-label="Twitter">t</a>
+                        <a href="#" class="social-icon" aria-label="Instagram">i</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop Now</h4>
+                    <ul>
+                        <li><a href="beef.html">Premium Beef</a></li>
+                        <li><a href="fish.html">Fresh Fish</a></li>
+                        <li><a href="chicken.html">Farm Chicken</a></li>
+                        <li><a href="checkout.html">Your Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Delivery Areas</h4>
+                    <ul class="delivery-areas-list">
+                        <li>Gayaza</li>
+                        <li>Kireka</li>
+                        <li>Busika</li>
+                        <li>Bugema</li>
+                        <li>Kasangati</li>
+                        <li>Seeta</li>
+                        <li>Kiira</li>
+                        <li>Najjera</li>
+                        <li>Nalya</li>
+                        <li>Gaaba</li>
+                        <li>Butto</li>
+                        <li>Kitende</li>
+                        <li>Namugongo</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Join Our Newsletter</h4>
+                    <p style="color: #bdc3c7; font-size: 0.9rem; margin-bottom: 0.5rem;">Get weekly updates on fresh stock and exclusive discounts.</p>
+                    <form class="newsletter-mini" onsubmit="event.preventDefault(); alert('Thank you for subscribing!'); this.reset();">
+                        <input type="email" placeholder="Email address" required>
+                        <button type="submit">Join</button>
+                    </form>
+                    <div class="footer-contact-info" style="margin-top: 1rem; font-size: 0.85rem; color: #95a5a6;">
+                        <div class="footer-contact-item">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Kireka,+Kampala" target="_blank">
+                                <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                Kireka, Kampala
+                            </a>
+                        </div>
+                        <div class="footer-contact-item">
+                            <a href="mailto:peterriak7@gmail.com">
+                                <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                peterriak7@gmail.com
+                            </a>
+                        </div>
+                        <div class="footer-contact-item">
+                            <a href="https://wa.me/256769989989" target="_blank">
+                                <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                </svg>
+                                +256 769 989 989
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Fresh Beef, Fish & Chicken Online Portal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Shopping cart state
+        let cart = [];
+        let cartTotal = 0;
+        let cartCount = 0;
+
+        function loadCart() {
+            const savedCart = localStorage.getItem('shoppingCart');
+            if (savedCart) {
+                const parsed = JSON.parse(savedCart);
+                cart = parsed.items || [];
+                cartTotal = parsed.total || 0;
+                cartCount = parsed.count || 0;
+                updateCartDisplay();
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('shoppingCart', JSON.stringify({
+                items: cart, total: cartTotal, count: cartCount
+            }));
+        }
+
+const addToCartButtons = document.querySelectorAll('.add-to-cart');
+         addToCartButtons.forEach(btn => {
+             btn.addEventListener('click', function() {
+                 const itemName = this.dataset.item;
+                 // Extract price from the sibling element (assuming structure stays same)
+                 const priceText = this.parentElement.querySelector('.item-price').textContent;
+                 const itemPrice = parseFloat(priceText.replace('USh', '').replace(',', ''));
+                 
+                 const existingItemIndex = cart.findIndex(item => item.name === itemName);
+
+                 if (this.classList.contains('added')) {
+                     this.textContent = 'Add to Cart';
+                     this.classList.remove('added');
+                     if (existingItemIndex > -1) {
+                         cartTotal -= cart[existingItemIndex].price;
+                         cartCount -= 1;
+                         cart.splice(existingItemIndex, 1);
+                     }
+                 } else {
+                     this.innerHTML = '✓ Added <span style="margin-left: 0.5rem;">🎉</span>';
+                     this.classList.add('added');
+                     if (existingItemIndex === -1) {
+                     cart.push({ name: itemName, price: itemPrice, quantity: 1, id: Date.now() });
+                         cartTotal += itemPrice;
+                         cartCount += 1;
+                     }
+                     showNotification(`${itemName} added to cart!`);
+                 }
+                 updateCartDisplay();
+                 saveCart();
+             });
+         });
+
+function updateCartDisplay() {
+             const cartStatus = document.getElementById('cart-status');
+             const cartDetails = document.getElementById('cart-details');
+             const cartItemsCount = document.getElementById('cart-items-count');
+             const cartTotalElem = document.getElementById('cart-total');
+             
+             if (cartCount === 0) {
+                 cartStatus.style.display = 'block';
+                 cartDetails.style.display = 'none';
+             } else {
+                 cartStatus.style.display = 'block'; // Ensure container visible
+                 cartStatus.style.display = 'none';
+                 cartDetails.style.display = 'block';
+                 cartItemsCount.textContent = cartCount;
+                 cartTotalElem.textContent = cartTotal.toLocaleString();
+             }
+         }
+
+         // Show notification
+         function showNotification(message) {
+             const notification = document.createElement('div');
+             notification.textContent = message;
+             notification.style.cssText = `
+                 position: fixed;
+                 bottom: 5rem;
+                 right: 2rem;
+                 background: linear-gradient(135deg, var(--secondary) 0%, #2ECC71 100%);
+                 color: white;
+                 padding: 1rem 1.5rem;
+                 border-radius: 10px;
+                 box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                 z-index: 1001;
+                 animation: slideInUp 0.3s ease;
+             `;
+             document.body.appendChild(notification);
+             setTimeout(() => notification.remove(), 3000);
+         }
+
+        // Checkout logic
+        function showCheckout() {
+            document.getElementById('about-section').style.display = 'none';
+            document.getElementById('featured-section').style.display = 'none';
+            document.getElementById('news-section').style.display = 'none';
+            document.getElementById('feedback-section').style.display = 'none';
+            document.getElementById('checkout-view').style.display = 'block';
+            renderCheckoutItems();
+            window.scrollTo(0, 0);
+        }
+
+        function hideCheckout() {
+            document.getElementById('about-section').style.display = 'block';
+            document.getElementById('featured-section').style.display = 'block';
+            document.getElementById('news-section').style.display = 'block';
+            document.getElementById('feedback-section').style.display = 'block';
+            document.getElementById('checkout-view').style.display = 'none';
+        }
+
+        function renderCheckoutItems() {
+            const itemsList = document.getElementById('checkout-items');
+            const totalDisplay = document.getElementById('final-total');
+            
+            if (cart.length === 0) {
+                hideCheckout();
+                return;
+            }
+
+            itemsList.innerHTML = cart.map((item, index) => `
+                <li class="order-item">
+                    <div class="item-info">
+                        <strong>${item.name}</strong>
+                        <div class="qty-controls">
+                            <button class="qty-btn" onclick="updateCheckoutQty(${index}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateCheckoutQty(${index}, 1)">+</button>
+                            <button class="remove-item" onclick="removeCheckoutItem(${index})">Remove</button>
+                        </div>
+                    </div>
+                    <span>USh ${(item.price * item.quantity).toLocaleString()}</span>
+                </li>
+            `).join('');
+
+            totalDisplay.textContent = cartTotal.toLocaleString();
+        }
+
+        function updateCheckoutQty(index, change) {
+            const item = cart[index];
+            const newQty = item.quantity + change;
+            if (newQty > 0) {
+                item.quantity = newQty;
+                recalculateAndSync();
+            }
+        }
+
+        function removeCheckoutItem(index) {
+            cart.splice(index, 1);
+            recalculateAndSync();
+        }
+
+        function recalculateAndSync() {
+            cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            saveCart();
+            updateCartDisplay();
+            renderCheckoutItems();
+        }
+
+        function processOrder() {
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+
+            if (!name || !phone || !address) {
+                alert("Please fill in delivery details.");
+                return;
+            }
+            alert(`Order Received!\n\nThank you, ${name}. Your order has been received and delivery is on its way! Your estimated delivery time is within 45-60 minutes.\n\nTotal: USh ${cartTotal.toLocaleString()}`);
+            cart = []; cartTotal = 0; cartCount = 0;
+            saveCart(); updateCartDisplay(); hideCheckout();
+        }
+
+        loadCart();
+
+        // Animated counter for stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.dataset.count);
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current);
+                    }
+                }, 16);
+            });
+        }
+
+        // Logo click handler
+        document.getElementById('logo').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'shine 0.8s ease-in-out';
+            }, 10);
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.querySelector('nav').classList.toggle('mobile-open');
+        });
+
+        // Back to top button
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Trigger counters when page loads
+        setTimeout(animateCounters, 1000);
+
+        // Feedback Form Functionality
+        const starRating = document.getElementById('star-rating');
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating-value');
+        const ratingError = document.getElementById('rating-error');
+        const feedbackForm = document.getElementById('feedback-form');
+        const feedbackSubmit = document.getElementById('feedback-submit');
+        const feedbackSuccess = document.getElementById('feedback-success');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const charCount = document.getElementById('char-count');
+
+        let currentRating = 0;
+        let hoverRating = 0;
+
+        // Star rating hover effect
+        stars.forEach(star => {
+            star.addEventListener('mouseenter', () => {
+                hoverRating = parseInt(star.dataset.rating);
+                updateStarDisplay(hoverRating);
+            });
+
+            star.addEventListener('mouseleave', () => {
+                hoverRating = 0;
+                updateStarDisplay(currentRating);
+            });
+
+            star.addEventListener('click', () => {
+                currentRating = parseInt(star.dataset.rating);
+                ratingInput.value = currentRating;
+                ratingError.style.display = 'none';
+                updateStarDisplay(currentRating);
+            });
+        });
+
+        function updateStarDisplay(rating) {
+            stars.forEach(star => {
+                const starValue = parseInt(star.dataset.rating);
+                if (starValue <= rating || (hoverRating && starValue <= hoverRating)) {
+                    star.classList.add('hover');
+                } else {
+                    star.classList.remove('hover');
+                }
+                
+                if (starValue <= currentRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Character counter for feedback message
+        feedbackMessage.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = count;
+            if (count > 500) {
+                charCount.style.color = 'var(--accent)';
+            } else {
+                charCount.style.color = 'var(--text-muted)';
+            }
+        });
+
+        // Feedback form validation and submission
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate rating
+            if (!ratingInput.value) {
+                ratingError.style.display = 'block';
+                return;
+            } else {
+                ratingError.style.display = 'none';
+            }
+
+            // Show loading state
+            feedbackSubmit.classList.add('loading');
+            feedbackSubmit.disabled = true;
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: this.method,
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    feedbackForm.style.display = 'none';
+                    feedbackSuccess.classList.add('show');
+                    feedbackForm.reset();
+                    
+                    // Optional: Reset UI after 5 seconds
+                    setTimeout(() => {
+                        feedbackForm.style.display = 'flex';
+                        feedbackSuccess.classList.remove('show');
+                        currentRating = 0;
+                        updateStarDisplay(0);
+                        charCount.textContent = '0';
+                    }, 5000);
+                } else {
+                    alert("Oops! There was a problem submitting your feedback. Please try again.");
+                }
+            }).catch(error => {
+                alert("Oops! There was a problem connecting to the server.");
+            }).finally(() => {
+                feedbackSubmit.classList.remove('loading');
+                feedbackSubmit.disabled = false;
+            });
+        });
+
+        // Interactive filtering logic for category checkboxes and "Show All" button
+        const filterCheckboxes = document.querySelectorAll('.checkbox-wrapper input');
+        const productItems = document.querySelectorAll('.featured-items .item');
+
+        function applyFilters() {
+            const enabledCategories = [];
+            filterCheckboxes.forEach(cb => {
+                if (cb.checked) {
+                    enabledCategories.push(cb.parentElement.dataset.category);
+                    cb.parentElement.classList.add('checked');
+                } else {
+                    cb.parentElement.classList.remove('checked');
+                }
+            });
+
+            productItems.forEach(item => {
+                if (enabledCategories.includes(item.dataset.category)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        filterCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
+        
+        // Enhance interactivity: Clicking the wrapper div toggles the checkbox
+        document.querySelectorAll('.checkbox-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'INPUT') {
+                    const cb = this.querySelector('input');
+                    cb.checked = !cb.checked;
+                    applyFilters();
+                }
+            });
+        });
+
+        // Initial call to set state
+        applyFilters();
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Scroll reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.item, .news-item, .about-container').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

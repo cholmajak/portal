@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Fish & Seafood Online Portal</title>
+    <style>
+        :root {
+            --primary: #3498DB;
+            --primary-dark: #2980B9;
+            --secondary: #27AE60;
+            --accent: #E74C3C;
+            --bg-light: #EBF5FB;
+            --bg-card: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(180deg, #EBF5FB 0%, #FFFFFF 30%);
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated wave background */
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23EBF5FB' fill-opacity='0.3' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") no-repeat bottom;
+            background-size: cover;
+            pointer-events: none;
+            z-index: -1;
+            animation: wave 10s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-20px) scaleY(1.1); }
+        }
+
+        /* Modern Header with Logo Left */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .logo:hover {
+            transform: rotate(10deg) scale(1.05);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            line-height: 1.2;
+        }
+
+        .site-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* Enhanced Navigation */
+        nav {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0;
+            position: sticky;
+            top: var(--header-height);
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        nav li { 
+            flex: 1; 
+            text-align: center;
+            position: relative;
+        }
+
+        nav a {
+            display: block;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--secondary);
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover { 
+            background-color: rgba(52, 152, 219, 0.2);
+        }
+
+        nav a:hover::before {
+            width: 80%;
+        }
+
+        nav a[style*="background-color"] {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+        }
+
+        nav a[style*="background-color"]::before {
+            width: 80%;
+            background: var(--secondary);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            padding: 3rem 0;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 80px; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .site-overview {
+            background: var(--bg-card);
+            padding: 0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 1px solid rgba(52, 152, 219, 0.1);
+        }
+
+        .about-tilapia-intro {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .about-tilapia-intro img {
+            width: 280px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .about-tilapia-intro:hover img {
+            transform: scale(1.02) rotate(0.5deg);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .about-text-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text-content p {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .about-text-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            position: relative;
+            padding-bottom: 0.75rem;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '🐟';
+            position: absolute;
+            right: -40px;
+            top: 0;
+            font-size: 1.5rem;
+            animation: swim 3s ease-in-out infinite;
+        }
+
+        @keyframes swim {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(5px) rotate(5deg); }
+            75% { transform: translateX(-5px) rotate(-5deg); }
+        }
+
+        .about-tilapia-intro {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem; /* Add some space below this section */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .about-tilapia-intro img {
+            max-width: 250px; /* Adjust as needed */
+            height: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            flex-shrink: 0; /* Prevent image from shrinking */
+        }
+
+        .about-text-content {
+            flex: 1;
+        }
+
+        .about-text-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 70px;
+            }
+
+            header {
+                padding: 0.8rem 1rem;
+                flex-wrap: wrap;
+                height: auto;
+            }
+
+            .logo {
+                width: 45px;
+                height: 45px;
+            }
+
+            header h1 {
+                font-size: 1.3rem;
+            }
+
+            .site-description {
+                font-size: 0.8rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+            }
+
+            nav li {
+                flex: 1 1 33.33%;
+                min-width: 33.33%;
+            }
+
+            nav a {
+                padding: 0.8rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .container {
+                padding: 1.5rem 0;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .about-tilapia-intro {
+                text-align: center;
+            }
+
+            .featured-items {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .item-img-wrapper {
+                height: 180px;
+            }
+
+            .cart-summary {
+                position: fixed;
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+                border-radius: 12px;
+            }
+
+            .scroll-top {
+                bottom: auto;
+                top: calc(var(--header-height) + 90px);
+                right: 1rem;
+                left: auto;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .featured-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .featured-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .item:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(52, 152, 219, 0.2);
+        }
+
+        .item-badge {
+            position: absolute;
+            top: 1rem; left: 1rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .item-badge.seafood {
+            background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
+        }
+
+        .item-img-wrapper { 
+            height: 220px; 
+            overflow: hidden; 
+            position: relative;
+        }
+
+        .item-img-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+        }
+
+        .item img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .item:hover img { 
+            transform: scale(1.08) rotate(1deg);
+        }
+
+        .item-content { 
+            padding: 1.5rem; 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column;
+        }
+
+        .item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            transition: color 0.3s;
+        }
+
+        .item:hover h3 {
+            color: var(--primary);
+        }
+
+        .item p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .item-price { 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            color: var(--secondary); 
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .item-price::before {
+            content: 'USh';
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .quantity-control {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-control label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .item-qty {
+            width: 70px;
+            padding: 0.6rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .item-qty:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+        }
+
+        .add-to-cart::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .add-to-cart:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .add-to-cart:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .add-to-cart:active {
+            transform: translateY(-1px);
+        }
+
+        .add-to-cart.added {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e8449 100%);
+        }
+
+        .add-to-cart .icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .add-to-cart:hover .icon {
+            transform: scale(1.2);
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-hover);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-card);
+            padding: 1.2rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-hover);
+            z-index: 1000;
+            border: 2px solid var(--secondary);
+            transition: var(--transition);
+            max-width: 280px;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .cart-summary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.2);
+        }
+
+        .cart-summary::before {
+            content: '🛒';
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 1.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        #cart-status {
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #cart-status::before {
+            content: '🛒';
+            font-size: 1.2rem;
+        }
+
+        #cart-details {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #cart-details strong {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        #cart-total {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .checkout-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            margin-left: 0.5rem;
+            vertical-align: middle;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkout-btn:hover {
+            background: #1e8449;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .checkout-btn::after {
+            content: '→';
+            margin-left: 0.3rem;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .checkout-btn:hover::after {
+            transform: translateX(3px);
+        }
+
+        footer { 
+            background: linear-gradient(135deg, var(--text-dark) 0%, #1a252f 100%);
+            color: white; 
+            text-align: center; 
+            padding: 2.5rem 1rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .footer-links a { 
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 0.5rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-section">
+            <div class="logo">
+                <img src="logo.png" alt="Fresh Fish Logo">
+            </div>
+            <div class="header-text">
+                <h1>Fresh Fish (TILAPIA)</h1>
+                <p class="site-description">Sustainably sourced, premium seafood delivered fresh</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="beef.html">Beef</a></li>
+            <li><a href="fish.html" style="background-color: var(--primary);">Fish</a></li>
+            <li><a href="chicken.html">Chicken</a></li>
+            <li><a href="contact.html">Customer Service</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section class="section">
+            <h2 class="section-title">About Our Tilapia</h2>
+            <div class="site-overview">
+                <div class="about-tilapia-intro">
+                    <img src="whole.jpg" alt="Whole Victoria Tilapia" loading="lazy">
+                    <div class="about-text-content">
+                        <p>Our whole Victoria Tilapia, freshly caught and ready for your kitchen. Experience the authentic taste of sustainably sourced fish, delivered directly from Lake Victoria to your table.</p>
+                        <p>Our Fresh Fish Online Portal is committed to delivering the highest quality, sustainably caught seafood. We partner directly with local fisheries and responsible suppliers to ensure that every fillet and whole fish meets our rigorous standards for freshness and environmental stewardship.</p>
+                        <p>From the deep cold waters of the Atlantic to our local lakes, we provide a variety of options that are rich in Omega-3 fatty acids and essential nutrients, handled with care and delivered in temperature-controlled packaging.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Our Fresh Selection</h2>
+            <div class="featured-items">
+                <!-- Whole Victoria Tilapia -->
+                <div class="item">
+                    <span class="item-badge">Fish</span>
+                    <div class="item-img-wrapper"> 
+                        <img src="whole.jpg" alt="Whole Victoria Tilapia">
+                    </div>
+                    <div class="item-content">
+                        <h3>Whole Victoria Tilapia</h3>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1rem;">Freshly Sourced Daily</p>
+                        <p>Locally sourced from the fresh waters of Lake Victoria. A lean, mild-flavored fish that is incredibly versatile for any recipe.</p>
+                        <p class="item-price">USh63,134</p>
+                        <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                            <input type="number" class="item-qty" value="1" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <button class="add-to-cart" data-item="Whole Victoria Tilapia" data-price="63134">
+                            <span class="icon">🛒</span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tilapia -->
+                <div class="item">
+                    <span class="item-badge">Fish</span>
+                    <div class="item-img-wrapper">
+                        <img src="butter.jpg" alt="Butterfly cuts">
+                    </div>
+                    <div class="item-content">
+                        <h3>Butterfly cuts</h3>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1rem;">Perfectly Butterflied & Deboned</p>
+                        <p>Expertly prepared butterfly cuts of Victoria Tilapia. Ideal for quick pan-searing or grilling, offering a consistent cook and elegant presentation.</p>
+                        <p class="item-price">USh35,000</p>
+                        <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                            <input type="number" class="item-qty" value="1" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <button class="add-to-cart" data-item="Butterfly cuts" data-price="35000">
+                            <span class="icon">🛒</span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Yellowfin Tuna -->
+                <div class="item">
+                    <span class="item-badge">Fish</span>
+                    <div class="item-img-wrapper">
+                        <img src="steaks.jpg" alt="Steak">
+                    </div>
+                    <div class="item-content">
+                        <h3>Tilapia Steaks</h3>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1rem;">Meaty Bone-in Cuts</p>
+                        <p>Thick-cut Tilapia steaks, perfect for traditional fish stews or deep-frying. These cuts are known for holding their shape and flavor beautifully.</p>
+                        <p class="item-price">USh82,500</p>
+                        <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                            <input type="number" class="item-qty" value="1" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <button class="add-to-cart" data-item="Tilapia Steaks" data-price="82500">
+                            <span class="icon">🛒</span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tiger Prawns -->
+                <div class="item">
+                    <span class="item-badge">Seafood</span>
+                    <div class="item-img-wrapper">
+                        <img src="tails.jpg" alt="Heads and Tails">
+                    </div>
+                    <div class="item-content">
+                        <h3>Tilapia Heads & Tails</h3>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1rem;">Nutrient-Rich Soup Base</p>
+                        <p>Fresh Tilapia heads and tails, highly sought after for making rich, traditional fish soups and flavorful broths.</p>
+                        <p class="item-price">USh94,000</p>
+                        <div class="quantity-control" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 600; color: var(--text-dark);">Qty:</label>
+                            <input type="number" class="item-qty" value="1" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <button class="add-to-cart" data-item="Tilapia Heads & Tails" data-price="94000">
+                            <span class="icon">🛒</span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="cart-summary" id="cart-summary">
+        <div id="cart-status">Your cart is empty</div>
+        <div id="cart-details" style="display: none;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem;">
+                <span><strong id="cart-items-count">0</strong> item(s)</span>
+                <span style="color: var(--secondary); font-weight: 700; font-size: 1.1rem;">USh <span id="cart-total">0</span></span>
+            </div>
+            <a href="checkout.html" class="checkout-btn">Checkout Now</a>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+    <footer>
+        <p>&copy; 2026 Fresh Beef, Fish & Chicken Online Portal. All rights reserved.</p>
+        <p class="footer-links">
+            <a href="contact.html">Contact Us</a> | <a href="#">Privacy Policy</a>
+        </p>
+    </footer>
+
+    <script>
+        // Cart state management with localStorage persistence
+        let cart = [];
+        let cartTotal = 0;
+        let cartCount = 0;
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCart();
+            initCartInteractions();
+            initScrollEffects();
+            addRippleEffect();
+
+            // Set initial quantity inputs
+            document.querySelectorAll('.item-qty').forEach(input => {
+                input.value = 1;
+                input.min = 1;
+            });
+        });
+
+        // Load cart from localStorage
+        function loadCart() {
+            const savedCart = localStorage.getItem('shoppingCart');
+            if (savedCart) {
+                const parsed = JSON.parse(savedCart);
+                cart = parsed.items || [];
+                cartTotal = parsed.total || 0;
+                cartCount = parsed.count || 0;
+                updateCartDisplay();
+                updateButtonStates();
+            }
+        }
+
+        // Save cart to localStorage
+        function saveCart() {
+            localStorage.setItem('shoppingCart', JSON.stringify({
+                items: cart,
+                total: cartTotal,
+                count: cartCount
+            }));
+        }
+
+        // Initialize cart button interactions
+        function initCartInteractions() {
+            const buttons = document.querySelectorAll('.add-to-cart');
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const itemName = this.dataset.item;
+                    const itemPrice = parseFloat(this.dataset.price);
+                    const qtyInput = this.closest('.item-content').querySelector('.item-qty');
+                    const quantity = qtyInput ? parseInt(qtyInput.value) || 1 : 1;
+                    
+                    toggleCartItem(this, itemName, itemPrice, quantity);
+                });
+            });
+
+            // Quantity change handlers
+            document.querySelectorAll('.item-qty').forEach(input => {
+                input.addEventListener('change', function() {
+                    const itemName = this.closest('.item-content').querySelector('.add-to-cart').dataset.item;
+                    const itemPrice = parseFloat(this.closest('.item-content').querySelector('.add-to-cart').dataset.price);
+                    const newQty = parseInt(this.value) || 1;
+                    
+                    // Update cart quantity
+                    const existingIndex = cart.findIndex(item => item.name === itemName);
+                    if (existingIndex > -1) {
+                        const oldQty = cart[existingIndex].quantity;
+                        cart[existingIndex].quantity = newQty;
+                        cartTotal = cartTotal - (cart[existingIndex].price * oldQty) + (cart[existingIndex].price * newQty);
+                        cartCount = cartCount - oldQty + newQty;
+                        saveCart();
+                        updateCartDisplay();
+                    }
+                });
+            });
+        }
+
+        // Toggle item in cart
+        function toggleCartItem(button, itemName, itemPrice, quantity) {
+            const existingIndex = cart.findIndex(item => item.name === itemName);
+
+            if (existingIndex > -1) {
+                // Remove item
+                const removedQty = cart[existingIndex].quantity;
+                cartTotal -= cart[existingIndex].price * removedQty;
+                cartCount -= removedQty;
+                cart.splice(existingIndex, 1);
+                
+                button.innerHTML = '<span class="icon">🛒</span> Add to Cart';
+                button.classList.remove('added');
+                
+                // Animate removal
+                animateCartChange(button, 'remove');
+            } else {
+                // Add item
+                cart.push({ 
+                    name: itemName, 
+                    price: itemPrice, 
+                    quantity: quantity 
+                });
+                cartTotal += itemPrice * quantity;
+                cartCount += quantity;
+                
+                button.innerHTML = '<span class="icon">✓</span> In Cart';
+                button.classList.add('added');
+                
+                // Animate addition
+                animateCartChange(button, 'add');
+            }
+
+            saveCart();
+            updateCartDisplay();
+            updateButtonStates();
+        }
+
+        // Animate cart button change
+        function animateCartChange(button, action) {
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartStatus = document.getElementById('cart-status');
+            const cartDetails = document.getElementById('cart-details');
+            const cartItemsCount = document.getElementById('cart-items-count');
+            const cartTotalElem = document.getElementById('cart-total');
+            
+            if (cartCount === 0) {
+                cartStatus.style.display = 'flex';
+                cartStatus.style.alignItems = 'center';
+                cartStatus.style.gap = '0.5rem';
+                cartDetails.style.display = 'none';
+            } else {
+                cartStatus.style.display = 'none';
+                cartDetails.style.display = 'block';
+                cartItemsCount.textContent = cartCount;
+                cartTotalElem.textContent = formatNumber(cartTotal);
+                
+                // Pulse animation on cart total
+                cartTotalElem.parentElement.style.animation = 'pulse 0.3s ease-out';
+                setTimeout(() => {
+                    cartTotalElem.parentElement.style.animation = '';
+                }, 300);
+            }
+        }
+
+        // Update all button states based on cart
+        function updateButtonStates() {
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                const itemName = btn.dataset.item;
+                if (cart.some(item => item.name === itemName)) {
+                    btn.innerHTML = '<span class="icon">✓</span> In Cart';
+                    btn.classList.add('added');
+                } else {
+                    btn.innerHTML = '<span class="icon">🛒</span> Add to Cart';
+                    btn.classList.remove('added');
+                }
+            });
+        }
+
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toLocaleString('en-US');
+        }
+
+        // Scroll effects
+        function initScrollEffects() {
+            const scrollTopBtn = document.getElementById('scrollTop');
+
+            // Show/hide scroll to top button
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            // Scroll to top on click
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Ripple effect on buttons
+        function addRippleEffect() {
+            document.querySelectorAll('.add-to-cart, .checkout-btn, .scroll-top').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size/2;
+                    const y = e.clientY - rect.top - size/2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255,255,255,0.3);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s ease-out;
+                        pointer-events: none;
+                        z-index: 1;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        }
+
+        // Add CSS for ripple animation
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+            .cart-summary {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+    </script>
+</body>
+</html>
