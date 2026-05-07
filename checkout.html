@@ -1907,40 +1907,6 @@
     <div class="checkout-container">
         <!-- Left Side: Forms -->
         <div class="main-content">
-            <!-- Login Section -->
-            <section class="login-section" id="loginSection">
-                <div class="login-header">
-                    <span class="login-icon">👤</span>
-                    <h2>Sign In to Your Account</h2>
-                </div>
-                <form class="login-form" id="loginForm">
-                    <div class="form-group">
-                        <label for="loginEmail">Email Address</label>
-                        <input type="email" id="loginEmail" name="email" placeholder="you@example.com" required>
-                        <span class="error-message">Please enter a valid email address</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
-                        <span class="error-message">Password is required</span>
-                    </div>
-                    <div class="login-actions">
-                        <button type="submit" class="login-btn" id="loginBtn">
-                            <span class="btn-text">Sign In</span>
-                        </button>
-                        <a href="#" class="forgot-password-link">Forgot Password?</a>
-                    </div>
-                </form>
-                <div class="login-divider">or continue as guest</div>
-                <button type="button" class="guest-continue-btn" id="guestContinueBtn">
-                    <span>🛍️</span>
-                    Continue as Guest
-                </button>
-                <p class="account-prompt">
-                    Don't have an account? <a href="#">Create one</a>
-                </p>
-            </section>
-
             <div class="checkout-section" id="delivery-section">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg-light); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
                     <h2 style="border: none; margin: 0; padding: 0;">Delivery Information</h2>
@@ -3490,14 +3456,13 @@
         };
         
         // Add to initialization
-        const originalInit = window.addEventListener('load', function() {
+        window.addEventListener('load', function() {
             loadCheckout();
             setupPaymentMethodToggle();
             setupRealTimeValidation();
             initInteractiveEffects();
             initTooltips();
             initDeliveryEnhancements(); // NEW
-            initLoginForm(); // Initialize login form after DOM is ready
         });
 
         // Smart input formatting
@@ -3520,141 +3485,6 @@
             }
             input.value = value;
         }
-
-        // Login Form Handling
-        let loginForm, loginBtn, guestContinueBtn, loginSection;
-
-        function initLoginForm() {
-            loginForm = document.getElementById('loginForm');
-            loginBtn = document.getElementById('loginBtn');
-            guestContinueBtn = document.getElementById('guestContinueBtn');
-            loginSection = document.getElementById('loginSection');
-
-            initLoginFormEvents();
-            checkLoginStatus();
-        }
-
-        function checkLoginStatus() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            const userEmail = localStorage.getItem('userEmail');
-            if (isLoggedIn && userEmail) {
-                // User is logged in, show logged in state or hide login
-                showLoggedInState(userEmail);
-            }
-        }
-
-        function showLoggedInState(email) {
-            loginSection.innerHTML = `
-                <div class="login-header">
-                    <span class="login-icon">✓</span>
-                    <h2>Welcome Back!</h2>
-                </div>
-                <div style="text-align: center; padding: 1rem 0;">
-                    <p style="margin: 0 0 1rem 0; color: var(--text-muted);">
-                        Signed in as <strong>${email}</strong>
-                    </p>
-                    <button type="button" class="login-btn" id="logoutBtn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
-                        Sign Out
-                    </button>
-                </div>
-            `;
-            document.getElementById('logoutBtn').addEventListener('click', logout);
-        }
-
-        function logout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            location.reload();
-        }
-
-        function initLoginFormEvents() {
-            // Handle login submission
-            if (loginForm) {
-                loginForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-
-                    if (!validateLoginForm()) return;
-
-                    const email = document.getElementById('loginEmail').value.trim();
-                    const password = document.getElementById('loginPassword').value.trim();
-
-                    // Show loading state
-                    loginBtn.classList.add('loading');
-                    loginBtn.disabled = true;
-
-                    // Simulate API call (replace with actual authentication in production)
-                    setTimeout(() => {
-                        loginBtn.classList.remove('loading');
-                        loginBtn.disabled = false;
-
-                        // Store login state
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('userEmail', email);
-
-                        // Update UI to show logged in state
-                        showLoggedInState(email);
-
-                        // Show success feedback
-                        showNotification('Login successful!', 'success');
-                    }, 1500);
-                });
-            }
-
-            // Handle guest continue
-            if (guestContinueBtn) {
-                guestContinueBtn.addEventListener('click', function() {
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', 'guest@temp.com');
-                    loginSection.style.display = 'none';
-                    showNotification('Continuing as guest', 'info');
-                });
-            }
-        }
-
-        // Show notification helper
-        function showNotification(message, type = 'info') {
-            const colors = {
-                success: 'var(--secondary)',
-                error: 'var(--accent)',
-                info: 'var(--primary)'
-            };
-
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${colors[type] || colors.info};
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 10000;
-                animation: slideInRight 0.3s ease-out;
-                font-weight: 600;
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.animation = 'slideOutRight 0.3s ease-out';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // Add slide animations for notifications
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOutRight {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
