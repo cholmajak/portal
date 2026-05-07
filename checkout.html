@@ -2402,13 +2402,13 @@
         </div>
     </div>
 
-    <script>
-        // Global variable to hold cart data
-        let currentCartData = { items: [], total: 0, count: 0 };
-        let isProcessing = false;
+     <script>
+         // Global variable to hold cart data
+         let currentCartData = { items: [], total: 0, count: 0 };
+         let isProcessing = false;
 
-        // Smooth scroll behavior
-        function smoothScrollTo(element, duration = 800) {
+         // Smooth scroll behavior
+         function smoothScrollTo(element, duration = 800) {
             const targetPosition = element.getBoundingClientRect().top + window.pageYOffset;
             const startPosition = window.pageYOffset;
             const distance = targetPosition - startPosition;
@@ -3639,6 +3639,7 @@
             initInteractiveEffects();
             initTooltips();
             initDeliveryEnhancements(); // NEW
+            initLoginForm(); // Initialize login form after DOM is ready
         });
 
         // Smart input formatting
@@ -3663,12 +3664,18 @@
         }
 
         // Login Form Handling
-        const loginForm = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-        const guestContinueBtn = document.getElementById('guestContinueBtn');
-        const loginSection = document.getElementById('loginSection');
+        let loginForm, loginBtn, guestContinueBtn, loginSection;
 
-        // Check if user is already logged in
+        function initLoginForm() {
+            loginForm = document.getElementById('loginForm');
+            loginBtn = document.getElementById('loginBtn');
+            guestContinueBtn = document.getElementById('guestContinueBtn');
+            loginSection = document.getElementById('loginSection');
+
+            initLoginFormEvents();
+            checkLoginStatus();
+        }
+
         function checkLoginStatus() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             const userEmail = localStorage.getItem('userEmail');
@@ -3702,78 +3709,48 @@
             location.reload();
         }
 
-        // Login form validation
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
+        function initLoginFormEvents() {
+            // Handle login submission
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-        function validateLoginForm() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-            let isValid = true;
+                    if (!validateLoginForm()) return;
 
-            // Validate email
-            const emailGroup = document.getElementById('loginEmail').closest('.form-group');
-            if (!validateEmail(email)) {
-                emailGroup.classList.add('has-error');
-                isValid = false;
-            } else {
-                emailGroup.classList.remove('has-error');
+                    const email = document.getElementById('loginEmail').value.trim();
+                    const password = document.getElementById('loginPassword').value.trim();
+
+                    // Show loading state
+                    loginBtn.classList.add('loading');
+                    loginBtn.disabled = true;
+
+                    // Simulate API call (replace with actual authentication in production)
+                    setTimeout(() => {
+                        loginBtn.classList.remove('loading');
+                        loginBtn.disabled = false;
+
+                        // Store login state
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('userEmail', email);
+
+                        // Update UI to show logged in state
+                        showLoggedInState(email);
+
+                        // Show success feedback
+                        showNotification('Login successful!', 'success');
+                    }, 1500);
+                });
             }
 
-            // Validate password
-            const passwordGroup = document.getElementById('loginPassword').closest('.form-group');
-            if (password.length < 1) {
-                passwordGroup.classList.add('has-error');
-                isValid = false;
-            } else {
-                passwordGroup.classList.remove('has-error');
-            }
-
-            return isValid;
-        }
-
-        // Handle login submission
-        if (loginForm) {
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                if (!validateLoginForm()) return;
-
-                const email = document.getElementById('loginEmail').value.trim();
-                const password = document.getElementById('loginPassword').value.trim();
-
-                // Show loading state
-                loginBtn.classList.add('loading');
-                loginBtn.disabled = true;
-
-                // Simulate API call (replace with actual authentication in production)
-                setTimeout(() => {
-                    loginBtn.classList.remove('loading');
-                    loginBtn.disabled = false;
-
-                    // Store login state
+            // Handle guest continue
+            if (guestContinueBtn) {
+                guestContinueBtn.addEventListener('click', function() {
                     localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', email);
-
-                    // Update UI to show logged in state
-                    showLoggedInState(email);
-
-                    // Show success feedback
-                    showNotification('Login successful!', 'success');
-                }, 1500);
-            });
-        }
-
-        // Handle guest continue
-        if (guestContinueBtn) {
-            guestContinueBtn.addEventListener('click', function() {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userEmail', 'guest@temp.com');
-                loginSection.style.display = 'none';
-                showNotification('Continuing as guest', 'info');
-            });
+                    localStorage.setItem('userEmail', 'guest@temp.com');
+                    loginSection.style.display = 'none';
+                    showNotification('Continuing as guest', 'info');
+                });
+            }
         }
 
         // Show notification helper
@@ -3820,9 +3797,6 @@
             }
         `;
         document.head.appendChild(style);
-
-        // Check login on page load
-        checkLoginStatus();
     </script>
 </body>
 </html>
