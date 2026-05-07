@@ -1913,6 +1913,8 @@
                     <span id="delivery-status-badge" style="opacity: 0; transform: translateY(10px); transition: var(--transition); background: var(--secondary); color: white; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700;">DETAILS ACCEPTED ✓</span>
                 </div>
                 <form id="checkout-form">
+    <!-- Order Approval Message -->
+    <div id="order-approval-message" class="approval-message" style="display: none; margin-bottom: 1.5rem; padding: 1rem; border-radius: var(--radius-sm); background: #e8f4fd; border-left: 4px solid var(--primary); animation: slideUp 0.4s ease-out;"></div>
                     <!-- Delivery Method Selection -->
                     <div class="form-group">
                         <label>Delivery Method</label>
@@ -3468,7 +3470,19 @@
             // Load saved addresses for suggestions (will be available when address field is focused)
         };
 
-        // Watch for order approval from Admin
+        // Calculate estimated preparation time based on order complexity
+        function calculateEstimatedPrepTime() {
+            const cartItems = currentCartData.items;
+            const totalItems = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            
+            // Base preparation time: 5 minutes
+            // Add 2 minutes per item type
+            // Add 1 minute per quantity of each item
+            let prepTime = 5 + (cartItems.length * 2) + totalItems;
+            
+            // Cap at reasonable maximum
+            return Math.min(prepTime, 30);
+        }
         function initApprovalWatcher() {
             window.addEventListener('storage', (e) => {
                 if (e.key === 'customerOrders') {
@@ -3480,12 +3494,46 @@
 
                     // If order is approved and we haven't alerted the user yet
                     if (myOrder && myOrder.status === 'approved' && !sessionStorage.getItem('alerted_' + lastId)) {
-                        alert(`🎉 Great news! Your order #${lastId} has been approved by Fresh Online Cuts and is now being prepared!`);
+                        // Show approval message on checkout form
+                        const approvalMessage = document.getElementById('order-approval-message');
+                        if (approvalMessage) {
+                            approvalMessage.innerHTML = `
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <svg style="width: 24px; height: 24px; color: var(--secondary);" viewBox="0 0 24 24">
+                                        <path d="M9 16.2l-3.5-3.5L5 12l3 3 7-7z"/>
+                                    </svg>
+                                    <div>
+                                        <strong>Order Approved!</strong>
+                                        <p style="margin: 0.25rem 0 0 0; font-size: 0.9rem;">Your order #${lastId} has been approved and is being prepared.</p>
+                                        <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Estimated preparation time: ${calculateEstimatedPrepTime()} minutes</p>
+                                    </div>
+                                </div>
+                            `;
+                            approvalMessage.style.display = 'block';
+                            
+                            // Scroll to the message
+                            approvalMessage.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        
                         // Mark as alerted so it doesn't pop up repeatedly
                         sessionStorage.setItem('alerted_' + lastId, 'true');
                     }
                 }
             });
+        }
+
+        // Calculate estimated preparation time based on order complexity
+        function calculateEstimatedPrepTime() {
+            const cartItems = currentCartData.items;
+            const totalItems = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            
+            // Base preparation time: 5 minutes
+            // Add 2 minutes per item type
+            // Add 1 minute per quantity of each item
+            let prepTime = 5 + (cartItems.length * 2) + totalItems;
+            
+            // Cap at reasonable maximum
+            return Math.min(prepTime, 30);
         }
         
         // Add to initialization
