@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Fresh Online Cuts</title>
+    <style>
+        :root {
+            --primary: #2E86C1;
+            --primary-dark: #1A5276;
+            --secondary: #27AE60;
+            --accent: #E74C3C;
+            --bg-light: #F8F9FA;
+            --bg-card: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f4f7f6 0%, #e8eff3 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(46, 134, 193, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(39, 174, 96, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Header */
+        .admin-header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .admin-icon {
+            font-size: 2rem;
+        }
+
+        .admin-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .home-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .home-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .admin-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Login Section */
+        .login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 200px);
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 450px;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-icon-large {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .login-header h1 {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 134, 193, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 134, 193, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Auth Tabs */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .auth-tab:hover {
+            color: var(--primary);
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+        }
+
+        .auth-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .auth-tab.active::after {
+            transform: scaleX(1);
+        }
+
+        .auth-forms {
+            position: relative;
+        }
+
+        .auth-form {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .password-strength.visible {
+            display: block;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak { background: var(--accent); width: 33%; }
+        .strength-medium { background: #F39C12; width: 66%; }
+        .strength-strong { background: var(--secondary); width: 100%; }
+
+        .strength-text {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            color: var(--text-muted);
+        }
+
+        .error-message {
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group.has-error input {
+            border-color: var(--accent);
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .form-group.has-error .error-message {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .admin-prompt {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .admin-prompt a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .admin-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Customer Table */
+        .customers-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .refresh-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-light);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .refresh-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .customers-table th {
+            background: var(--bg-light);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .customers-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .customers-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .status-completed {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .status-cancelled {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        .action-btn {
+            padding: 0.35rem 0.75rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .action-btn.delete {
+            background: var(--accent);
+        }
+
+        .action-btn.delete:hover {
+            background: #c0392b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(231, 76, 60, 0.2);
+            color: white;
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .login-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .customers-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+</style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="header-left">
+            <span class="admin-icon">⚙️</span>
+            <h1 class="admin-title">Admin Portal</h1>
+        </div>
+        <div class="header-right" id="header-actions" style="display: none;">
+            <a href="index.html" class="home-link">
+                <span>🏪</span>
+                Back to Shop
+            </a>
+            <button class="logout-btn" id="logoutBtn">Sign Out</button>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <!-- Login Section -->
+        <div class="login-wrapper" id="loginSection">
+            <div class="login-card">
+                <div class="login-header">
+                    <span class="login-icon-large" id="auth-icon">🔐</span>
+                    <h1 id="auth-title">Admin Login</h1>
+                    <p id="auth-subtitle">Enter credentials to access dashboard</p>
+                </div>
+
+                <!-- Auth Tabs -->
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="signup">Sign Up</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <label for="loginEmail">Admin Email</label>
+                        <input type="email" id="loginEmail" placeholder="admin@freshcuts.com" required>
+                        <span class="error-message">Invalid email address</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <span class="error-message">Password is required</span>
+                    </div>
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span class="btn-text">Sign In</span>
+                    </button>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Your full name" required>
+                        <span class="error-message">Name is required</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="you@company.com" required>
+                        <span class="error-message">Invalid email address</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a strong password" required>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bar" id="strengthBar"></div>
+                        </div>
+                        <span class="strength-text" id="strengthText"></span>
+                        <span class="error-message">Password must be at least 6 characters</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirm">Confirm Password</label>
+                        <input type="password" id="signupConfirm" placeholder="Confirm your password" required>
+                        <span class="error-message">Passwords do not match</span>
+                    </div>
+                    <button type="submit" class="login-btn" id="signupBtn" style="background: linear-gradient(135deg, var(--secondary) 0%, #1e8449 100%);">
+                        <span class="btn-text">Create Account</span>
+                    </button>
+                </form>
+
+                <div class="form-footer" id="loginFooter">
+                    Don't have an account? <a href="#" id="switchToSignup">Create one</a>
+                </div>
+                <div class="form-footer" id="signupFooter" style="display: none;">
+                    Already have an account? <a href="#" id="switchToLogin">Sign in</a>
+                </div>
+                <div class="admin-prompt" id="admin-prompt">
+                    Demo: <strong>admin@freshcuts.com</strong> / <strong>admin123</strong><br>
+                    <small>New admins can create accounts via Sign Up tab</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard" id="dashboard">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value" id="totalCustomers">0</div>
+                    <div class="stat-label">Total Customers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-value" id="totalRevenue">USh 0</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🛒</div>
+                    <div class="stat-value" id="pendingOrders">0</div>
+                    <div class="stat-label">Pending Orders</div>
+                </div>
+            </div>
+
+            <!-- Customers Table -->
+            <div class="customers-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>📋</span>
+                        Recent Customer Orders
+                    </h2>
+                    <button class="refresh-btn" id="refreshBtn">
+                        <span>🔄</span>
+                        Refresh
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="customers-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Customer</th>
+                                <th>Contact</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📭</div>
+                    <h3>No Orders Yet</h3>
+                    <p>Customer orders will appear here once they complete checkout.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin Authentication Constants
+        const ADMIN_CREDENTIALS = {
+            email: 'admin@freshcuts.com',
+            password: 'admin123'
+        };
+
+        // Admin Account Manager
+        const AdminManager = {
+            getAdmins() {
+                return JSON.parse(localStorage.getItem('adminAccounts') || '[]');
+            },
+            addAdmin(admin) {
+                const admins = this.getAdmins();
+                admins.push(admin);
+                localStorage.setItem('adminAccounts', JSON.stringify(admins));
+            },
+            exists(email) {
+                return this.getAdmins().some(a => a.email.toLowerCase() === email.toLowerCase());
+            },
+            validate(email, password) {
+                const admins = this.getAdmins();
+                // Check default credentials (always available)
+                if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+                    return { name: 'System Admin', email: email };
+                }
+                // Check registered admins
+                const admin = admins.find(a => a.email.toLowerCase() === email.toLowerCase() && a.password === password);
+                return admin ? { name: admin.name, email: admin.email } : null;
+            }
+        };
+
+        // Tab Switching
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                // Clear forms
+                loginForm.reset();
+                signupForm.reset();
+                document.getElementById('passwordStrength').classList.remove('visible');
+                document.querySelectorAll('.form-group').forEach(g => g.classList.remove('has-error'));
+                
+                // Update tab states
+                authTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update form visibility
+                authForms.forEach(form => form.classList.remove('active'));
+                document.getElementById(`${targetTab}Form`).classList.add('active');
+                
+                // Update footers
+                if (targetTab === 'login') {
+                    loginFooter.style.display = 'block';
+                    signupFooter.style.display = 'none';
+                    adminPrompt.style.display = 'block';
+                    authIcon.textContent = '🔐';
+                    authTitle.textContent = 'Admin Login';
+                    authSubtitle.textContent = 'Enter credentials to access dashboard';
+                } else {
+                    loginFooter.style.display = 'none';
+                    signupFooter.style.display = 'block';
+                    adminPrompt.style.display = 'none';
+                    authIcon.textContent = '✨';
+                    authTitle.textContent = 'Create Admin Account';
+                    authSubtitle.textContent = 'Register a new administrator';
+                }
+            });
+        });
+
+        // Tab switchers (footer links)
+        document.getElementById('switchToSignup').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('.auth-tab[data-tab="signup"]').click();
+        });
+        document.getElementById('switchToLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('.auth-tab[data-tab="login"]').click();
+        });
+
+        // Password Strength Checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+            const strengthDiv = document.getElementById('passwordStrength');
+
+            if (password.length === 0) {
+                strengthDiv.classList.remove('visible');
+                return;
+            }
+            strengthDiv.classList.add('visible');
+
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            strengthBar.className = 'strength-bar';
+            if (strength <= 2) {
+                strengthBar.classList.add('strength-weak');
+                strengthText.textContent = 'Weak password';
+                strengthText.style.color = 'var(--accent)';
+            } else if (strength <= 4) {
+                strengthBar.classList.add('strength-medium');
+                strengthText.textContent = 'Medium strength';
+                strengthText.style.color = '#F39C12';
+            } else {
+                strengthBar.classList.add('strength-strong');
+                strengthText.textContent = 'Strong password';
+                strengthText.style.color = 'var(--secondary)';
+            }
+        }
+
+        signupPassword.addEventListener('input', () => {
+            checkPasswordStrength(signupPassword.value);
+        });
+
+        // Validate Email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Field Validation
+        function validateField(field, validator, errorMessage) {
+            const value = field.value.trim();
+            const formGroup = field.closest('.form-group');
+            const errorMsg = formGroup.querySelector('.error-message');
+            
+            if (!validator(value)) {
+                field.classList.add('error');
+                formGroup.classList.add('has-error');
+                if (errorMessage) errorMsg.textContent = errorMessage;
+                return false;
+            }
+            field.classList.remove('error');
+            formGroup.classList.remove('has-error');
+            return true;
+        }
+
+        function validateLoginForm() {
+            const emailValid = validateField(loginEmail, validateEmail, 'Please enter a valid email');
+            const passValid = validateField(loginPassword, v => v.length >= 1, 'Password is required');
+            return emailValid && passValid;
+        }
+
+        function validateSignupForm() {
+            const nameValid = validateField(signupName, v => v.length >= 2, 'Name must be at least 2 characters');
+            const emailValid = validateField(signupEmail, validateEmail, 'Please enter a valid email');
+            const passValid = validateField(signupPassword, v => v.length >= 6, 'Password must be at least 6 characters');
+            
+            if (signupEmail.value.trim().toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase()) {
+                const emailGroup = signupEmail.closest('.form-group');
+                emailGroup.classList.add('has-error');
+                emailGroup.querySelector('.error-message').textContent = 'This email is reserved';
+                return false;
+            }
+            
+            if (signupPassword.value !== signupConfirm.value) {
+                validateField(signupConfirm, () => false, 'Passwords do not match');
+                return false;
+            } else {
+                signupConfirm.classList.remove('error');
+                signupConfirm.closest('.form-group').classList.remove('has-error');
+            }
+            
+            if (AdminManager.exists(signupEmail.value)) {
+                validateField(signupEmail, () => false, 'Email already registered');
+                return false;
+            }
+            
+            return nameValid && emailValid && passValid;
+        }
+
+        // Handle Login
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!validateLoginForm()) return;
+
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
+            
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+
+            setTimeout(() => {
+                const admin = AdminManager.validate(email, password);
+                if (admin) {
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                    localStorage.setItem('adminEmail', email);
+                    localStorage.setItem('adminName', admin.name);
+                    showDashboard();
+                    showNotification(`Welcome back, ${admin.name}!`, 'success');
+                } else {
+                    showNotification('Invalid credentials', 'error');
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+                }
+            }, 1000);
+        });
+
+        // Handle Signup
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!validateSignupForm()) return;
+
+            const name = signupName.value.trim();
+            const email = signupEmail.value.trim();
+            const password = signupPassword.value.trim();
+
+            signupBtn.classList.add('loading');
+            signupBtn.disabled = true;
+
+            // Save new admin account
+            AdminManager.addAdmin({ name, email, password, created: new Date().toISOString() });
+
+            setTimeout(() => {
+                showNotification('Account created! Please sign in.', 'success');
+                signupForm.reset();
+                document.getElementById('passwordStrength').classList.remove('visible');
+                signupBtn.classList.remove('loading');
+                signupBtn.disabled = false;
+                
+                // Switch to login tab
+                document.querySelector('.auth-tab[data-tab="login"]').click();
+                loginEmail.value = email;
+            }, 1000);
+        });
+
+        // Check login on page load
+        checkAuth();
+
+        // Show dashboard
+        function showDashboard() {
+            loginSection.style.display = 'none';
+            dashboard.classList.add('active');
+            headerActions.style.display = 'flex';
+            
+            // Show admin name in header
+            const adminName = localStorage.getItem('adminName') || 'Admin';
+            document.querySelector('.admin-title').textContent = `Admin Portal - ${adminName}`;
+            
+            loadDashboardData();
+        }
+
+        // Handle logout
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('isAdminLoggedIn');
+            localStorage.removeItem('adminEmail');
+            localStorage.removeItem('adminName');
+            dashboard.classList.remove('active');
+            headerActions.style.display = 'none';
+            loginSection.style.display = 'flex';
+            document.querySelector('.admin-title').textContent = 'Admin Portal';
+            showNotification('Logged out successfully', 'info');
+        });
+
+        // Load dashboard data
+        function loadDashboardData() {
+            loadStats();
+            loadCustomersTable();
+        }
+
+        // Load statistics
+        function loadStats() {
+            const orders = getOrders();
+            const totalCustomers = new Set(orders.map(o => o.email)).size;
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
+            const pendingOrders = orders.filter(o => o.status === 'pending').length;
+
+            document.getElementById('totalCustomers').textContent = totalCustomers;
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('totalRevenue').textContent = `USh ${totalRevenue.toLocaleString()}`;
+            document.getElementById('pendingOrders').textContent = pendingOrders;
+        }
+
+        // Get orders from localStorage
+        function getOrders() {
+            const orders = localStorage.getItem('customerOrders');
+            return orders ? JSON.parse(orders) : [];
+        }
+
+        // Load customers table
+        function loadCustomersTable() {
+            const orders = getOrders();
+            const tbody = document.getElementById('customersTableBody');
+            const emptyState = document.getElementById('emptyState');
+
+            if (orders.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            // Sort orders by date (newest first)
+            orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            tbody.innerHTML = orders.map((order, index) => {
+                const date = new Date(order.timestamp);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const statusClass = `status-${order.status || 'pending'}`;
+                const statusText = order.status || 'pending';
+
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>
+                            <strong>${order.name || 'Guest'}</strong><br>
+                            <small style="color: var(--text-muted);">${order.email || 'N/A'}</small>
+                        </td>
+                        <td>${order.phone || 'N/A'}</td>
+                        <td>${order.items?.length || 0} items</td>
+                        <td><strong>USh ${(order.total || 0).toLocaleString()}</strong></td>
+                        <td>
+                            <select class="status-select" data-index="${index}" onchange="updateStatus(${index})" 
+                                style="padding: 0.35rem; border-radius: 12px; border: 2px solid #ddd; font-weight: 600; cursor: pointer;">
+                                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            <button class="action-btn" onclick="viewOrderDetails(${index})">View</button>
+                            <button class="action-btn delete" onclick="deleteOrder(${index})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Re-attach event listeners for status selects
+            document.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    const index = parseInt(this.dataset.index);
+                    updateStatus(index);
+                });
+            });
+        }
+
+        // Update order status
+        window.updateStatus = function(index) {
+            const orders = getOrders();
+            const select = document.querySelector(`.status-select[data-index="${index}"]`);
+            const newStatus = select.value;
+            
+            orders[index].status = newStatus;
+            localStorage.setItem('customerOrders', JSON.stringify(orders));
+            
+            showNotification(`Order marked as ${newStatus}`, 'success');
+            loadStats();
+        };
+
+        // View order details
+        window.viewOrderDetails = function(index) {
+            const orders = getOrders();
+            const order = orders[index];
+            if (!order) return;
+
+            const itemsList = order.items?.map(item => 
+                `• ${item.name} x${item.quantity} = USh ${(item.price * item.quantity).toLocaleString()}`
+            ).join('\n') || 'No items';
+
+            alert(`Order Details:\n\nCustomer: ${order.name}\nPhone: ${order.phone}\nEmail: ${order.email}\nAddress: ${order.address}\nDelivery: ${order.deliveryMethod}\n\nItems:\n${itemsList}\n\nTotal: USh ${(order.total || 0).toLocaleString()}\nStatus: ${order.status || 'pending'}\nDate: ${new Date(order.timestamp).toLocaleString()}`);
+        };
+
+        // Delete order
+        window.deleteOrder = function(index) {
+            if (confirm('Are you sure you want to delete this order?')) {
+                const orders = getOrders();
+                orders.splice(index, 1);
+                localStorage.setItem('customerOrders', JSON.stringify(orders));
+                loadCustomersTable();
+                loadStats();
+                showNotification('Order deleted', 'success');
+            }
+        };
+
+        // Refresh button
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            this.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                loadDashboardData();
+                this.style.transform = 'rotate(0deg)';
+                showNotification('Data refreshed', 'info');
+            }, 500);
+        });
+
+        // Notification helper
+        function showNotification(message, type = 'info') {
+            const colors = {
+                success: 'var(--secondary)',
+                error: 'var(--accent)',
+                info: 'var(--primary)'
+            };
+
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${colors[type] || colors.info};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease-out;
+                font-weight: 600;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add slide animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize default admin if none exist
+        (function initAdmins() {
+            const admins = AdminManager.getAdmins();
+            if (admins.length === 0) {
+                // Add default admin account
+                AdminManager.addAdmin({
+                    name: 'System Admin',
+                    email: ADMIN_CREDENTIALS.email,
+                    password: ADMIN_CREDENTIALS.password,
+                    created: new Date().toISOString()
+                });
+            }
+        })();
+
+        // Check login on page load
+        checkAuth();
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            if (dashboard.classList.contains('active')) {
+                loadDashboardData();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
