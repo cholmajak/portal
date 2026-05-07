@@ -2601,29 +2601,28 @@
             };
             
             fields.forEach(fieldId => {
-            Object.keys(validators).forEach(fieldId => {
                 const field = document.getElementById(fieldId);
                 if (field) {
                     field.addEventListener('blur', function() {
-                        validateField(this, (v) => true, '');
+                        const validator = validators[fieldId] || ((v) => v.trim() !== '');
+                        validateField(this, validator, '');
                     });
                     
                     field.addEventListener('input', function() {
-                        if (this.classList.contains('error')) {
-                        const isValid = validators[fieldId](this.value);
-                        const formGroup = this.closest('.form-group');
-                        const checkIcon = formGroup?.querySelector('.check-icon');
-                        
-                        if (isValid && this.value.trim() !== '') {
-                            checkIcon?.classList.add('visible');
-                            this.classList.remove('error');
+                        const validator = validators[fieldId];
+                        if (validator && this.classList.contains('error')) {
+                            const isValid = validator(this.value);
                             const formGroup = this.closest('.form-group') || this.parentElement;
-                            formGroup.classList.remove('has-error');
-                            formGroup?.classList.remove('has-error');
-                        } else {
-                            checkIcon?.classList.remove('visible');
+                            const checkIcon = formGroup?.querySelector('.check-icon');
+                            
+                            if (isValid && this.value.trim() !== '') {
+                                checkIcon?.classList.add('visible');
+                                this.classList.remove('error');
+                                formGroup.classList.remove('has-error');
+                            } else {
+                                checkIcon?.classList.remove('visible');
+                            }
                         }
-
                     });
                 }
             });
@@ -2741,6 +2740,39 @@
             
             showProcessingOverlay();
 
+            // Create the order object first
+            const orderId = Date.now().toString().slice(-6);
+            const order = {
+                id: orderId,
+                name: name,
+                phone: phone,
+                email: email || 'Not provided',
+                address: address,
+                deliveryMethod: deliveryMethod,
+                deliveryNotes: deliveryNotes || 'None',
+                contactless: contactless,
+                paymentMethod: paymentBanner,
+                paymentDetails: paymentDetails,
+                estimatedDelivery: estimatedDelivery,
+                items: currentCartData.items.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity || 1
+                })),
+                total: parseInt(total.replace(/,/g, '')),
+                status: 'pending',
+                timestamp: new Date().toISOString()
+            };
+
+            // Save to local storage immediately so it reflects on the admin portal
+            const existingOrders = JSON.parse(localStorage.getItem('customerOrders') || '[]');
+            existingOrders.push(order);
+            localStorage.setItem('customerOrders', JSON.stringify(existingOrders));
+
+            // Save this order ID in session so we can watch for approval
+            sessionStorage.setItem('lastOrderId', orderId);
+
+            // Prepare email data
             const formData = new FormData();
             formData.append('Customer Name', name);
             formData.append('Phone', phone);
@@ -2757,60 +2789,22 @@
             formData.append('Delivery Person', 'John Rider');
             formData.append('Delivery Contact', '+256 700 123 456');
             formData.append('_replyto', email);
-            formData.append('_subject', `Order Confirmation - Fresh Cuts (#${Date.now().toString().slice(-6)})`);
+            formData.append('_subject', `Order Confirmation - Fresh Cuts (#${orderId})`);
 
-            try {
-                const response = await fetch('https://formspree.io/peterriak7@gmail.com', {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
+            // Send email notification in the background
+            fetch('https://formspree.io/peterriak7@gmail.com', {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            }).catch(err => console.error("Email notification skipped:", err));
 
+            // Show success modal regardless of Formspree status
+            setTimeout(() => {
                 hideProcessingOverlay();
-
-                if (response.ok) {
-                    // Save order to localStorage for admin panel
-                    const order = {
-                        id: Date.now().toString().slice(-6),
-                        name: name,
-                        phone: phone,
-                        email: email || 'Not provided',
-                        address: address,
-                        deliveryMethod: deliveryMethod,
-                        deliveryNotes: deliveryNotes || 'None',
-                        contactless: contactless,
-                        paymentMethod: paymentBanner,
-                        paymentDetails: paymentDetails,
-                        estimatedDelivery: estimatedDelivery,
-                        items: currentCartData.items.map(item => ({
-                            name: item.name,
-                            price: item.price,
-                            quantity: item.quantity || 1
-                        })),
-                        total: parseInt(total.replace(/,/g, '')),
-                        status: 'pending',
-                        timestamp: new Date().toISOString()
-                    };
-                    
-                    // Save to orders array
-                    const existingOrders = JSON.parse(localStorage.getItem('customerOrders') || '[]');
-                    existingOrders.push(order);
-                    localStorage.setItem('customerOrders', JSON.stringify(existingOrders));
-                    
-                    showSuccessModal(name, email, total, paymentBanner, estimatedDelivery);
-                    localStorage.removeItem('shoppingCart');
-                    currentCartData = { items: [], total: 0, count: 0 };
-                } else {
-                    throw new Error('Submission failed');
-                }
-            } catch (error) {
-                hideProcessingOverlay();
-                alert("There was a problem submitting your order. Please check your connection and try again.");
-                isProcessing = false;
-                orderBtn.classList.remove('loading');
-                orderBtn.disabled = false;
-                orderBtn.innerHTML = originalContent;
-            }
+                showSuccessModal(name, email, total, paymentBanner, estimatedDelivery);
+                localStorage.removeItem('shoppingCart');
+                currentCartData = { items: [], total: 0, count: 0 };
+            }, 1000);
         }
 
         // Show processing overlay
@@ -2904,10 +2898,6 @@
                             <p style="margin: 0 0 0.5rem 0; font-size: 0.95rem;">📞 <strong>Contact:</strong> +256 700 123 456</p>
                             <p style="margin: 0; font-size: 0.95rem;">⏱️ <strong>Estimated Arrival:</strong> ${estimatedDelivery}</p>
                         </div>
-
-                        <p style="color: #7F8C8D; margin-bottom: 1.5rem; font-size: 0.9rem;">
-                            Please check your email (<strong>${email || 'the address provided'}</strong>) for order tracking details and receipt.
-                        </p>
                         <div style="
                             background: #f8f9fa;
                             border-radius: 8px;
@@ -3477,6 +3467,26 @@
             originalLoadCheckout();
             // Load saved addresses for suggestions (will be available when address field is focused)
         };
+
+        // Watch for order approval from Admin
+        function initApprovalWatcher() {
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'customerOrders') {
+                    const lastId = sessionStorage.getItem('lastOrderId');
+                    if (!lastId) return;
+
+                    const orders = JSON.parse(e.newValue || '[]');
+                    const myOrder = orders.find(o => o.id === lastId);
+
+                    // If order is approved and we haven't alerted the user yet
+                    if (myOrder && myOrder.status === 'approved' && !sessionStorage.getItem('alerted_' + lastId)) {
+                        alert(`🎉 Great news! Your order #${lastId} has been approved by Fresh Online Cuts and is now being prepared!`);
+                        // Mark as alerted so it doesn't pop up repeatedly
+                        sessionStorage.setItem('alerted_' + lastId, 'true');
+                    }
+                }
+            });
+        }
         
         // Add to initialization
         window.addEventListener('load', function() {
@@ -3486,6 +3496,7 @@
             initInteractiveEffects();
             initTooltips();
             initDeliveryEnhancements(); // NEW
+            initApprovalWatcher(); // NEW
         });
 
         // Smart input formatting
