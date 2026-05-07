@@ -1486,6 +1486,22 @@ nav ul {
     </nav>
 
     <div class="container" role="main">
+        <!-- Incoming Order Notification -->
+        <section id="incoming-order-section" style="display: none; margin-bottom: 2rem; animation: fadeInUp 0.6s ease-out;">
+            <div style="background: linear-gradient(135deg, #27AE60 0%, #2ecc71 100%); color: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 20px rgba(39, 174, 96, 0.2); position: relative; overflow: hidden;">
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <div style="font-size: 2.5rem; animation: bounce 2s infinite;">🚚</div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.2rem;">Your Order is on the way!</h3>
+                        <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Order #<span id="incoming-order-id"></span> has been approved and is being prepared for delivery.</p>
+                    </div>
+                    <div style="margin-left: auto; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">
+                        Approved
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="about-section" class="section">
             <h2 class="section-title">About the Company</h2>
             <div class="site-overview">
@@ -2267,6 +2283,35 @@ function updateCartDisplay() {
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
         });
+
+        // Logic to display approved orders on the home page
+        function checkIncomingOrders() {
+            const lastOrderId = sessionStorage.getItem('lastOrderId');
+            if (!lastOrderId) return;
+
+            const orders = JSON.parse(localStorage.getItem('customerOrders') || '[]');
+            const myOrder = orders.find(o => o.id === lastOrderId);
+
+            const section = document.getElementById('incoming-order-section');
+            const idSpan = document.getElementById('incoming-order-id');
+
+            if (myOrder && myOrder.status === 'approved') {
+                idSpan.textContent = lastOrderId;
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        // Watch for real-time updates from localStorage (e.g. when Admin approves)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'customerOrders') {
+                checkIncomingOrders();
+            }
+        });
+
+        // Initial check on load
+        window.addEventListener('DOMContentLoaded', checkIncomingOrders);
     </script>
 </body>
 </html>
