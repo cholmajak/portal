@@ -239,110 +239,12 @@
             }
         }
 
-        /* Auth Tabs */
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 1rem;
-            background: none;
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .auth-tab:hover {
-            color: var(--primary);
-        }
-
-        .auth-tab.active {
-            color: var(--primary);
-        }
-
-        .auth-tab::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .auth-tab.active::after {
-            transform: scaleX(1);
-        }
-
-        .auth-forms {
-            position: relative;
-        }
-
-        .auth-form {
-            display: none;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
-
         .form-footer {
             text-align: center;
             margin-top: 1.5rem;
             padding-top: 1rem;
             border-top: 1px solid #eee;
             font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .form-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .form-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .password-strength {
-            margin-top: 0.5rem;
-            height: 4px;
-            background: #e0e0e0;
-            border-radius: 2px;
-            overflow: hidden;
-            display: none;
-        }
-
-        .password-strength.visible {
-            display: block;
-        }
-
-        .strength-bar {
-            height: 100%;
-            width: 0%;
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-
-        .strength-weak { background: var(--accent); width: 33%; }
-        .strength-medium { background: #F39C12; width: 66%; }
-        .strength-strong { background: var(--secondary); width: 100%; }
-
-        .strength-text {
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
             color: var(--text-muted);
         }
 
@@ -723,74 +625,28 @@
         <div class="login-wrapper" id="loginSection">
             <div class="login-card">
                 <div class="login-header">
-                    <span class="login-icon-large" id="auth-icon">🔐</span>
-                    <h1 id="auth-title">Admin Login</h1>
-                    <p id="auth-subtitle">Enter credentials to access dashboard</p>
+                    <span class="login-icon-large">🔐</span>
+                    <h1>Admin Login</h1>
+                    <p>Enter admin credentials to access dashboard</p>
                 </div>
-
-                <!-- Auth Tabs -->
-                <div class="auth-tabs">
-                    <button class="auth-tab active" data-tab="login">Login</button>
-                    <button class="auth-tab" data-tab="signup">Sign Up</button>
-                </div>
-
-                <!-- Login Form -->
-                <form id="loginForm" class="auth-form active">
+                <form id="adminLoginForm">
                     <div class="form-group">
-                        <label for="loginEmail">Admin Email</label>
-                        <input type="email" id="loginEmail" placeholder="admin@freshcuts.com" required>
-                        <span class="error-message">Invalid email address</span>
+                        <label for="adminUsername">Admin Username</label>
+                        <input type="text" id="adminUsername" placeholder="Enter username (admin123)" required autocomplete="username">
+                        <span class="error-message">Username is required</span>
                     </div>
                     <div class="form-group">
-                        <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" placeholder="Enter your password" required autocomplete="current-password">
                         <span class="error-message">Password is required</span>
                     </div>
                     <button type="submit" class="login-btn" id="loginBtn">
                         <span class="btn-text">Sign In</span>
                     </button>
                 </form>
-
-                <!-- Signup Form -->
-                <form id="signupForm" class="auth-form">
-                    <div class="form-group">
-                        <label for="signupName">Full Name</label>
-                        <input type="text" id="signupName" placeholder="Your full name" required>
-                        <span class="error-message">Name is required</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="signupEmail">Email Address</label>
-                        <input type="email" id="signupEmail" placeholder="you@company.com" required>
-                        <span class="error-message">Invalid email address</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="signupPassword">Password</label>
-                        <input type="password" id="signupPassword" placeholder="Create a strong password" required>
-                        <div class="password-strength" id="passwordStrength">
-                            <div class="strength-bar" id="strengthBar"></div>
-                        </div>
-                        <span class="strength-text" id="strengthText"></span>
-                        <span class="error-message">Password must be at least 6 characters</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="signupConfirm">Confirm Password</label>
-                        <input type="password" id="signupConfirm" placeholder="Confirm your password" required>
-                        <span class="error-message">Passwords do not match</span>
-                    </div>
-                    <button type="submit" class="login-btn" id="signupBtn" style="background: linear-gradient(135deg, var(--secondary) 0%, #1e8449 100%);">
-                        <span class="btn-text">Create Account</span>
-                    </button>
-                </form>
-
-                <div class="form-footer" id="loginFooter">
-                    Don't have an account? <a href="#" id="switchToSignup">Create one</a>
-                </div>
-                <div class="form-footer" id="signupFooter" style="display: none;">
-                    Already have an account? <a href="#" id="switchToLogin">Sign in</a>
-                </div>
-                <div class="admin-prompt" id="admin-prompt">
-                    Demo: <strong>admin@freshcuts.com</strong> / <strong>admin123</strong><br>
-                    <small>New admins can create accounts via Sign Up tab</small>
+                <div class="admin-prompt">
+                    <p><strong>Default credentials:</strong><br>
+                    Username: <strong>admin123</strong> | Password: <strong>123admin</strong></p>
                 </div>
             </div>
         </div>
@@ -909,239 +765,308 @@
             </div>
         </div>
 
-    <script>
-        // Admin Authentication Constants
+     <script>
+        // Admin Authentication - Hardcoded credentials only
         const ADMIN_CREDENTIALS = {
-            email: 'admin@freshcuts.com',
-            password: 'admin123'
+            username: 'admin123',
+            password: '123admin'
         };
 
-        // Admin Account Manager
-        const AdminManager = {
-            getAdmins() {
-                return JSON.parse(localStorage.getItem('adminAccounts') || '[]');
-            },
-            addAdmin(admin) {
-                const admins = this.getAdmins();
-                admins.push(admin);
-                localStorage.setItem('adminAccounts', JSON.stringify(admins));
-            },
-            exists(email) {
-                return this.getAdmins().some(a => a.email.toLowerCase() === email.toLowerCase());
-            },
-            validate(email, password) {
-                const admins = this.getAdmins();
-                // Check default credentials (always available)
-                if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
-                    return { name: 'System Admin', email: email };
-                }
-                // Check registered admins
-                const admin = admins.find(a => a.email.toLowerCase() === email.toLowerCase() && a.password === password);
-                return admin ? { name: admin.name, email: admin.email } : null;
+        // DOM Elements
+        const loginSection = document.getElementById('loginSection');
+        const dashboard = document.getElementById('dashboard');
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const adminUsername = document.getElementById('adminUsername');
+        const adminPassword = document.getElementById('adminPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const headerActions = document.getElementById('header-actions');
+
+        // Check if admin is already logged in
+        function checkAuth() {
+            const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+            if (isAdminLoggedIn) {
+                showDashboard();
             }
-        };
+        }
 
-        // Tab Switching
-        authTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const targetTab = tab.dataset.tab;
-                
-                // Clear forms
-                loginForm.reset();
-                signupForm.reset();
-                document.getElementById('passwordStrength').classList.remove('visible');
-                document.querySelectorAll('.form-group').forEach(g => g.classList.remove('has-error'));
-                
-                // Update tab states
-                authTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                // Update form visibility
-                authForms.forEach(form => form.classList.remove('active'));
-                document.getElementById(`${targetTab}Form`).classList.add('active');
-                
-                // Update footers
-                if (targetTab === 'login') {
-                    loginFooter.style.display = 'block';
-                    signupFooter.style.display = 'none';
-                    adminPrompt.style.display = 'block';
-                    authIcon.textContent = '🔐';
-                    authTitle.textContent = 'Admin Login';
-                    authSubtitle.textContent = 'Enter credentials to access dashboard';
-                } else {
-                    loginFooter.style.display = 'none';
-                    signupFooter.style.display = 'block';
-                    adminPrompt.style.display = 'none';
-                    authIcon.textContent = '✨';
-                    authTitle.textContent = 'Create Admin Account';
-                    authSubtitle.textContent = 'Register a new administrator';
-                }
-            });
-        });
+        // Validate login form
+        function validateLogin() {
+            const username = adminUsername.value.trim();
+            const password = adminPassword.value.trim();
+            let isValid = true;
 
-        // Tab switchers (footer links)
-        document.getElementById('switchToSignup').addEventListener('click', (e) => {
+            // Username validation
+            const usernameGroup = adminUsername.closest('.form-group');
+            if (username.length < 1) {
+                usernameGroup.classList.add('has-error');
+                isValid = false;
+            } else {
+                usernameGroup.classList.remove('has-error');
+            }
+
+            // Password validation
+            const passwordGroup = adminPassword.closest('.form-group');
+            if (password.length < 1) {
+                passwordGroup.classList.add('has-error');
+                isValid = false;
+            } else {
+                passwordGroup.classList.remove('has-error');
+            }
+
+            return isValid;
+        }
+
+        // Handle login
+        adminLoginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            document.querySelector('.auth-tab[data-tab="signup"]').click();
-        });
-        document.getElementById('switchToLogin').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelector('.auth-tab[data-tab="login"]').click();
+
+            if (!validateLogin()) return;
+
+            const username = adminUsername.value.trim();
+            const password = adminPassword.value.trim();
+
+            // Check credentials against hardcoded values
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                // Show loading state
+                loginBtn.classList.add('loading');
+                loginBtn.disabled = true;
+
+                // Simulate authentication delay
+                setTimeout(() => {
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                    localStorage.setItem('adminUsername', username);
+                    showDashboard();
+                    showNotification('Welcome back, Admin!', 'success');
+                }, 1000);
+            } else {
+                showNotification('Invalid credentials. Access denied.', 'error');
+                // Shake animation for error
+                loginBtn.style.animation = 'shake 0.4s ease-in-out';
+                setTimeout(() => loginBtn.style.animation = '', 400);
+            }
         });
 
-        // Password Strength Checker
-        function checkPasswordStrength(password) {
-            let strength = 0;
-            const strengthBar = document.getElementById('strengthBar');
-            const strengthText = document.getElementById('strengthText');
-            const strengthDiv = document.getElementById('passwordStrength');
+        // Show dashboard
+        function showDashboard() {
+            loginSection.style.display = 'none';
+            dashboard.classList.add('active');
+            headerActions.style.display = 'flex';
+            loadDashboardData();
+        }
 
-            if (password.length === 0) {
-                strengthDiv.classList.remove('visible');
+        // Handle logout
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('isAdminLoggedIn');
+            localStorage.removeItem('adminUsername');
+            dashboard.classList.remove('active');
+            headerActions.style.display = 'none';
+            loginSection.style.display = 'flex';
+            adminLoginForm.reset();
+            showNotification('Logged out successfully', 'info');
+        });
+
+        // Load dashboard data
+        function loadDashboardData() {
+            loadStats();
+            loadCustomersTable();
+        }
+
+        // Get orders from localStorage
+        function getOrders() {
+            const orders = localStorage.getItem('customerOrders');
+            return orders ? JSON.parse(orders) : [];
+        }
+
+        // Load statistics
+        function loadStats() {
+            const orders = getOrders();
+            const totalCustomers = new Set(orders.map(o => o.email)).size;
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
+            const pendingOrders = orders.filter(o => o.status === 'pending').length;
+
+            document.getElementById('totalCustomers').textContent = totalCustomers;
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('totalRevenue').textContent = `USh ${totalRevenue.toLocaleString()}`;
+            document.getElementById('pendingOrders').textContent = pendingOrders;
+        }
+
+        // Load customers table
+        function loadCustomersTable() {
+            const orders = getOrders();
+            const tbody = document.getElementById('customersTableBody');
+            const emptyState = document.getElementById('emptyState');
+
+            if (orders.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
                 return;
             }
-            strengthDiv.classList.add('visible');
 
-            if (password.length >= 6) strength++;
-            if (password.length >= 10) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            emptyState.style.display = 'none';
 
-            strengthBar.className = 'strength-bar';
-            if (strength <= 2) {
-                strengthBar.classList.add('strength-weak');
-                strengthText.textContent = 'Weak password';
-                strengthText.style.color = 'var(--accent)';
-            } else if (strength <= 4) {
-                strengthBar.classList.add('strength-medium');
-                strengthText.textContent = 'Medium strength';
-                strengthText.style.color = '#F39C12';
-            } else {
-                strengthBar.classList.add('strength-strong');
-                strengthText.textContent = 'Strong password';
-                strengthText.style.color = 'var(--secondary)';
-            }
+            // Sort orders by date (newest first)
+            orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            tbody.innerHTML = orders.map((order, index) => {
+                const date = new Date(order.timestamp);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const statusClass = `status-${order.status || 'pending'}`;
+
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>
+                            <strong>${order.name || 'Guest'}</strong><br>
+                            <small style="color: var(--text-muted);">${order.email || 'N/A'}</small>
+                        </td>
+                        <td>${order.phone || 'N/A'}</td>
+                        <td>${order.items?.length || 0} items</td>
+                        <td><strong>USh ${(order.total || 0).toLocaleString()}</strong></td>
+                        <td>
+                            <select class="status-select" data-index="${index}" onchange="updateStatus(${index})" 
+                                style="padding: 0.35rem; border-radius: 12px; border: 2px solid #ddd; font-weight: 600; cursor: pointer;">
+                                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            <button class="action-btn" onclick="viewOrderDetails(${index})">View</button>
+                            <button class="action-btn delete" onclick="deleteOrder(${index})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Re-attach event listeners for status selects
+            document.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    const index = parseInt(this.dataset.index);
+                    updateStatus(index);
+                });
+            });
         }
 
-        signupPassword.addEventListener('input', () => {
-            checkPasswordStrength(signupPassword.value);
+        // Update order status
+        window.updateStatus = function(index) {
+            const orders = getOrders();
+            const select = document.querySelector(`.status-select[data-index="${index}"]`);
+            const newStatus = select.value;
+            
+            orders[index].status = newStatus;
+            localStorage.setItem('customerOrders', JSON.stringify(orders));
+            
+            showNotification(`Order marked as ${newStatus}`, 'success');
+            loadStats();
+        };
+
+        // View order details
+        window.viewOrderDetails = function(index) {
+            const orders = getOrders();
+            const order = orders[index];
+            if (!order) return;
+
+            const itemsList = order.items?.map(item => 
+                `• ${item.name} x${item.quantity} = USh ${(item.price * item.quantity).toLocaleString()}`
+            ).join('\n') || 'No items';
+
+            alert(`Order Details:\n\nCustomer: ${order.name}\nPhone: ${order.phone}\nEmail: ${order.email}\nAddress: ${order.address}\nDelivery: ${order.deliveryMethod}\nPayment: ${order.paymentMethod}\n\nItems:\n${itemsList}\n\nTotal: USh ${(order.total || 0).toLocaleString()}\nStatus: ${order.status || 'pending'}\nDate: ${new Date(order.timestamp).toLocaleString()}`);
+        };
+
+        // Delete order
+        window.deleteOrder = function(index) {
+            if (confirm('Are you sure you want to delete this order?')) {
+                const orders = getOrders();
+                orders.splice(index, 1);
+                localStorage.setItem('customerOrders', JSON.stringify(orders));
+                loadCustomersTable();
+                loadStats();
+                showNotification('Order deleted', 'success');
+            }
+        };
+
+        // Refresh button
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            this.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                loadDashboardData();
+                this.style.transform = 'rotate(0deg)';
+                showNotification('Data refreshed', 'info');
+            }, 500);
         });
 
-        // Validate Email
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
+        // Notification helper
+        function showNotification(message, type = 'info') {
+            const colors = {
+                success: 'var(--secondary)',
+                error: 'var(--accent)',
+                info: 'var(--primary)'
+            };
 
-        // Field Validation
-        function validateField(field, validator, errorMessage) {
-            const value = field.value.trim();
-            const formGroup = field.closest('.form-group');
-            const errorMsg = formGroup.querySelector('.error-message');
-            
-            if (!validator(value)) {
-                field.classList.add('error');
-                formGroup.classList.add('has-error');
-                if (errorMessage) errorMsg.textContent = errorMessage;
-                return false;
-            }
-            field.classList.remove('error');
-            formGroup.classList.remove('has-error');
-            return true;
-        }
-
-        function validateLoginForm() {
-            const emailValid = validateField(loginEmail, validateEmail, 'Please enter a valid email');
-            const passValid = validateField(loginPassword, v => v.length >= 1, 'Password is required');
-            return emailValid && passValid;
-        }
-
-        function validateSignupForm() {
-            const nameValid = validateField(signupName, v => v.length >= 2, 'Name must be at least 2 characters');
-            const emailValid = validateField(signupEmail, validateEmail, 'Please enter a valid email');
-            const passValid = validateField(signupPassword, v => v.length >= 6, 'Password must be at least 6 characters');
-            
-            if (signupEmail.value.trim().toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase()) {
-                const emailGroup = signupEmail.closest('.form-group');
-                emailGroup.classList.add('has-error');
-                emailGroup.querySelector('.error-message').textContent = 'This email is reserved';
-                return false;
-            }
-            
-            if (signupPassword.value !== signupConfirm.value) {
-                validateField(signupConfirm, () => false, 'Passwords do not match');
-                return false;
-            } else {
-                signupConfirm.classList.remove('error');
-                signupConfirm.closest('.form-group').classList.remove('has-error');
-            }
-            
-            if (AdminManager.exists(signupEmail.value)) {
-                validateField(signupEmail, () => false, 'Email already registered');
-                return false;
-            }
-            
-            return nameValid && emailValid && passValid;
-        }
-
-        // Handle Login
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (!validateLoginForm()) return;
-
-            const email = loginEmail.value.trim();
-            const password = loginPassword.value.trim();
-            
-            loginBtn.classList.add('loading');
-            loginBtn.disabled = true;
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${colors[type] || colors.info};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease-out;
+                font-weight: 600;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
 
             setTimeout(() => {
-                const admin = AdminManager.validate(email, password);
-                if (admin) {
-                    localStorage.setItem('isAdminLoggedIn', 'true');
-                    localStorage.setItem('adminEmail', email);
-                    localStorage.setItem('adminName', admin.name);
-                    showDashboard();
-                    showNotification(`Welcome back, ${admin.name}!`, 'success');
-                } else {
-                    showNotification('Invalid credentials', 'error');
-                    loginBtn.classList.remove('loading');
-                    loginBtn.disabled = false;
-                }
-            }, 1000);
-        });
+                notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
 
-        // Handle Signup
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (!validateSignupForm()) return;
+        // Add slide animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
 
-            const name = signupName.value.trim();
-            const email = signupEmail.value.trim();
-            const password = signupPassword.value.trim();
-
-            signupBtn.classList.add('loading');
-            signupBtn.disabled = true;
-
-            // Save new admin account
-            AdminManager.addAdmin({ name, email, password, created: new Date().toISOString() });
-
-            setTimeout(() => {
-                showNotification('Account created! Please sign in.', 'success');
-                signupForm.reset();
-                document.getElementById('passwordStrength').classList.remove('visible');
-                signupBtn.classList.remove('loading');
-                signupBtn.disabled = false;
-                
-                // Switch to login tab
-                document.querySelector('.auth-tab[data-tab="login"]').click();
-                loginEmail.value = email;
-            }, 1000);
-        });
-
-        // Check login on page load
+        // Initialize
         checkAuth();
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            if (dashboard.classList.contains('active')) {
+                loadDashboardData();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
 
         // Show dashboard
         function showDashboard() {
@@ -1149,24 +1074,22 @@
             dashboard.classList.add('active');
             headerActions.style.display = 'flex';
             
-            // Show admin name in header
-            const adminName = localStorage.getItem('adminName') || 'Admin';
-            document.querySelector('.admin-title').textContent = `Admin Portal - ${adminName}`;
+            // Show admin username in header
+            const adminUsername = localStorage.getItem('adminUsername') || 'Admin';
+            document.querySelector('.admin-title').textContent = `Admin Portal - ${adminUsername}`;
             
             loadDashboardData();
-            loadCommunications();
-            initSettings();
         }
 
         // Handle logout
         logoutBtn.addEventListener('click', function() {
             localStorage.removeItem('isAdminLoggedIn');
-            localStorage.removeItem('adminEmail');
-            localStorage.removeItem('adminName');
+            localStorage.removeItem('adminUsername');
             dashboard.classList.remove('active');
             headerActions.style.display = 'none';
             loginSection.style.display = 'flex';
             document.querySelector('.admin-title').textContent = 'Admin Portal';
+            adminLoginForm.reset();
             showNotification('Logged out successfully', 'info');
         });
 
@@ -1316,7 +1239,7 @@
                     contact: customerPhone,
                     message: notificationMessage,
                     timestamp: new Date().toISOString(),
-                    sentBy: localStorage.getItem('adminName') || 'Admin',
+                    sentBy: localStorage.getItem('adminUsername') || 'Admin',
                     automated: true
                 });
                 localStorage.setItem('customerCommunications', JSON.stringify(commLog));
@@ -1647,7 +1570,7 @@
                 contact: order.phone || order.email,
                 message: message,
                 timestamp: new Date().toISOString(),
-                sentBy: localStorage.getItem('adminName') || 'Admin'
+                sentBy: localStorage.getItem('adminUsername') || 'Admin'
             });
             localStorage.setItem('customerCommunications', JSON.stringify(commLog));
 
@@ -1690,11 +1613,11 @@
             commLog.push({
                 orderId: order.id,
                 customer: order.name,
-                contact: order.phone,
-                message: notificationMessage,
+                contact: order.phone || order.email,
+                message: message,
                 timestamp: new Date().toISOString(),
-                sentBy: localStorage.getItem('adminName') || 'Admin',
-                automated: true
+                sentBy: localStorage.getItem('adminUsername') || 'Admin',
+                automated: false
             });
             localStorage.setItem('customerCommunications', JSON.stringify(commLog));
             
@@ -1919,19 +1842,6 @@
             }
         };
 
-        // Initialize default admin if none exist
-        (function initAdmins() {
-            const admins = AdminManager.getAdmins();
-            if (admins.length === 0) {
-                AdminManager.addAdmin({
-                    name: 'System Admin',
-                    email: ADMIN_CREDENTIALS.email,
-                    password: ADMIN_CREDENTIALS.password,
-                    created: new Date().toISOString()
-                });
-            }
-        })();
-
         // Check login on page load
         checkAuth();
 
@@ -1939,7 +1849,6 @@
         setInterval(() => {
             if (dashboard.classList.contains('active')) {
                 loadDashboardData();
-                loadCommunications();
             }
         }, 30000);
     </script>
