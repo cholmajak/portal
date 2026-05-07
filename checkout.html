@@ -1982,17 +1982,31 @@
                         </div>
                     </div>
 
-                    <!-- Address Section with Live Validation -->
-                    <div class="form-group">
-                        <label>Delivery Address</label>
-                        <div class="address-input-container">
-                            <input type="text" id="cust-address" placeholder="Street name, Apartment/House No, Area" required>
-                            <span class="field-status-icon check-icon">✓</span>
-                            <span class="field-error-icon">✕</span>
-                            <div class="address-validation-feedback" id="address-feedback"></div>
-                        </div>
-                        <div class="address-suggestions" id="address-suggestions"></div>
-                    </div>
+                     <!-- Address Section with Live Validation -->
+                     <div class="form-group">
+                         <label>Delivery Address</label>
+                         <div class="address-input-container">
+                             <select id="cust-address" required style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e0e0e0; border-radius: var(--radius-sm); font-size: 1rem; background: white; cursor: pointer;">
+                                 <option value="">Select your delivery location</option>
+                                 <option value="Gayaza">Gayaza</option>
+                                 <option value="Kireka">Kireka</option>
+                                 <option value="Busika">Busika</option>
+                                 <option value="Bugema">Bugema</option>
+                                 <option value="Kasangati">Kasangati</option>
+                                 <option value="Seeta">Seeta</option>
+                                 <option value="Kiira">Kiira</option>
+                                 <option value="Najjera">Najjera</option>
+                                 <option value="Nalya">Nalya</option>
+                                 <option value="Gaaba">Gaaba</option>
+                                 <option value="Butto">Butto</option>
+                                 <option value="Kitende">Kitende</option>
+                                 <option value="Namugongo">Namugongo</option>
+                             </select>
+                             <span class="field-status-icon check-icon">✓</span>
+                             <span class="field-error-icon">✕</span>
+                             <div class="address-validation-feedback" id="address-feedback"></div>
+                         </div>
+                     </div>
 
                     <!-- Delivery Options -->
                     <div class="form-group delivery-options-group">
@@ -2477,11 +2491,13 @@
         // Enhanced form validation
         function validateForm() {
             let isValid = true;
+            const validAddresses = ['Gayaza', 'Kireka', 'Busika', 'Bugema', 'Kasangati', 'Seeta', 'Kiira', 'Najjera', 'Nalya', 'Gaaba', 'Butto', 'Kitende', 'Namugongo'];
+            
             const requiredFields = [
                 { id: 'cust-name', validator: (v) => v.trim().length >= 2, message: 'Please enter your full name (at least 2 characters)' },
                 { id: 'cust-phone', validator: (v) => /^[\+]?[(]?[0-9]{1,3}[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?[-\s\.]?[0-9]{3,6}[-\s\.]?[0-9]{2,6}$/.test(v), message: 'Please enter a valid phone number' },
                 { id: 'cust-email', validator: (v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), message: 'Please enter a valid email address' },
-                { id: 'cust-address', validator: (v) => v.trim().length >= 10, message: 'Please enter a complete delivery address' }
+                { id: 'cust-address', validator: (v) => validAddresses.includes(v), message: 'Please select a valid delivery location' }
             ];
 
             requiredFields.forEach(field => {
@@ -3170,66 +3186,40 @@
             });
         }
         
-        // Address Validation and Suggestions
+        // Address Validation for Select Dropdown
         function setupAddressValidation() {
-            const addressInput = document.getElementById('cust-address');
+            const addressSelect = document.getElementById('cust-address');
             const feedback = document.getElementById('address-feedback');
-            const suggestions = document.getElementById('address-suggestions');
-            const checkIcon = addressInput.parentElement.querySelector('.check-icon');
-            const errorIcon = addressInput.parentElement.querySelector('.error-icon');
+            const checkIcon = addressSelect.parentElement.querySelector('.check-icon');
+            const errorIcon = addressSelect.parentElement.querySelector('.field-error-icon');
             
-            if (!addressInput) return;
-            
-            // Load saved addresses
-            const savedAddresses = JSON.parse(localStorage.getItem('savedAddresses') || '[]');
-            
-            addressInput.addEventListener('input', function() {
-                const value = this.value.trim();
+            if (!addressSelect) return;
+
+            addressSelect.addEventListener('change', function() {
+                const value = this.value;
                 
                 // Clear previous states
                 checkIcon.classList.remove('visible');
                 errorIcon.classList.remove('visible');
                 feedback.classList.remove('visible');
-                suggestions.classList.remove('visible');
-                
-                if (value.length < 5) {
-                    feedback.textContent = 'Enter at least 5 characters';
-                    feedback.classList.add('visible');
-                    return;
-                }
-                
-                // Simulate address validation (basic check)
-                const isValid = value.length >= 10 && /[A-Za-z]/.test(value);
-                
-                if (isValid) {
+
+                if (value && value !== '') {
+                    // Valid selection
                     checkIcon.classList.add('visible');
-                    feedback.textContent = '✓ Address looks good';
+                    feedback.textContent = '✓ Delivery available to this location';
                     feedback.style.color = 'var(--secondary)';
                     feedback.classList.add('visible');
-                    
-                    // Show saved address suggestions
-                    if (savedAddresses.length > 0) {
-                        const matches = savedAddresses.filter(addr => 
-                            addr.toLowerCase().includes(value.toLowerCase())
-                        );
-                        
-                        if (matches.length > 0) {
-                            renderAddressSuggestions(matches.slice(0, 3));
-                        }
-                    }
                 } else {
+                    // No selection
                     errorIcon.classList.add('visible');
-                    feedback.textContent = 'Please enter a complete address';
+                    feedback.textContent = 'Please select a delivery location';
                     feedback.style.color = 'var(--accent)';
                     feedback.classList.add('visible');
                 }
             });
-            
-            addressInput.addEventListener('blur', function() {
-                setTimeout(() => {
-                    suggestions.classList.remove('visible');
-                }, 200);
+        }
             });
+        }
         }
         
         function renderAddressSuggestions(addresses) {
@@ -3404,16 +3394,17 @@
             return `${baseTime - variance}-${baseTime + variance} min`;
         }
         
-        // Update form validation to include address suggestions
+        // Update form validation to include address auto-save on change
         function enhanceFormValidation() {
             const addressField = document.getElementById('cust-address');
-            if (addressField) {
-                addressField.addEventListener('input', function() {
+            const saveCheckbox = document.getElementById('save-address');
+            
+            if (addressField && saveCheckbox) {
+                addressField.addEventListener('change', function() {
                     // Auto-save address if checkbox is checked
-                    if (document.getElementById('save-address').checked) {
-                        // Debounced save
+                    if (saveCheckbox.checked && this.value.trim()) {
                         clearTimeout(this.saveTimeout);
-                        this.saveTimeout = setTimeout(saveCurrentAddress, 2000);
+                        this.saveTimeout = setTimeout(saveCurrentAddress, 1000);
                     }
                 });
             }
