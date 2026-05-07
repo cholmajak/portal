@@ -113,6 +113,13 @@
             margin-bottom: 2rem;
             transition: var(--transition);
             animation: slideUp 0.4s ease-out;
+            border: 2px solid transparent;
+        }
+
+        .checkout-section.accepted {
+            border-color: var(--secondary);
+            background: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.1);
         }
         
         @keyframes slideUp {
@@ -827,7 +834,14 @@
             z-index: 1;
         }
 
-        /* Delivery Banner Styles */
+        /* Delivery Banner Styles - Enhanced */
+        .delivery-info-banner {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
         .delivery-promo-banner {
             display: flex;
             align-items: center;
@@ -835,10 +849,28 @@
             background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
             padding: 1.2rem 1.5rem;
             border-radius: var(--radius);
-            margin-bottom: 2rem;
             border: 1px dashed #F39C12;
             animation: pulse-border 3s ease-in-out infinite;
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .delivery-promo-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 4s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
         }
         
         .delivery-promo-banner:hover {
@@ -849,7 +881,7 @@
         .rider-icon {
             width: 60px;
             height: 60px;
-            background: #F39C12;
+            background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -857,10 +889,35 @@
             font-size: 1.8rem;
             animation: bounce 2s ease-in-out infinite;
             flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+            position: relative;
+            z-index: 1;
         }
         
-        .delivery-promo-banner div:last-child {
+        .rider-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(243, 156, 18, 0.3);
+            animation: ripple 2s infinite;
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .delivery-promo-banner > div:last-child {
             flex: 1;
+            position: relative;
+            z-index: 1;
         }
         
         .delivery-promo-banner p {
@@ -868,16 +925,161 @@
             font-weight: 600;
             color: #D35400;
             line-height: 1.5;
+            font-size: 0.95rem;
         }
         
         .delivery-time {
             display: inline-block;
             background: #D35400;
             color: white;
-            padding: 0.25rem 0.75rem;
+            padding: 0.3rem 0.8rem;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
+        }
+        
+        /* Dynamic Delivery Details */
+        .delivery-dynamic-details {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .delivery-dynamic-details.visible {
+            opacity: 1;
+            max-height: 200px;
+        }
+        
+        .delivery-fee-section {
+            background: linear-gradient(135deg, #fef9e7 0%, #fef5e7 100%);
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid #f5e6a3;
+            animation: slideUp 0.3s ease-out;
+            position: relative;
+        }
+        
+        .delivery-fee-section::before {
+            content: '✨';
+            position: absolute;
+            top: -8px;
+            right: 10px;
+            font-size: 1.2rem;
+            animation: float 2s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .delivery-fee-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            justify-content: center;
+            font-size: 1rem;
+            color: #8B4513;
+        }
+        
+        .delivery-fee-badge span:first-child {
+            font-weight: 600;
+        }
+        
+        .fee-amount {
+            background: white;
+            padding: 0.4rem 1rem;
+            border-radius: 25px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+        
+        .fee-amount.highlight {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            color: #d35400;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+            50% { transform: scale(1.05); box-shadow: 0 5px 12px rgba(211, 84, 0, 0.3); }
+        }
+        
+        .delivery-time-estimate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .delivery-time-estimate span:first-child {
+            font-weight: 500;
+        }
+        
+        .time-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 3px 8px rgba(46, 134, 193, 0.3);
+            transition: var(--transition);
+        }
+        
+        .time-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(46, 134, 193, 0.4);
+        }
+        
+        .time-badge.express {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
+        }
+        
+        .time-badge.scheduled {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            box-shadow: 0 3px 8px rgba(155, 89, 182, 0.3);
+        }
+        
+        /* Smooth pulse border animation */
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(243, 156, 18, 0.5); }
+            50% { border-color: rgba(243, 156, 18, 1); }
+        }
+        
+        /* Responsive delivery banner */
+        @media (max-width: 768px) {
+            .delivery-promo-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+            
+            .rider-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .delivery-fee-badge {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .fee-amount {
+                font-size: 1rem;
+                padding: 0.3rem 0.8rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -914,10 +1116,788 @@
             }
         }
         
-        /* Tablet responsive */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .checkout-container {
-                grid-template-columns: 1.2fr 1fr;
+        /* Delivery Method Selector Styles */
+        .delivery-method-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .delivery-method-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .delivery-method-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .delivery-method-option:hover::before {
+            left: 100%;
+        }
+        
+        .delivery-method-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(46, 134, 193, 0.15);
+        }
+        
+        .delivery-method-option.selected {
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, #f0fff4 0%, #e6f7e6 100%);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+        }
+        
+        .method-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .delivery-method-option:hover .method-icon {
+            transform: scale(1.2);
+        }
+        
+        .method-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .method-name {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+        
+        .method-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .method-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        
+        .method-badge.free-badge {
+            background: var(--secondary);
+        }
+        
+        /* Scheduled Delivery Group */
+        .scheduled-delivery-group {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .scheduled-delivery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .field-hint {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        /* Address Input Enhancements */
+        .address-input-container {
+            position: relative;
+        }
+        
+        .address-input-container input {
+            padding-right: 2.5rem;
+        }
+        
+        .field-status-icon.check-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .field-error-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .field-status-icon.check-icon.visible,
+        .field-error-icon.visible {
+            opacity: 1;
+        }
+        
+        .address-validation-feedback {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .address-validation-feedback.visible {
+            opacity: 1;
+        }
+        
+        .address-suggestions {
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .address-suggestions.visible {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .suggestion-item {
+            padding: 0.5rem 0.75rem;
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .suggestion-item:hover {
+            background: #f0f9ff;
+            border-color: var(--primary);
+            padding-left: 1rem;
+        }
+        
+        .suggestion-item.selected {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f2ff 100%);
+            border-color: var(--primary);
+        }
+        
+        /* Delivery Preferences */
+        .delivery-preferences {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .preference-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+        
+        .preference-toggle:hover {
+            background: var(--bg-light);
+            border-color: #e0e0e0;
+        }
+        
+        .preference-toggle input[type="checkbox"] {
+            display: none;
+        }
+        
+        .toggle-slider {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        
+        .toggle-slider::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .preference-toggle input:checked + .toggle-slider {
+            background: var(--secondary);
+        }
+        
+        .preference-toggle input:checked + .toggle-slider::after {
+            transform: translateX(20px);
+        }
+        
+        .toggle-label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        
+        .toggle-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+        
+        .toggle-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* Quick Notes */
+        .quick-notes-container {
+            position: relative;
+        }
+        
+        .quick-notes-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quick-note-tag {
+            background: var(--bg-light);
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .quick-note-tag:hover {
+            background: #e8f4fc;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+        
+        .quick-note-tag.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .quick-notes-container input {
+            padding-right: 4rem;
+        }
+        
+        .char-count {
+            position: absolute;
+            right: 0.75rem;
+            bottom: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        
+        /* Delivery Progress Indicator */
+        .delivery-progress-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            border-radius: var(--radius-sm);
+            border: 1px solid #d4e9f7;
+            display: none;
+        }
+        
+        .delivery-progress-container.visible {
+            display: block;
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        .progress-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            width: 16%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: -12px;
+        }
+        
+        .progress-connector {
+            position: absolute;
+            top: 12px;
+            left: 24px;
+            right: 24px;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+        
+        .progress-connector-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--secondary);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 20%;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+        
+        .progress-steps::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 0;
+            height: 2px;
+            background: var(--secondary);
+            z-index: 1;
+            transition: width 0.5s ease;
+            width: 16%;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e0e0e0;
+            transition: var(--transition);
+        }
+        
+        .step.active .step-dot {
+            border-color: var(--secondary);
+            background: var(--secondary);
+            box-shadow: 0 0 0 6px rgba(39, 174, 96, 0.15);
+            animation: pulse 2s infinite;
+        }
+        
+        .step.completed .step-dot {
+            background: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .step.completed .step-dot::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(39, 174, 96, 0); }
+        }
+        
+        .step span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        
+        .step.active span {
+            color: var(--text-dark);
+        }
+        
+        .step.completed span {
+            color: var(--secondary);
+        }
+        
+        /* Delivery Fee Badge */
+        .delivery-fee-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #d35400;
+            margin-top: 1rem;
+            border: 1px solid #ffe0b2;
+            transition: var(--transition);
+        }
+        
+        .delivery-fee-badge.highlight {
+            background: linear-gradient(135deg, #fef9e7 0%, #fdeaa8 100%);
+            border-color: #f5c542;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .delivery-time-estimate {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .time-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+        
+        .time-badge.express {
+            background: #e74c3c;
+        }
+        
+        .time-badge.scheduled {
+            background: #9b59b6;
+        }
+
+        /* Delivery Progress Indicator */
+        .delivery-progress-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            border-radius: var(--radius-sm);
+            border: 1px solid #d4e9f7;
+            display: none;
+        }
+        
+        .delivery-progress-container.visible {
+            display: block;
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        .progress-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .progress-label::before {
+            content: '📊';
+            font-size: 1.1rem;
+        }
+        
+        .progress-bar-wrapper {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-bar-bg {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            width: 16%;
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: -12px;
+            padding: 0 4px;
+        }
+        
+        .progress-connector {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+        
+        .progress-connector-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--secondary);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 16%;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+            background: transparent;
+        }
+        
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e0e0e0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .step.active .step-dot {
+            border-color: var(--secondary);
+            background: var(--secondary);
+            box-shadow: 0 0 0 6px rgba(39, 174, 96, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        .step.completed .step-dot {
+            background: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .step.completed .step-dot::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(39, 174, 96, 0); }
+        }
+        
+        .step span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .step.active span {
+            color: var(--text-dark);
+        }
+        
+        .step.completed span {
+            color: var(--secondary);
+        }
+        
+        /* Delivery Fee Badge */
+        .delivery-fee-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border-radius: var(--radius-sm);
+            border: 1px solid #ffe0b2;
+            text-align: center;
+        }
+        
+        .delivery-fee-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #d35400;
+        }
+        
+        .delivery-fee-badge .fee-amount {
+            font-size: 1.1rem;
+            background: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .delivery-time-estimate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        
+        .time-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            box-shadow: 0 3px 8px rgba(46, 134, 193, 0.3);
+            transition: var(--transition);
+        }
+        
+        .time-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(46, 134, 193, 0.4);
+        }
+        
+        .time-badge.express {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
+        }
+        
+        .time-badge.scheduled {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            box-shadow: 0 3px 8px rgba(155, 89, 182, 0.3);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .delivery-method-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .scheduled-delivery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step span {
+                font-size: 0.65rem;
+            }
+            
+            .progress-label {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -927,39 +1907,187 @@
     <div class="checkout-container">
         <!-- Left Side: Forms -->
         <div class="main-content">
-            <div class="checkout-section">
-                <h2>Delivery Information</h2>
+            <div class="checkout-section" id="delivery-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg-light); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                    <h2 style="border: none; margin: 0; padding: 0;">Delivery Information</h2>
+                    <span id="delivery-status-badge" style="opacity: 0; transform: translateY(10px); transition: var(--transition); background: var(--secondary); color: white; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700;">DETAILS ACCEPTED ✓</span>
+                </div>
                 <form id="checkout-form">
+                    <!-- Delivery Method Selection -->
+                    <div class="form-group">
+                        <label>Delivery Method</label>
+                        <div class="delivery-method-selector" id="delivery-method-selector">
+                            <div class="delivery-method-option selected" data-method="standard" data-delivery-time="45-60" data-fee="0">
+                                <div class="method-icon">🚚</div>
+                                <div class="method-info">
+                                    <span class="method-name">Standard Delivery</span>
+                                    <span class="method-desc">45-60 minutes</span>
+                                </div>
+                                <div class="method-badge free-badge">FREE</div>
+                            </div>
+                            <div class="delivery-method-option" data-method="express" data-delivery-time="20-30" data-fee="5000">
+                                <div class="method-icon">⚡</div>
+                                <div class="method-info">
+                                    <span class="method-name">Express Delivery</span>
+                                    <span class="method-desc">20-30 minutes</span>
+                                </div>
+                                <div class="method-badge">USh 5,000</div>
+                            </div>
+                            <div class="delivery-method-option" data-method="scheduled" data-delivery-time="custom" data-fee="0">
+                                <div class="method-icon">📅</div>
+                                <div class="method-info">
+                                    <span class="method-name">Schedule for Later</span>
+                                    <span class="method-desc">Choose your time</span>
+                                </div>
+                                <div class="method-badge free-badge">FREE</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="delivery-method" name="delivery-method" value="standard">
+                    </div>
+
+                    <!-- Scheduled Delivery DateTime Picker (Hidden by default) -->
+                    <div class="form-group scheduled-delivery-group" id="scheduled-delivery-group" style="display: none;">
+                        <div class="scheduled-delivery-grid">
+                            <div>
+                                <label for="delivery-date">Delivery Date</label>
+                                <input type="date" id="delivery-date" min="">
+                                <span class="field-hint">Select delivery date</span>
+                            </div>
+                            <div>
+                                <label for="delivery-time">Delivery Time</label>
+                                <input type="time" id="delivery-time" min="08:00" max="20:00">
+                                <span class="field-hint">8:00 AM - 8:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
                     <div class="form-group">
                         <label>Full Name</label>
                         <input type="text" id="cust-name" placeholder="Enter your full name" required>
+                        <span class="field-status-icon check-icon">✓</span>
+                        <span class="field-error-icon">✕</span>
                     </div>
                     <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div>
                             <label>Phone Number</label>
                             <input type="tel" id="cust-phone" placeholder="+256..." required>
+                            <span class="field-status-icon check-icon">✓</span>
+                            <span class="field-error-icon">✕</span>
                         </div>
                         <div>
                             <label>Email Address</label>
                             <input type="email" id="cust-email" placeholder="Email (optional)">
+                            <span class="field-status-icon check-icon">✓</span>
                         </div>
                     </div>
+
+                    <!-- Address Section with Live Validation -->
                     <div class="form-group">
                         <label>Delivery Address</label>
-                        <textarea id="cust-address" rows="3" placeholder="Street name, Apartment/House No, Area" required></textarea>
+                        <div class="address-input-container">
+                            <input type="text" id="cust-address" placeholder="Street name, Apartment/House No, Area" required>
+                            <span class="field-status-icon check-icon">✓</span>
+                            <span class="field-error-icon">✕</span>
+                            <div class="address-validation-feedback" id="address-feedback"></div>
+                        </div>
+                        <div class="address-suggestions" id="address-suggestions"></div>
                     </div>
+
+                    <!-- Delivery Options -->
+                    <div class="form-group delivery-options-group">
+                        <label>Delivery Preferences</label>
+                        <div class="delivery-preferences">
+                            <label class="preference-toggle">
+                                <input type="checkbox" id="contactless-delivery" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">
+                                    <span class="toggle-title">Contact-Free Delivery</span>
+                                    <span class="toggle-desc"> Rider will leave package at your door</span>
+                                </span>
+                            </label>
+                            <label class="preference-toggle">
+                                <input type="checkbox" id="save-address">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">
+                                    <span class="toggle-title">Save this address</span>
+                                    <span class="toggle-desc"> For faster checkout next time</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Quick Delivery Notes -->
                     <div class="form-group">
-                        <label>Delivery Notes</label>
-                        <input type="text" placeholder="Any specific instructions for the rider?">
+                        <label>Delivery Notes (Optional)</label>
+                        <div class="quick-notes-container">
+                            <div class="quick-notes-tags" id="quick-notes-tags">
+                                <button type="button" class="quick-note-tag" data-note="Ring doorbell">🔔 Ring doorbell</button>
+                                <button type="button" class="quick-note-tag" data-note="Call on arrival">📞 Call on arrival</button>
+                                <button type="button" class="quick-note-tag" data-note="Leave with security">🏢 Leave with security</button>
+                                <button type="button" class="quick-note-tag" data-note="Second floor">🏠 Second floor</button>
+                            </div>
+                            <input type="text" id="cust-notes" placeholder="Add a note for the delivery rider..." maxlength="200">
+                            <span class="char-count"><span id="notes-char-count">0</span>/200</span>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Progress Indicator -->
+                    <div class="delivery-progress-container" id="delivery-progress-container">
+                        <div class="progress-label">Delivery Timeline</div>
+                        <div class="progress-bar-wrapper">
+                            <div class="progress-bar-bg">
+                                <div class="progress-fill" id="delivery-progress-fill"></div>
+                            </div>
+                            <div class="progress-steps">
+                                <div class="step active" id="step-preparing">
+                                    <div class="step-dot"></div>
+                                    <span>Preparing</span>
+                                </div>
+                                <div class="progress-connector">
+                                    <div class="progress-connector-fill" id="connector-fill"></div>
+                                </div>
+                                <div class="step" id="step-on-the-way">
+                                    <div class="step-dot"></div>
+                                    <span>On the Way</span>
+                                </div>
+                                <div class="progress-connector">
+                                    <div class="progress-connector-fill"></div>
+                                </div>
+                                <div class="step" id="step-delivered">
+                                    <div class="step-dot"></div>
+                                    <span>Delivered</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
 
-            <div class="delivery-promo-banner">
-                <div class="rider-icon">🚀</div>
-                <div>
-                    <p>Fast & Reliable Delivery: Our riders are on standby! Your fresh cuts will be at your doorstep within 45-60 minutes.</p>
-                    <span class="delivery-time">⏱️ 45-60 min delivery</span>
+            <!-- Delivery Info Banner - Enhanced -->
+            <div class="delivery-info-banner">
+                <div class="delivery-promo-banner">
+                    <div class="rider-icon">🚀</div>
+                    <div>
+                        <p>Fast & Reliable Delivery: Our riders are on standby! Your fresh cuts will be at your doorstep within 45-60 minutes.</p>
+                        <span class="delivery-time">⏱️ 45-60 min delivery</span>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Delivery Details -->
+                <div class="delivery-dynamic-details">
+                    <div class="delivery-fee-section" id="delivery-fee-display">
+                        <div class="delivery-fee-badge">
+                            <span>🚚 Delivery</span>
+                            <span class="fee-amount" id="current-delivery-fee">Free</span>
+                        </div>
+                        <div class="delivery-time-estimate">
+                            <span>Estimated arrival:</span>
+                            <span class="time-badge" id="current-time-badge">
+                                ⏱️ 45-60 min
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1230,9 +2358,39 @@
                 `;
             }).join('');
 
-            itemCountDisplay.textContent = currentCartData.count;
-            subtotalDisplay.textContent = currentCartData.total.toLocaleString();
-            totalDisplay.textContent = currentCartData.total.toLocaleString();
+            // Calculate subtotal from items
+            const subtotal = currentCartData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Get current delivery fee
+            const selectedMethodEl = document.getElementById('delivery-method');
+            const deliveryFee = selectedMethodEl ? 
+                (parseInt(document.querySelector(`[data-method="${selectedMethodEl.value}"]`)?.dataset.fee) || 0) : 0;
+            
+            // Calculate final total
+            const finalTotal = subtotal + deliveryFee;
+            
+            // Update count
+            const count = currentCartData.items.reduce((sum, item) => sum + item.quantity, 0);
+            currentCartData.count = count;
+            currentCartData.total = finalTotal;
+            localStorage.setItem('shoppingCart', JSON.stringify(currentCartData));
+
+            // Update displays
+            itemCountDisplay.textContent = count;
+            subtotalDisplay.textContent = subtotal.toLocaleString();
+            totalDisplay.textContent = finalTotal.toLocaleString();
+
+            // Update badge
+            const badgeEl = document.getElementById('header-badge');
+            if (badgeEl) {
+                badgeEl.textContent = count;
+                if (initial) {
+                    badgeEl.style.transform = 'scale(1)';
+                } else {
+                    badgeEl.style.transform = 'scale(1.2)';
+                    setTimeout(() => badgeEl.style.transform = 'scale(1)', 200);
+                }
+            }
             
             // Initialize tooltips
             initTooltips();
@@ -1279,10 +2437,31 @@
 
         // Recalculates cart total and count, then updates localStorage and display
         function recalculateCart(animate = false, changedIndex = -1) {
-            currentCartData.total = currentCartData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            // Calculate subtotal and count
+            const subtotal = currentCartData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             currentCartData.count = currentCartData.items.reduce((sum, item) => sum + item.quantity, 0);
+            
+            // Get current delivery fee
+            const selectedMethodEl = document.getElementById('delivery-method');
+            let deliveryFee = 0;
+            if (selectedMethodEl) {
+                const methodOption = document.querySelector(`[data-method="${selectedMethodEl.value}"]`);
+                deliveryFee = methodOption ? parseInt(methodOption.dataset.fee || 0) : 0;
+            }
+            
+            // Update total with delivery
+            currentCartData.total = subtotal + deliveryFee;
             localStorage.setItem('shoppingCart', JSON.stringify(currentCartData));
             
+            // Update delivery row in order summary
+            const deliveryRow = document.querySelector('.total-row:nth-child(2)');
+            if (deliveryRow) {
+                deliveryRow.innerHTML = deliveryFee === 0 
+                    ? '<span>Delivery</span><span>Free</span>'
+                    : `<span>Delivery</span><span>USh ${deliveryFee.toLocaleString()}</span>`;
+            }
+            
+            // Render and animate items, then update totals
             renderCheckoutItems(animate);
             
             // Animate specific line total if needed
@@ -1341,6 +2520,37 @@
                 if (!validateField(airtelNumber, (v) => /^\+256\d{9}$/.test(v), 'Please enter a valid Airtel Money number')) isValid = false;
                 if (!validateField(airtelFirstName, (v) => v.trim().length >= 2, 'Please enter first name')) isValid = false;
                 if (!validateField(airtelLastName, (v) => v.trim().length >= 2, 'Please enter last name')) isValid = false;
+            }
+            
+            // Scheduled delivery validation
+            const deliveryMethod = document.getElementById('delivery-method').value;
+            if (deliveryMethod === 'scheduled') {
+                const deliveryDate = document.getElementById('delivery-date');
+                const deliveryTime = document.getElementById('delivery-time');
+                
+                if (!deliveryDate.value) {
+                    animateField(deliveryDate);
+                    isValid = false;
+                }
+                
+                if (!deliveryTime.value) {
+                    animateField(deliveryTime);
+                    isValid = false;
+                }
+                
+                // Validate date is in the future
+                if (deliveryDate.value) {
+                    const selectedDate = new Date(deliveryDate.value + 'T00:00:00');
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    if (selectedDate < today) {
+                        alert('Please select a future date for delivery');
+                        deliveryDate.value = '';
+                        deliveryDate.focus();
+                        isValid = false;
+                    }
+                }
             }
 
             if (!isValid) {
@@ -1447,11 +2657,26 @@
             const phone = document.getElementById('cust-phone').value;
             const email = document.getElementById('cust-email').value;
             const address = document.getElementById('cust-address').value;
+            const deliveryMethod = document.getElementById('delivery-method').value;
+            const deliveryNotes = document.getElementById('cust-notes').value;
+            const contactless = document.getElementById('contactless-delivery').checked;
             const payment = document.querySelector('input[name="payment"]:checked').value;
             const total = document.getElementById('final-total').textContent;
             const orderDetails = currentCartData.items.map(item => 
                 `${item.name} (x${item.quantity}) - USh ${(item.price * item.quantity).toLocaleString()}`
             ).join('\n');
+            
+            // Determine delivery time estimate
+            let estimatedDelivery = '';
+            const methodOption = document.querySelector(`[data-method="${deliveryMethod}"]`);
+            if (deliveryMethod === 'scheduled') {
+                const date = document.getElementById('delivery-date').value;
+                const time = document.getElementById('delivery-time').value;
+                estimatedDelivery = `Scheduled: ${formatDate(date)} at ${formatTime(time)}`;
+            } else {
+                const timeRange = methodOption?.dataset.deliveryTime || '45-60';
+                estimatedDelivery = `${timeRange} minutes`;
+            }
 
             let paymentBanner, paymentDetails;
             if (payment === 'visa') {
@@ -1490,6 +2715,12 @@
             formData.append('Total Amount', `USh ${total}`);
             formData.append('Payment Method', paymentBanner);
             formData.append('Payment Details', paymentDetails);
+            formData.append('Delivery Method', deliveryMethod.charAt(0).toUpperCase() + deliveryMethod.slice(1));
+            formData.append('Delivery Notes', deliveryNotes || 'None');
+            formData.append('Contactless Delivery', contactless ? 'Yes' : 'No');
+            formData.append('Estimated Delivery', estimatedDelivery);
+            formData.append('Delivery Person', 'John Rider');
+            formData.append('Delivery Contact', '+256 700 123 456');
             formData.append('_replyto', email);
             formData.append('_subject', `Order Confirmation - Fresh Cuts (#${Date.now().toString().slice(-6)})`);
 
@@ -1503,7 +2734,7 @@
                 hideProcessingOverlay();
 
                 if (response.ok) {
-                    showSuccessModal(name, email, total, paymentBanner);
+                    showSuccessModal(name, email, total, paymentBanner, estimatedDelivery);
                     localStorage.removeItem('shoppingCart');
                     currentCartData = { items: [], total: 0, count: 0 };
                 } else {
@@ -1558,7 +2789,7 @@
             }
         }
 
-        function showSuccessModal(name, email, total, paymentBanner) {
+        function showSuccessModal(name, email, total, paymentBanner, estimatedDelivery) {
             const modal = document.createElement('div');
             modal.id = 'success-modal';
             modal.innerHTML = `
@@ -1586,10 +2817,17 @@
                             <circle cx="26" cy="26" r="24" fill="none" stroke="#27AE60" stroke-width="3"/>
                             <path fill="none" stroke="#27AE60" stroke-width="4" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
                         </svg>
-                        <h2 style="color: #27AE60; margin: 0 0 1rem 0;">Order Confirmed!</h2>
-                        <p style="margin: 0 0 0.5rem 0;">Thank you, <strong>${name}</strong>!</p>
-                        <p style="color: #7F8C8D; margin-bottom: 1.5rem;">
-                            A confirmation email will be sent to <strong>${email || 'your contact email'}</strong> shortly.
+                        <h2 style="color: #27AE60; margin: 0 0 1rem 0;">Order Placed!</h2>
+                        <p style="margin: 0 0 0.5rem 0;">Thank you, <strong>${name}</strong>! Your fresh cuts are on the way.</p>
+                        
+                        <div style="margin: 1.5rem 0; padding: 1rem; background: #e8f4fd; border-radius: 8px; text-align: left; border-left: 4px solid var(--primary);">
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.95rem;">🛵 <strong>Delivery Person:</strong> John Rider</p>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.95rem;">📞 <strong>Contact:</strong> +256 700 123 456</p>
+                            <p style="margin: 0; font-size: 0.95rem;">⏱️ <strong>Estimated Arrival:</strong> ${estimatedDelivery}</p>
+                        </div>
+
+                        <p style="color: #7F8C8D; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                            Please check your email (<strong>${email || 'the address provided'}</strong>) for order tracking details and receipt.
                         </p>
                         <div style="
                             background: #f8f9fa;
@@ -1607,9 +2845,6 @@
                                 <span>${paymentBanner}</span>
                             </div>
                         </div>
-                        <p style="font-size: 0.9rem; color: #7F8C8D; margin-bottom: 0;">
-                            Estimated delivery: <strong>45-60 minutes</strong>
-                        </p>
                         <button onclick="closeSuccessModal()" style="
                             background: var(--primary);
                             color: white;
@@ -1715,13 +2950,491 @@
             // This function exists for extensibility
         }
 
-        // Run all setup on page load
-        window.addEventListener('load', function() {
+        // Delivery Method Selection Handler
+        function setupDeliveryMethodToggle() {
+            const methodOptions = document.querySelectorAll('.delivery-method-option');
+            const scheduledGroup = document.getElementById('scheduled-delivery-group');
+            const deliveryMethodInput = document.getElementById('delivery-method');
+            const dynamicDetails = document.querySelector('.delivery-dynamic-details');
+            const feeAmountEl = document.getElementById('current-delivery-fee');
+            const timeBadgeEl = document.getElementById('current-time-badge');
+            
+            if (!dynamicDetails) return;
+            
+            methodOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Update selected state
+                    methodOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    const method = this.dataset.method;
+                    const fee = parseInt(this.dataset.fee) || 0;
+                    const deliveryTime = this.dataset.deliveryTime;
+                    
+                    deliveryMethodInput.value = method;
+                    
+                    // Show/hide scheduled delivery date picker
+                    if (method === 'scheduled') {
+                        scheduledGroup.style.display = 'block';
+                        scheduledGroup.style.animation = 'fadeIn 0.3s ease-out';
+                    } else {
+                        scheduledGroup.style.display = 'none';
+                    }
+                    
+                    // Show delivery details section
+                    dynamicDetails.classList.add('visible');
+                    
+                    // Update fee display
+                    updateDeliveryFeeDisplay(fee);
+                    
+                    // Update time badge
+                    updateDeliveryTimeDisplay(method, deliveryTime);
+                    
+                    // Recalculate totals
+                    updateOrderTotalsWithDelivery(fee);
+                    
+                    // Update progress indicator
+                    updateDeliveryProgress(method);
+                    
+                    // Save preference
+                    localStorage.setItem('preferredDeliveryMethod', method);
+                    
+                    // Add haptic feedback sound effect (visual pulse)
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+            // Load saved preference
+            const savedMethod = localStorage.getItem('preferredDeliveryMethod');
+            if (savedMethod) {
+                const savedOption = document.querySelector(`[data-method="${savedMethod}"]`);
+                if (savedOption) {
+                    savedOption.click();
+                    if (dynamicDetails) dynamicDetails.classList.add('visible');
+                }
+            } else {
+                // Trigger default selected option
+                const defaultOption = document.querySelector('.delivery-method-option.selected');
+                if (defaultOption) {
+                    defaultOption.click();
+                }
+            }
+        }
+        
+        // Update Delivery Fee Display
+        function updateDeliveryFeeDisplay(fee) {
+            const feeAmountEl = document.getElementById('current-delivery-fee');
+            if (!feeAmountEl) return;
+            
+            if (fee === 0) {
+                feeAmountEl.textContent = 'Free';
+                feeAmountEl.classList.remove('highlight');
+            } else {
+                feeAmountEl.textContent = `USh ${fee.toLocaleString()}`;
+                feeAmountEl.classList.add('highlight');
+            }
+        }
+        
+        // Update Delivery Time Display
+        function updateDeliveryTimeDisplay(method, timeRange) {
+            const timeBadgeEl = document.getElementById('current-time-badge');
+            if (!timeBadgeEl || !timeBadgeEl.parentElement) return;
+            
+            let icon, text, className;
+            
+            switch(method) {
+                case 'express':
+                    icon = '⚡';
+                    text = `${timeRange} min`;
+                    className = 'time-badge express';
+                    break;
+                case 'scheduled':
+                    icon = '📅';
+                    const date = document.getElementById('delivery-date').value;
+                    const time = document.getElementById('delivery-time').value;
+                    text = date && time ? `${formatDate(date)} at ${formatTime(time)}` : 'Select date & time';
+                    className = 'time-badge scheduled';
+                    break;
+                default:
+                    icon = '🚚';
+                    text = `${timeRange} min`;
+                    className = 'time-badge';
+            }
+            
+            timeBadgeEl.className = className;
+            timeBadgeEl.innerHTML = `${icon} ${text}`;
+            
+            // Update promo banner time as well
+            const promoTimeBadge = document.querySelector('.delivery-time');
+            if (promoTimeBadge) {
+                promoTimeBadge.innerHTML = `${icon} ${text}`;
+            }
+        }
+        
+        function formatDate(dateStr) {
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+        
+        function formatTime(timeStr) {
+            const [hours, minutes] = timeStr.split(':');
+            const h = parseInt(hours);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const displayHour = h % 12 || 12;
+            return `${displayHour}:${minutes} ${ampm}`;
+        }
+        
+        // Update Order Totals with Delivery Fee
+        function updateOrderTotalsWithDelivery(deliveryFee) {
+            if (!window.currentCartData) return;
+            
+            // Update the delivery row in order summary
+            const deliveryRow = document.querySelector('.total-row:nth-child(2)');
+            if (deliveryRow) {
+                if (deliveryFee === 0) {
+                    deliveryRow.innerHTML = '<span>Delivery</span><span>Free</span>';
+                } else {
+                    deliveryRow.innerHTML = `<span>Delivery</span><span>USh ${deliveryFee.toLocaleString()}</span>`;
+                }
+            }
+            
+            // Recalculate cart with delivery fee
+            recalculateCart(true);
+        }
+        
+        // Update Delivery Progress Indicator
+        function updateDeliveryProgress(method) {
+            const progressFill = document.getElementById('delivery-progress-fill');
+            const connectorFill = document.querySelector('.progress-connector-fill');
+            const steps = document.querySelectorAll('.step');
+            
+            if (!progressFill || steps.length === 0) return;
+            
+            let progressWidth, connectorWidth;
+            
+            switch(method) {
+                case 'express':
+                    progressWidth = '35%';
+                    connectorWidth = '35%';
+                    break;
+                case 'scheduled':
+                    progressWidth = '20%';
+                    connectorWidth = '20%';
+                    break;
+                default:
+                    progressWidth = '20%';
+                    connectorWidth = '20%';
+            }
+            
+            progressFill.style.width = progressWidth;
+            if (connectorFill) {
+                connectorFill.style.width = connectorWidth;
+            }
+            
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index === 0) {
+                    step.classList.add('active');
+                }
+            });
+        }
+        
+        // Address Validation and Suggestions
+        function setupAddressValidation() {
+            const addressInput = document.getElementById('cust-address');
+            const feedback = document.getElementById('address-feedback');
+            const suggestions = document.getElementById('address-suggestions');
+            const checkIcon = addressInput.parentElement.querySelector('.check-icon');
+            const errorIcon = addressInput.parentElement.querySelector('.error-icon');
+            
+            if (!addressInput) return;
+            
+            // Load saved addresses
+            const savedAddresses = JSON.parse(localStorage.getItem('savedAddresses') || '[]');
+            
+            addressInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                
+                // Clear previous states
+                checkIcon.classList.remove('visible');
+                errorIcon.classList.remove('visible');
+                feedback.classList.remove('visible');
+                suggestions.classList.remove('visible');
+                
+                if (value.length < 5) {
+                    feedback.textContent = 'Enter at least 5 characters';
+                    feedback.classList.add('visible');
+                    return;
+                }
+                
+                // Simulate address validation (basic check)
+                const isValid = value.length >= 10 && /[A-Za-z]/.test(value);
+                
+                if (isValid) {
+                    checkIcon.classList.add('visible');
+                    feedback.textContent = '✓ Address looks good';
+                    feedback.style.color = 'var(--secondary)';
+                    feedback.classList.add('visible');
+                    
+                    // Show saved address suggestions
+                    if (savedAddresses.length > 0) {
+                        const matches = savedAddresses.filter(addr => 
+                            addr.toLowerCase().includes(value.toLowerCase())
+                        );
+                        
+                        if (matches.length > 0) {
+                            renderAddressSuggestions(matches.slice(0, 3));
+                        }
+                    }
+                } else {
+                    errorIcon.classList.add('visible');
+                    feedback.textContent = 'Please enter a complete address';
+                    feedback.style.color = 'var(--accent)';
+                    feedback.classList.add('visible');
+                }
+            });
+            
+            addressInput.addEventListener('blur', function() {
+                setTimeout(() => {
+                    suggestions.classList.remove('visible');
+                }, 200);
+            });
+        }
+        
+        function renderAddressSuggestions(addresses) {
+            const suggestionsContainer = document.getElementById('address-suggestions');
+            suggestionsContainer.innerHTML = '';
+            
+            addresses.forEach(addr => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.textContent = addr;
+                div.addEventListener('click', function() {
+                    document.getElementById('cust-address').value = addr;
+                    suggestionsContainer.classList.remove('visible');
+                    // Trigger validation
+                    document.getElementById('cust-address').dispatchEvent(new Event('input'));
+                });
+                suggestionsContainer.appendChild(div);
+            });
+            
+            suggestionsContainer.classList.add('visible');
+        }
+        
+        // Quick Notes Tags
+        function setupQuickNotes() {
+            const tags = document.querySelectorAll('.quick-note-tag');
+            const notesInput = document.getElementById('cust-notes');
+            const charCount = document.getElementById('notes-char-count');
+            
+            tags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const note = this.dataset.note;
+                    
+                    // Toggle selection
+                    this.classList.toggle('selected');
+                    
+                    // Update input value
+                    let currentNotes = notesInput.value.trim();
+                    const notesArray = currentNotes ? currentNotes.split(',').map(n => n.trim()) : [];
+                    
+                    if (this.classList.contains('selected')) {
+                        if (!notesArray.includes(note)) {
+                            notesArray.push(note);
+                        }
+                    } else {
+                        const index = notesArray.indexOf(note);
+                        if (index > -1) {
+                            notesArray.splice(index, 1);
+                        }
+                    }
+                    
+                    notesInput.value = notesArray.join(', ');
+                    
+                    // Update character count
+                    charCount.textContent = notesInput.value.length;
+                });
+            });
+            
+            // Character counter
+            if (notesInput && charCount) {
+                notesInput.addEventListener('input', function() {
+                    charCount.textContent = this.value.length;
+                    if (this.value.length > 180) {
+                        charCount.style.color = 'var(--accent)';
+                    } else {
+                        charCount.style.color = 'var(--text-muted)';
+                    }
+                });
+            }
+        }
+        
+        // Save Address to LocalStorage
+        function setupSaveAddress() {
+            const saveCheckbox = document.getElementById('save-address');
+            const addressInput = document.getElementById('cust-address');
+            
+            if (!saveCheckbox || !addressInput) return;
+            
+            saveCheckbox.addEventListener('change', function() {
+                if (this.checked && addressInput.value.trim()) {
+                    saveCurrentAddress();
+                }
+            });
+        }
+        
+        // Setup scheduled delivery date/time updates
+        function setupScheduledDeliveryUpdates() {
+            const dateInput = document.getElementById('delivery-date');
+            const timeInput = document.getElementById('delivery-time');
+            const methodSelect = document.getElementById('delivery-method');
+            
+            if (!dateInput || !timeInput || !methodSelect) return;
+            
+            function updateScheduledTimeDisplay() {
+                if (methodSelect.value === 'scheduled' && dateInput.value && timeInput.value) {
+                    const methodOption = document.querySelector('[data-method="scheduled"]');
+                    if (methodOption) {
+                        // Trigger update of time badge
+                        const timeBadgeEl = document.getElementById('current-time-badge');
+                        if (timeBadgeEl) {
+                            timeBadgeEl.innerHTML = `📅 ${formatDate(dateInput.value)} at ${formatTime(timeInput.value)}`;
+                        }
+                        // Update also promo banner
+                        const promoTimeBadge = document.querySelector('.delivery-time');
+                        if (promoTimeBadge) {
+                            promoTimeBadge.innerHTML = `📅 Scheduled`;
+                        }
+                    }
+                }
+            }
+            
+            dateInput.addEventListener('change', updateScheduledTimeDisplay);
+            timeInput.addEventListener('change', updateScheduledTimeDisplay);
+        }
+        
+        function saveCurrentAddress() {
+            const address = document.getElementById('cust-address').value.trim();
+            if (!address) return;
+            
+            let savedAddresses = JSON.parse(localStorage.getItem('savedAddresses') || '[]');
+            
+            // Remove duplicates and add to front
+            savedAddresses = savedAddresses.filter(addr => addr.toLowerCase() !== address.toLowerCase());
+            savedAddresses.unshift(address);
+            
+            // Keep only last 5 addresses
+            savedAddresses = savedAddresses.slice(0, 5);
+            
+            localStorage.setItem('savedAddresses', JSON.stringify(savedAddresses));
+        }
+        
+        // Real-time Delivery Estimation
+        function estimateDeliveryTime(address) {
+            const now = new Date();
+            const hours = now.getHours();
+            
+            // Simulate zone-based estimation (in real app, would use geocoding API)
+            const zones = {
+                ' downtown ': { min: 15, max: 25, multiplier: 0.8 },
+                ' central ': { min: 20, max: 30, multiplier: 0.9 },
+                ' kiwatule ': { min: 35, max: 45, multiplier: 1.1 },
+                ' naalya ': { min: 40, max: 50, multiplier: 1.2 },
+                ' Bugolobi ': { min: 30, max: 40, multiplier: 1.0 },
+                ' namanve ': { min: 45, max: 55, multiplier: 1.3 }
+            };
+            
+            const lowerAddress = address.toLowerCase();
+            let zone = null;
+            
+            for (const [zoneName, data] of Object.entries(zones)) {
+                if (lowerAddress.includes(zoneName.trim())) {
+                    zone = data;
+                    break;
+                }
+            }
+            
+            const method = document.getElementById('delivery-method').value;
+            let baseTime = 45; // standard
+            let variance = 15;
+            
+            if (method === 'express') {
+                baseTime = 25;
+                variance = 5;
+            } else if (method === 'scheduled') {
+                return 'Scheduled';
+            }
+            
+            if (zone) {
+                const estimatedTime = Math.round((baseTime * zone.multiplier));
+                return `${estimatedTime - variance}-${estimatedTime + variance} min`;
+            }
+            
+            return `${baseTime - variance}-${baseTime + variance} min`;
+        }
+        
+        // Update form validation to include address suggestions
+        function enhanceFormValidation() {
+            const addressField = document.getElementById('cust-address');
+            if (addressField) {
+                addressField.addEventListener('input', function() {
+                    // Auto-save address if checkbox is checked
+                    if (document.getElementById('save-address').checked) {
+                        // Debounced save
+                        clearTimeout(this.saveTimeout);
+                        this.saveTimeout = setTimeout(saveCurrentAddress, 2000);
+                    }
+                });
+            }
+        }
+        
+        // Initialize delivery features on page load
+        function initDeliveryEnhancements() {
+            setupDeliveryMethodToggle();
+            setupAddressValidation();
+            setupQuickNotes();
+            setupSaveAddress();
+            setupScheduledDeliveryUpdates(); // Listen for date/time changes
+            enhanceFormValidation();
+            
+            // Set minimum date for scheduled delivery to today
+            const dateInput = document.getElementById('delivery-date');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.min = today;
+                dateInput.value = today; // Default to today
+                
+                // Set default time range
+                const timeInput = document.getElementById('delivery-time');
+                if (timeInput) {
+                    timeInput.min = '08:00';
+                    timeInput.max = '20:00';
+                    const now = new Date();
+                    const currentHour = now.getHours();
+                    const defaultHour = currentHour + 1 > 20 ? '20:00' : `${String(currentHour + 1).padStart(2, '0')}:00`;
+                    timeInput.value = defaultHour;
+                }
+            }
+        }
+        
+        // Override loadCheckout to also load saved addresses
+        const originalLoadCheckout = loadCheckout;
+        loadCheckout = function() {
+            originalLoadCheckout();
+            // Load saved addresses for suggestions (will be available when address field is focused)
+        };
+        
+        // Add to initialization
+        const originalInit = window.addEventListener('load', function() {
             loadCheckout();
             setupPaymentMethodToggle();
             setupRealTimeValidation();
             initInteractiveEffects();
             initTooltips();
+            initDeliveryEnhancements(); // NEW
         });
 
         // Smart input formatting
