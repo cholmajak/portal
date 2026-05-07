@@ -459,6 +459,11 @@
             color: #E65100;
         }
 
+        .status-approved {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
         .status-completed {
             background: #E8F5E9;
             color: #2E7D32;
@@ -1002,26 +1007,27 @@
 
                 return `
                     <tr>
-                        <td>${index + 1}</td>
+                        <td>${order.id}</td>
                         <td>
                             <strong>${order.name || 'Guest'}</strong><br>
                             <small style="color: var(--text-muted);">${order.email || 'N/A'}</small>
                         </td>
                         <td>${order.phone || 'N/A'}</td>
-                        <td>${order.items?.length || 0} items</td>
+                        <td>${order.paymentMethod || 'N/A'}</td>
                         <td><strong>USh ${(order.total || 0).toLocaleString()}</strong></td>
                         <td>
-                            <select class="status-select" data-index="${index}" onchange="updateStatus(${index})" 
-                                style="padding: 0.35rem; border-radius: 12px; border: 2px solid #ddd; font-weight: 600; cursor: pointer;">
+                            <select class="status-select" data-id="${order.id}" onchange="updateStatus('${order.id}')" 
+                                style="padding: 0.35rem; border-radius: 12px; border: 2px solid #ddd; font-weight: 600; cursor: pointer; background: ${getStatusColor(order.status)}">
                                 <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="approved" ${order.status === 'approved' ? 'selected' : ''}>Approved</option>
                                 <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
                                 <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
                             </select>
                         </td>
                         <td>${formattedDate}</td>
                         <td>
-                            <button class="action-btn" onclick="viewOrderDetails(${index})">View</button>
-                            <button class="action-btn delete" onclick="deleteOrder(${index})">Delete</button>
+                            <button class="action-btn" onclick="viewOrderDetails('${order.id}')">View</button>
+                            <button class="action-btn delete" onclick="deleteOrder('${order.id}')">Delete</button>
                         </td>
                     </tr>
                 `;
@@ -1030,29 +1036,42 @@
             // Re-attach event listeners for status selects
             document.querySelectorAll('.status-select').forEach(select => {
                 select.addEventListener('change', function() {
-                    const index = parseInt(this.dataset.index);
-                    updateStatus(index);
+                    const id = this.dataset.id;
+                    updateStatus(id);
                 });
             });
         }
 
+        function getStatusColor(status) {
+            switch(status) {
+                case 'pending': return '#FFF3E0';
+                case 'approved': return '#E3F2FD';
+                case 'completed': return '#E8F5E9';
+                case 'cancelled': return '#FFEBEE';
+                default: return '#white';
+            }
+        }
+
         // Update order status
-        window.updateStatus = function(index) {
+        window.updateStatus = function(orderId) {
             const orders = getOrders();
-            const select = document.querySelector(`.status-select[data-index="${index}"]`);
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex === -1) return;
+            
+            const select = document.querySelector(`.status-select[data-id="${orderId}"]`);
             const newStatus = select.value;
             
-            orders[index].status = newStatus;
+            orders[orderIndex].status = newStatus;
             localStorage.setItem('customerOrders', JSON.stringify(orders));
             
             showNotification(`Order marked as ${newStatus}`, 'success');
-            loadStats();
+            loadDashboardData();
         };
 
         // View order details
-        window.viewOrderDetails = function(index) {
+        window.viewOrderDetails = function(orderId) {
             const orders = getOrders();
-            const order = orders[index];
+            const order = orders.find(o => o.id === orderId);
             if (!order) return;
 
             const itemsList = order.items?.map(item => 
