@@ -567,6 +567,90 @@
             background: #c0392b;
         }
 
+        /* Communications Log */
+        .comm-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+            transition: var(--transition);
+        }
+
+        .comm-item:hover {
+            background: #f8f9fa;
+        }
+
+        .comm-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .comm-content {
+            flex: 1;
+        }
+
+        .comm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.25rem;
+        }
+
+        .comm-customer {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .comm-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .comm-message {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        .comm-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .comm-empty {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .comm-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(46, 134, 193, 0.4);
+            transition: var(--transition);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comm-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(46, 134, 193, 0.5);
+        }
+
         .empty-state {
             text-align: center;
             padding: 3rem;
@@ -735,6 +819,16 @@
                     <div class="stat-value" id="pendingOrders">0</div>
                     <div class="stat-label">Pending Orders</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💳</div>
+                    <div class="stat-value" id="paymentMethods">0</div>
+                    <div class="stat-label">Payment Methods</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value" id="avgOrderValue">USh 0</div>
+                    <div class="stat-label">Avg Order Value</div>
+                </div>
             </div>
 
             <!-- Customers Table -->
@@ -756,11 +850,12 @@
                                 <th>#</th>
                                 <th>Customer</th>
                                 <th>Contact</th>
+                                <th>Payment</th>
                                 <th>Items</th>
                                 <th>Total</th>
                                 <th>Status</th>
                                 <th>Date</th>
-                                <th>Action</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="customersTableBody">
@@ -774,8 +869,45 @@
                     <p>Customer orders will appear here once they complete checkout.</p>
                 </div>
             </div>
+
+            <!-- Quick Settings -->
+            <div class="customers-section" style="margin-top: 1.5rem;">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>⚙️</span>
+                        Quick Settings
+                    </h2>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-light); border-radius: var(--radius-sm);">
+                    <div>
+                        <strong>Auto-notify customers</strong>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">Send SMS/email when order status changes</div>
+                    </div>
+                    <label class="preference-toggle" style="cursor: pointer;">
+                        <input type="checkbox" id="autoNotifyToggle" checked onchange="toggleAutoNotify(this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
         </div>
-    </div>
+
+            <!-- Communications Log -->
+            <div class="customers-section" style="margin-top: 2rem;">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>📨</span>
+                        Communication History
+                    </h2>
+                    <button class="refresh-btn" id="refreshCommBtn" onclick="loadCommunications()">
+                        <span>🔄</span>
+                        Refresh
+                    </button>
+                </div>
+                <div id="communications-log" style="max-height: 400px; overflow-y: auto;">
+                    <!-- Communications will be listed here -->
+                </div>
+            </div>
+        </div>
 
     <script>
         // Admin Authentication Constants
@@ -1022,6 +1154,8 @@
             document.querySelector('.admin-title').textContent = `Admin Portal - ${adminName}`;
             
             loadDashboardData();
+            loadCommunications();
+            initSettings();
         }
 
         // Handle logout
@@ -1049,11 +1183,17 @@
             const totalOrders = orders.length;
             const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
             const pendingOrders = orders.filter(o => o.status === 'pending').length;
+            
+            // Payment methods analysis
+            const paymentMethods = new Set(orders.map(o => o.paymentMethod).filter(Boolean));
+            const avgOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
 
             document.getElementById('totalCustomers').textContent = totalCustomers;
             document.getElementById('totalOrders').textContent = totalOrders;
             document.getElementById('totalRevenue').textContent = `USh ${totalRevenue.toLocaleString()}`;
             document.getElementById('pendingOrders').textContent = pendingOrders;
+            document.getElementById('paymentMethods').textContent = paymentMethods.size;
+            document.getElementById('avgOrderValue').textContent = `USh ${avgOrderValue.toLocaleString()}`;
         }
 
         // Get orders from localStorage
@@ -1090,29 +1230,46 @@
 
                 const statusClass = `status-${order.status || 'pending'}`;
                 const statusText = order.status || 'pending';
+                
+                // Payment method icon
+                let paymentIcon = '💳';
+                if (order.paymentMethod?.includes('MTN') || order.paymentMethod?.includes('Mobile Money')) {
+                    paymentIcon = '📱';
+                } else if (order.paymentMethod?.includes('Airtel')) {
+                    paymentIcon = '📞';
+                } else if (order.paymentMethod?.includes('Visa') || order.paymentMethod?.includes('Card')) {
+                    paymentIcon = '💳';
+                }
 
                 return `
                     <tr>
-                        <td>${index + 1}</td>
+                        <td><strong>#${order.id || index + 1}</strong></td>
                         <td>
                             <strong>${order.name || 'Guest'}</strong><br>
                             <small style="color: var(--text-muted);">${order.email || 'N/A'}</small>
                         </td>
                         <td>${order.phone || 'N/A'}</td>
+                        <td>
+                            <span title="${order.paymentMethod || 'N/A'}">${paymentIcon}</span>
+                            <small style="display: block; color: var(--text-muted); font-size: 0.75rem;">
+                                ${order.paymentMethod ? order.paymentMethod.replace('Visa / ', '').replace('Airtel Money', 'Airtel') : 'N/A'}
+                            </small>
+                        </td>
                         <td>${order.items?.length || 0} items</td>
-                        <td><strong>USh ${(order.total || 0).toLocaleString()}</strong></td>
+                        <td><strong style="color: var(--secondary);">USh ${(order.total || 0).toLocaleString()}</strong></td>
                         <td>
                             <select class="status-select" data-index="${index}" onchange="updateStatus(${index})" 
-                                style="padding: 0.35rem; border-radius: 12px; border: 2px solid #ddd; font-weight: 600; cursor: pointer;">
-                                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
-                                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                                style="padding: 0.35rem; border-radius: 12px; border: 2px solid #ddd; font-weight: 600; cursor: pointer; min-width: 100px;">
+                                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>🟡 Pending</option>
+                                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>🟢 Completed</option>
+                                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>🔴 Cancelled</option>
                             </select>
                         </td>
                         <td>${formattedDate}</td>
                         <td>
-                            <button class="action-btn" onclick="viewOrderDetails(${index})">View</button>
-                            <button class="action-btn delete" onclick="deleteOrder(${index})">Delete</button>
+                            <button class="action-btn" onclick="viewOrderDetails(${index})" title="View Full Details">👁️ View</button>
+                            <button class="action-btn" onclick="quickComplete(${index})" title="Mark Complete" style="background: var(--secondary);">✓</button>
+                            <button class="action-btn delete" onclick="deleteOrder(${index})" title="Delete Order">🗑️</button>
                         </td>
                     </tr>
                 `;
@@ -1133,14 +1290,46 @@
             const select = document.querySelector(`.status-select[data-index="${index}"]`);
             const newStatus = select.value;
             
+            const oldStatus = orders[index].status;
             orders[index].status = newStatus;
             localStorage.setItem('customerOrders', JSON.stringify(orders));
             
-            showNotification(`Order marked as ${newStatus}`, 'success');
+            // Auto-notify customer of status change
+            const customerPhone = orders[index].phone;
+            const customerName = orders[index].name;
+            
+            let notificationMessage = '';
+            if (newStatus === 'completed') {
+                notificationMessage = `Hi ${customerName}, your order has been completed! Thank you for shopping with us. 🎉`;
+            } else if (newStatus === 'cancelled') {
+                notificationMessage = `Hi ${customerName}, your order has been cancelled. Please contact us if you have questions.`;
+            } else if (newStatus === 'pending' && oldStatus !== 'pending') {
+                notificationMessage = `Hi ${customerName}, your order status has been updated to pending.`;
+            }
+            
+            if (notificationMessage) {
+                // Log the notification
+                const commLog = JSON.parse(localStorage.getItem('customerCommunications') || '[]');
+                commLog.push({
+                    orderId: orders[index].id,
+                    customer: customerName,
+                    contact: customerPhone,
+                    message: notificationMessage,
+                    timestamp: new Date().toISOString(),
+                    sentBy: localStorage.getItem('adminName') || 'Admin',
+                    automated: true
+                });
+                localStorage.setItem('customerCommunications', JSON.stringify(commLog));
+                
+                showNotification(`Order marked as ${newStatus} & customer notified`, 'success');
+            } else {
+                showNotification(`Order marked as ${newStatus}`, 'success');
+            }
+            
             loadStats();
         };
 
-        // View order details
+        // View order details - Professional modal
         window.viewOrderDetails = function(index) {
             const orders = getOrders();
             const order = orders[index];
@@ -1150,7 +1339,366 @@
                 `• ${item.name} x${item.quantity} = USh ${(item.price * item.quantity).toLocaleString()}`
             ).join('\n') || 'No items';
 
-            alert(`Order Details:\n\nCustomer: ${order.name}\nPhone: ${order.phone}\nEmail: ${order.email}\nAddress: ${order.address}\nDelivery: ${order.deliveryMethod}\n\nItems:\n${itemsList}\n\nTotal: USh ${(order.total || 0).toLocaleString()}\nStatus: ${order.status || 'pending'}\nDate: ${new Date(order.timestamp).toLocaleString()}`);
+            // Get admin notes
+            const orderNotes = JSON.parse(localStorage.getItem('orderNotes') || '{}');
+            const notes = orderNotes[order.id] || '';
+
+            const modal = document.createElement('div');
+            modal.id = 'order-detail-modal';
+            modal.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    background: rgba(0,0,0,0.6);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    backdrop-filter: blur(4px);
+                    animation: fadeIn 0.2s ease-out;
+                ">
+                    <div style="
+                        background: white;
+                        width: 90%;
+                        max-width: 600px;
+                        max-height: 90vh;
+                        overflow-y: auto;
+                        border-radius: 16px;
+                        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                        animation: slideUp 0.3s ease-out;
+                    ">
+                        <div style="
+                            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+                            color: white;
+                            padding: 1.5rem 2rem;
+                            border-radius: 16px 16px 0 0;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        ">
+                            <div>
+                                <h2 style="margin: 0; font-size: 1.4rem;">Order #${order.id || index + 1}</h2>
+                                <p style="margin: 0.5rem 0 0 0; opacity: 0.9; font-size: 0.9rem;">
+                                    ${new Date(order.timestamp).toLocaleString()}
+                                </p>
+                            </div>
+                            <button onclick="closeOrderModal()" style="
+                                background: rgba(255,255,255,0.2);
+                                border: none;
+                                color: white;
+                                width: 36px;
+                                height: 36px;
+                                border-radius: 50%;
+                                font-size: 1.2rem;
+                                cursor: pointer;
+                                transition: var(--transition);
+                            " onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">✕</button>
+                        </div>
+                        
+                        <div style="padding: 2rem;">
+                            <!-- Customer Info -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <h3 style="color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1.1rem;">👤 Customer Information</h3>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: var(--bg-light); padding: 1rem; border-radius: 8px;">
+                                    <div><strong>Name:</strong><br>${order.name || 'Guest'}</div>
+                                    <div><strong>Phone:</strong><br>${order.phone || 'N/A'}</div>
+                                    <div><strong>Email:</strong><br>${order.email || 'N/A'}</div>
+                                    <div><strong>Status:</strong><br><span class="status-badge status-${order.status || 'pending'}">${order.status || 'pending'}</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Delivery Info -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <h3 style="color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1.1rem;">📍 Delivery Details</h3>
+                                <div style="background: var(--bg-light); padding: 1rem; border-radius: 8px;">
+                                    <p style="margin: 0 0 0.5rem 0;"><strong>Address:</strong> ${order.address || 'N/A'}</p>
+                                    <p style="margin: 0 0 0.5rem 0;"><strong>Method:</strong> ${order.deliveryMethod || 'N/A'}</p>
+                                    <p style="margin: 0 0 0.5rem 0;"><strong>Est. Delivery:</strong> ${order.estimatedDelivery || 'N/A'}</p>
+                                    <p style="margin: 0;"><strong>Contactless:</strong> ${order.contactless ? '✅ Yes' : '❌ No'}</p>
+                                    ${order.deliveryNotes ? `<p style="margin: 0.5rem 0 0 0;"><strong>Notes:</strong> ${order.deliveryNotes}</p>` : ''}
+                                </div>
+                            </div>
+
+                            <!-- Payment Info -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <h3 style="color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1.1rem;">💳 Payment Information</h3>
+                                <div style="background: var(--bg-light); padding: 1rem; border-radius: 8px;">
+                                    <p style="margin: 0 0 0.5rem 0;"><strong>Method:</strong> ${order.paymentMethod || 'N/A'}</p>
+                                    ${order.paymentDetails ? `<p style="margin: 0; font-family: monospace; font-size: 0.85rem; color: var(--text-muted);">${order.paymentDetails.replace(/\n/g, '<br>')}</p>` : ''}
+                                </div>
+                            </div>
+
+                            <!-- Order Items -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <h3 style="color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1.1rem;">🛒 Order Items</h3>
+                                <div style="background: var(--bg-light); padding: 1rem; border-radius: 8px; font-family: monospace; white-space: pre-line;">
+                                    ${itemsList}
+                                </div>
+                            </div>
+
+                            <!-- Total -->
+                            <div style="margin-bottom: 1.5rem; text-align: right; padding: 1rem; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 8px;">
+                                <p style="margin: 0; font-size: 1.2rem; font-weight: 700; color: var(--secondary);">
+                                    Total: USh ${(order.total || 0).toLocaleString()}
+                                </p>
+                            </div>
+
+                            <!-- Admin Notes -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <h3 style="color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1.1rem;">📝 Admin Notes</h3>
+                                <textarea id="adminNotes" placeholder="Add internal notes about this order..." 
+                                    style="width: 100%; min-height: 80px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; resize: vertical;">${notes}</textarea>
+                                <button onclick="saveOrderNotes(${index})" style="
+                                    margin-top: 0.5rem;
+                                    padding: 0.5rem 1rem;
+                                    background: var(--primary);
+                                    color: white;
+                                    border: none;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                    font-size: 0.85rem;
+                                    font-weight: 600;
+                                ">💾 Save Note</button>
+                            </div>
+
+                            <!-- Send Customer Feedback -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <h3 style="color: var(--primary-dark); margin-bottom: 0.75rem; font-size: 1.1rem;">📤 Send Customer Notification</h3>
+                                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                    <select id="notificationTemplate" onchange="applyNotificationTemplate()" style="
+                                        padding: 0.6rem;
+                                        border: 2px solid #e0e0e0;
+                                        border-radius: 6px;
+                                        font-size: 0.85rem;
+                                    ">
+                                        <option value="">Choose a template...</option>
+                                        <option value="confirmed">✅ Order Confirmed</option>
+                                        <option value="preparing">🚚 Preparing for Delivery</option>
+                                        <option value="delivered">🎉 Delivered</option>
+                                        <option value="cancelled">❌ Order Cancelled</option>
+                                    </select>
+                                    <textarea id="customerMessage" placeholder="Type your message to the customer..." 
+                                        style="width: 100%; min-height: 100px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
+                                    <button onclick="sendCustomerNotification(${index})" style="
+                                        align-self: flex-start;
+                                        padding: 0.6rem 1.2rem;
+                                        background: var(--secondary);
+                                        color: white;
+                                        border: none;
+                                        border-radius: 6px;
+                                        cursor: pointer;
+                                        font-size: 0.85rem;
+                                        font-weight: 600;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 0.5rem;
+                                    ">
+                                        <span>📧</span> Send to Customer
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div style="
+                                display: flex; 
+                                gap: 0.75rem; 
+                                padding-top: 1rem; 
+                                border-top: 2px solid #eee;
+                            ">
+                                <button onclick="markOrderCompleted(${index})" style="
+                                    flex: 1;
+                                    padding: 0.75rem;
+                                    background: var(--secondary);
+                                    color: white;
+                                    border: none;
+                                    border-radius: 8px;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    transition: var(--transition);
+                                ">✓ Mark Completed</button>
+                                <button onclick="closeOrderModal()" style="
+                                    flex: 1;
+                                    padding: 0.75rem;
+                                    background: #e0e0e0;
+                                    color: var(--text-dark);
+                                    border: none;
+                                    border-radius: 8px;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                ">Close</button>
+                            </div>
+                        </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button for quick actions -->
+        <button class="comm-fab" id="quickActionBtn" title="Quick Actions" onclick="toggleQuickActions()">
+            <span>+</span>
+        </button>
+
+        <!-- Quick Actions Panel -->
+        <div id="quickActions" style="
+            position: fixed;
+            bottom: 8rem;
+            right: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            padding: 0.5rem;
+            display: none;
+            z-index: 998;
+            min-width: 200px;
+        ">
+            <div style="padding: 0.5rem 1rem; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid #eee; margin-bottom: 0.5rem;">
+                Quick Actions
+            </div>
+            <button onclick="exportData('csv')" style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border: none;
+                background: none;
+                cursor: pointer;
+                font-size: 0.9rem;
+                color: var(--text-dark);
+                border-radius: 6px;
+                transition: var(--transition);
+            " onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
+                <span>📊</span> Export Orders (CSV)
+            </button>
+            <button onclick="clearCompletedOrders()" style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border: none;
+                background: none;
+                cursor: pointer;
+                font-size: 0.9rem;
+                color: var(--text-dark);
+                border-radius: 6px;
+                transition: var(--transition);
+            " onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
+                <span>🧹</span> Clear Completed Orders
+            </button>
+            <button onclick="loadCommunications()" style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border: none;
+                background: none;
+                cursor: pointer;
+                font-size: 0.9rem;
+                color: var(--text-dark);
+                border-radius: 6px;
+                transition: var(--transition);
+            " onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background='none'">
+                <span>📨</span> Refresh Comms
+            </button>
+        </div>
+            `;
+            document.body.appendChild(modal);
+        };
+
+        window.closeOrderModal = function() {
+            const modal = document.getElementById('order-detail-modal');
+            if (modal) modal.remove();
+        };
+
+        window.applyNotificationTemplate = function() {
+            const template = document.getElementById('notificationTemplate').value;
+            const messageArea = document.getElementById('customerMessage');
+            const orders = getOrders();
+            const order = orders[document.querySelector('.status-select')?.dataset.index || 0];
+            
+            const templates = {
+                confirmed: `Dear ${order.name || 'Valued Customer'},\n\nYour order has been confirmed! 🎉\n\nOrder Details:\n• Items: ${order.items?.length || 0} products\n• Total: USh ${(order.total || 0).toLocaleString()}\n• Delivery: ${order.deliveryMethod || 'Standard'}\n\nWe'll keep you updated on your order status.\n\nThank you for choosing Fresh Online Cuts!`,
+                preparing: `Hi ${order.name || 'Customer'},\n\nYour order is now being prepared for delivery! 🚚\n\nWe'll dispatch your order shortly. Please ensure someone is available at the delivery address.\n\nEstimated delivery: ${order.estimatedDelivery || '45-60 minutes'}\n\nThank you!`,
+                delivered: `Hello ${order.name || 'Customer'},\n\nYour order has been delivered! 🎊\n\nWe hope you enjoy your fresh cuts. Your satisfaction is our priority.\n\nThank you for shopping with us! Feel free to reach out if you need anything.\n\nBest regards,\nFresh Online Cuts Team`,
+                cancelled: `Dear ${order.name || 'Customer'},\n\nWe regret to inform you that your order has been cancelled.\n\nIf you have any questions or concerns, please contact our customer service.\n\nWe apologize for any inconvenience.\n\nCustomer Service: +256 700 123 456`
+            };
+            
+            messageArea.value = templates[template] || '';
+        };
+
+        window.sendCustomerNotification = function(orderIndex) {
+            const message = document.getElementById('customerMessage').value.trim();
+            if (!message) {
+                showNotification('Please enter a message', 'error');
+                return;
+            }
+
+            const orders = getOrders();
+            const order = orders[orderIndex];
+
+            // Simulate sending (in production, this would be API call to SMS/email service)
+            console.log('Sending notification to:', order.phone || order.email, 'Message:', message);
+
+            // Save communication log
+            const commLog = JSON.parse(localStorage.getItem('customerCommunications') || '[]');
+            commLog.push({
+                orderId: order.id,
+                customer: order.name,
+                contact: order.phone || order.email,
+                message: message,
+                timestamp: new Date().toISOString(),
+                sentBy: localStorage.getItem('adminName') || 'Admin'
+            });
+            localStorage.setItem('customerCommunications', JSON.stringify(commLog));
+
+            showNotification('Notification sent to customer!', 'success');
+            document.getElementById('customerMessage').value = '';
+            document.getElementById('notificationTemplate').value = '';
+        };
+
+        window.saveOrderNotes = function(index) {
+            const orders = getOrders();
+            const notes = document.getElementById('adminNotes').value;
+            const orderNotes = JSON.parse(localStorage.getItem('orderNotes') || '{}');
+            orderNotes[orders[index].id] = notes;
+            localStorage.setItem('orderNotes', JSON.stringify(orderNotes));
+            showNotification('Note saved successfully', 'success');
+        };
+
+        window.markOrderCompleted = function(index) {
+            const orders = getOrders();
+            orders[index].status = 'completed';
+            localStorage.setItem('customerOrders', JSON.stringify(orders));
+            closeOrderModal();
+            loadCustomersTable();
+            loadStats();
+            showNotification('Order marked as completed', 'success');
+        };
+
+        // Quick complete from table
+        window.quickComplete = function(index) {
+            const orders = getOrders();
+            orders[index].status = 'completed';
+            localStorage.setItem('customerOrders', JSON.stringify(orders));
+            loadCustomersTable();
+            loadStats();
+            
+            // Auto-notify customer
+            const order = orders[index];
+            const notificationMessage = `Hi ${order.name}, your order has been completed! 🎉 Thank you for shopping with Fresh Online Cuts.`;
+            const commLog = JSON.parse(localStorage.getItem('customerCommunications') || '[]');
+            commLog.push({
+                orderId: order.id,
+                customer: order.name,
+                contact: order.phone,
+                message: notificationMessage,
+                timestamp: new Date().toISOString(),
+                sentBy: localStorage.getItem('adminName') || 'Admin',
+                automated: true
+            });
+            localStorage.setItem('customerCommunications', JSON.stringify(commLog));
+            
+            showNotification('Order completed ✓', 'success');
         };
 
         // Delete order
@@ -1218,14 +1766,163 @@
                 from { transform: translateX(0); opacity: 1; }
                 to { transform: translateX(100%); opacity: 0; }
             }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateY(50px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
         `;
         document.head.appendChild(style);
+
+        // Global keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('order-detail-modal');
+                if (modal) closeOrderModal();
+                const quickPanel = document.getElementById('quickActions');
+                if (quickPanel && quickPanel.style.display === 'block') {
+                    quickPanel.style.display = 'none';
+                }
+            }
+        });
+
+        // Close quick actions when clicking outside
+        document.addEventListener('click', function(e) {
+            const fab = document.getElementById('quickActionBtn');
+            const panel = document.getElementById('quickActions');
+            if (panel && panel.style.display === 'block' && 
+                !panel.contains(e.target) && !fab.contains(e.target)) {
+                panel.style.display = 'none';
+            }
+        });
+
+        // Communications Log
+        function loadCommunications() {
+            const commLog = JSON.parse(localStorage.getItem('customerCommunications') || '[]');
+            const container = document.getElementById('communications-log');
+            
+            if (commLog.length === 0) {
+                container.innerHTML = `
+                    <div class="comm-empty">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📭</div>
+                        <p>No communications sent yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by timestamp (newest first)
+            commLog.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            container.innerHTML = commLog.map(comm => {
+                const date = new Date(comm.timestamp);
+                const timeAgo = getTimeAgo(date);
+                const icon = comm.automated ? '🤖' : '👤';
+                
+                return `
+                    <div class="comm-item">
+                        <div class="comm-icon">${icon}</div>
+                        <div class="comm-content">
+                            <div class="comm-header">
+                                <span class="comm-customer">${comm.customer || 'Unknown'}</span>
+                                <span class="comm-time">${timeAgo}</span>
+                            </div>
+                            <div class="comm-message">${comm.message.replace(/\n/g, '<br>')}</div>
+                            <div class="comm-meta">
+                                Via ${comm.contact?.includes('@') ? 'Email' : 'SMS'} • by ${comm.sentBy}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'Just now';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h ago`;
+            const days = Math.floor(hours / 24);
+            return `${days}d ago`;
+        }
+
+        // Quick Action Panel
+        window.toggleQuickActions = function() {
+            const panel = document.getElementById('quickActions');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        };
+
+        window.toggleAutoNotify = function(enabled) {
+            localStorage.setItem('autoNotifyCustomers', enabled);
+            showNotification(`Auto-notify ${enabled ? 'enabled' : 'disabled'}`, 'info');
+        };
+
+        function initSettings() {
+            const autoNotify = localStorage.getItem('autoNotifyCustomers') !== 'false';
+            const toggle = document.getElementById('autoNotifyToggle');
+            if (toggle) toggle.checked = autoNotify;
+        }
+
+        window.exportData = function(format) {
+            const orders = getOrders();
+            if (orders.length === 0) {
+                showNotification('No orders to export', 'error');
+                return;
+            }
+
+            // Create CSV
+            const headers = ['ID', 'Customer', 'Email', 'Phone', 'Address', 'Items', 'Total', 'Payment', 'Status', 'Date'];
+            const rows = orders.map(o => [
+                o.id || '',
+                o.name || '',
+                o.email || '',
+                o.phone || '',
+                `"${(o.address || '').replace(/"/g, '""')}"`,
+                o.items?.length || 0,
+                o.total || 0,
+                `"${(o.paymentMethod || '').replace(/"/g, '""')}"`,
+                o.status || 'pending',
+                new Date(o.timestamp).toLocaleDateString()
+            ]);
+
+            const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `freshcuts_orders_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            showNotification('Orders exported successfully', 'success');
+        };
+
+        window.clearCompletedOrders = function() {
+            const orders = getOrders();
+            const completedCount = orders.filter(o => o.status === 'completed').length;
+            if (completedCount === 0) {
+                showNotification('No completed orders to clear', 'error');
+                return;
+            }
+
+            if (confirm(`Delete ${completedCount} completed order(s)? This cannot be undone.`)) {
+                const remaining = orders.filter(o => o.status !== 'completed');
+                localStorage.setItem('customerOrders', JSON.stringify(remaining));
+                loadCustomersTable();
+                loadStats();
+                showNotification(`${completedCount} completed orders cleared`, 'success');
+            }
+        };
 
         // Initialize default admin if none exist
         (function initAdmins() {
             const admins = AdminManager.getAdmins();
             if (admins.length === 0) {
-                // Add default admin account
                 AdminManager.addAdmin({
                     name: 'System Admin',
                     email: ADMIN_CREDENTIALS.email,
@@ -1242,6 +1939,7 @@
         setInterval(() => {
             if (dashboard.classList.contains('active')) {
                 loadDashboardData();
+                loadCommunications();
             }
         }, 30000);
     </script>
