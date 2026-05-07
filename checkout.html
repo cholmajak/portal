@@ -63,6 +63,148 @@
             flex-direction: column;
             gap: 2rem;
         }
+
+        /* Login Section Styles */
+        .login-section {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .login-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-header h2 {
+            margin: 0;
+            border: none;
+            color: var(--primary-dark);
+        }
+
+        .login-icon {
+            font-size: 1.8rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .login-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .login-btn {
+            padding: 0.9rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(46, 134, 193, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .forgot-password-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .forgot-password-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .guest-continue-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .guest-continue-btn:hover {
+            border-color: var(--primary);
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .account-prompt {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .account-prompt a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .account-prompt a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
         
         /* Sticky sidebar */
         .sidebar {
@@ -1907,6 +2049,40 @@
     <div class="checkout-container">
         <!-- Left Side: Forms -->
         <div class="main-content">
+            <!-- Login Section -->
+            <section class="login-section" id="loginSection">
+                <div class="login-header">
+                    <span class="login-icon">👤</span>
+                    <h2>Sign In to Your Account</h2>
+                </div>
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="you@example.com" required>
+                        <span class="error-message">Please enter a valid email address</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                        <span class="error-message">Password is required</span>
+                    </div>
+                    <div class="login-actions">
+                        <button type="submit" class="login-btn" id="loginBtn">
+                            <span class="btn-text">Sign In</span>
+                        </button>
+                        <a href="#" class="forgot-password-link">Forgot Password?</a>
+                    </div>
+                </form>
+                <div class="login-divider">or continue as guest</div>
+                <button type="button" class="guest-continue-btn" id="guestContinueBtn">
+                    <span>🛍️</span>
+                    Continue as Guest
+                </button>
+                <p class="account-prompt">
+                    Don't have an account? <a href="#">Create one</a>
+                </p>
+            </section>
+
             <div class="checkout-section" id="delivery-section">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg-light); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
                     <h2 style="border: none; margin: 0; padding: 0;">Delivery Information</h2>
@@ -2734,6 +2910,34 @@
                 hideProcessingOverlay();
 
                 if (response.ok) {
+                    // Save order to localStorage for admin panel
+                    const order = {
+                        id: Date.now().toString().slice(-6),
+                        name: name,
+                        phone: phone,
+                        email: email || 'Not provided',
+                        address: address,
+                        deliveryMethod: deliveryMethod,
+                        deliveryNotes: deliveryNotes || 'None',
+                        contactless: contactless,
+                        paymentMethod: paymentBanner,
+                        paymentDetails: paymentDetails,
+                        estimatedDelivery: estimatedDelivery,
+                        items: currentCartData.items.map(item => ({
+                            name: item.name,
+                            price: item.price,
+                            quantity: item.quantity || 1
+                        })),
+                        total: parseInt(total.replace(/,/g, '')),
+                        status: 'pending',
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    // Save to orders array
+                    const existingOrders = JSON.parse(localStorage.getItem('customerOrders') || '[]');
+                    existingOrders.push(order);
+                    localStorage.setItem('customerOrders', JSON.stringify(existingOrders));
+                    
                     showSuccessModal(name, email, total, paymentBanner, estimatedDelivery);
                     localStorage.removeItem('shoppingCart');
                     currentCartData = { items: [], total: 0, count: 0 };
@@ -3457,6 +3661,168 @@
             }
             input.value = value;
         }
+
+        // Login Form Handling
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const guestContinueBtn = document.getElementById('guestContinueBtn');
+        const loginSection = document.getElementById('loginSection');
+
+        // Check if user is already logged in
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const userEmail = localStorage.getItem('userEmail');
+            if (isLoggedIn && userEmail) {
+                // User is logged in, show logged in state or hide login
+                showLoggedInState(userEmail);
+            }
+        }
+
+        function showLoggedInState(email) {
+            loginSection.innerHTML = `
+                <div class="login-header">
+                    <span class="login-icon">✓</span>
+                    <h2>Welcome Back!</h2>
+                </div>
+                <div style="text-align: center; padding: 1rem 0;">
+                    <p style="margin: 0 0 1rem 0; color: var(--text-muted);">
+                        Signed in as <strong>${email}</strong>
+                    </p>
+                    <button type="button" class="login-btn" id="logoutBtn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                        Sign Out
+                    </button>
+                </div>
+            `;
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            location.reload();
+        }
+
+        // Login form validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validateLoginForm() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            let isValid = true;
+
+            // Validate email
+            const emailGroup = document.getElementById('loginEmail').closest('.form-group');
+            if (!validateEmail(email)) {
+                emailGroup.classList.add('has-error');
+                isValid = false;
+            } else {
+                emailGroup.classList.remove('has-error');
+            }
+
+            // Validate password
+            const passwordGroup = document.getElementById('loginPassword').closest('.form-group');
+            if (password.length < 1) {
+                passwordGroup.classList.add('has-error');
+                isValid = false;
+            } else {
+                passwordGroup.classList.remove('has-error');
+            }
+
+            return isValid;
+        }
+
+        // Handle login submission
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                if (!validateLoginForm()) return;
+
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+
+                // Show loading state
+                loginBtn.classList.add('loading');
+                loginBtn.disabled = true;
+
+                // Simulate API call (replace with actual authentication in production)
+                setTimeout(() => {
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+
+                    // Store login state
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', email);
+
+                    // Update UI to show logged in state
+                    showLoggedInState(email);
+
+                    // Show success feedback
+                    showNotification('Login successful!', 'success');
+                }, 1500);
+            });
+        }
+
+        // Handle guest continue
+        if (guestContinueBtn) {
+            guestContinueBtn.addEventListener('click', function() {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', 'guest@temp.com');
+                loginSection.style.display = 'none';
+                showNotification('Continuing as guest', 'info');
+            });
+        }
+
+        // Show notification helper
+        function showNotification(message, type = 'info') {
+            const colors = {
+                success: 'var(--secondary)',
+                error: 'var(--accent)',
+                info: 'var(--primary)'
+            };
+
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${colors[type] || colors.info};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease-out;
+                font-weight: 600;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add slide animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Check login on page load
+        checkLoginStatus();
     </script>
 </body>
 </html>
